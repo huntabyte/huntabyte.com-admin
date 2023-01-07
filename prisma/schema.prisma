@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+generator zod {
+    provider = "zod-prisma-types"
+    output   = "../src/lib/schemas/generated/"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    ADMIN
+    PRO
+    FREE
+}
+
+model User {
+    id         String  @id
+    email      String  @unique
+    name       String?
+    customerId String? @unique @map("customer_id")
+    role       Role    @default(FREE) @map("role")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    @@map("users")
+}
