@@ -1,7 +1,8 @@
-import type { TypedSupabaseClient } from "@supabase/auth-helpers-sveltekit"
+import type { TypedSupabaseClient } from "@supabase/auth-helpers-sveltekit/dist/types"
 import type { Session } from "@supabase/supabase-js"
 
 declare global {
+	/// <reference types="stripe-event-types" />
 	declare namespace App {
 		// interface Error {}
 		interface Locals {

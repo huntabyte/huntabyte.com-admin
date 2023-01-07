@@ -13,7 +13,6 @@ const CreateCustomerSchema = z.object({
 })
 
 export const POST: RequestHandler = async ({ url, request }) => {
-	console.log("hit endpoint")
 	if (url.searchParams.get("API_KEY") !== API_KEY) {
 		return json({ error: "Invalid API key" }, { status: 401 })
 	}
