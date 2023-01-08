@@ -5,14 +5,20 @@ import type { PageServerLoad } from "./$types";
 import { compile } from "mdsvex";
 
 export const load: PageServerLoad = async ({ params }) => {
-	const { slug } = params;
+	const { moduleSlug, lessonSlug, courseSlug } = params;
 
 	let lesson: Lesson | null;
 
 	try {
 		lesson = await prisma.lesson.findFirst({
 			where: {
-				slug: slug,
+				slug: lessonSlug,
+				module: {
+					slug: moduleSlug,
+					course: {
+						slug: courseSlug,
+					},
+				},
 			},
 		});
 	} catch (err) {
@@ -22,6 +28,12 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	if (!lesson) {
 		throw error(404, "Not Found");
+	}
+	if (!lesson.content) {
+		return {
+			content: "",
+			details: lesson,
+		};
 	}
 
 	const content = (
