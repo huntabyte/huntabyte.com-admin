@@ -8,6 +8,8 @@ import * as PrismaClient from "@prisma/client";
 // PRISMA GENERATED ENUMS
 //------------------------------------------------------
 
+export const LessonScalarFieldEnumSchema = z.nativeEnum(PrismaClient.Prisma.LessonScalarFieldEnum);
+
 export const QueryModeSchema = z.nativeEnum(PrismaClient.Prisma.QueryMode);
 
 export const SortOrderSchema = z.nativeEnum(PrismaClient.Prisma.SortOrder);
@@ -38,6 +40,16 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 });
 
+// LESSON
+//------------------------------------------------------
+
+export const LessonSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  content: z.string(),
+  slug: z.string(),
+});
+
 /////////////////////////////////////////
 // SELECT & INCLUDE
 /////////////////////////////////////////
@@ -53,6 +65,16 @@ export const UserSelectSchema: z.ZodType<PrismaClient.Prisma.UserSelect> = z.obj
   role: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+}).strict();
+
+// LESSON
+//------------------------------------------------------
+
+export const LessonSelectSchema: z.ZodType<PrismaClient.Prisma.LessonSelect> = z.object({
+  id: z.boolean().optional(),
+  title: z.boolean().optional(),
+  content: z.boolean().optional(),
+  slug: z.boolean().optional(),
 }).strict();
 
 /////////////////////////////////////////
@@ -112,6 +134,47 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Pr
   role: z.union([z.lazy(() => EnumRoleWithAggregatesFilterSchema), z.lazy(() => RoleSchema)]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
+}).strict();
+
+export const LessonWhereInputSchema: z.ZodType<PrismaClient.Prisma.LessonWhereInput> = z.object({
+  AND: z.union([z.lazy(() => LessonWhereInputSchema), z.lazy(() => LessonWhereInputSchema).array()]).optional(),
+  OR: z.lazy(() => LessonWhereInputSchema).array().optional(),
+  NOT: z.union([z.lazy(() => LessonWhereInputSchema), z.lazy(() => LessonWhereInputSchema).array()]).optional(),
+  id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  title: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  content: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  slug: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+}).strict();
+
+export const LessonOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prisma.LessonOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  content: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+}).strict();
+
+export const LessonWhereUniqueInputSchema: z.ZodType<PrismaClient.Prisma.LessonWhereUniqueInput> = z.object({
+  id: z.string().uuid().optional(),
+}).strict();
+
+export const LessonOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Prisma.LessonOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  content: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => LessonCountOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => LessonMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => LessonMinOrderByAggregateInputSchema).optional(),
+}).strict();
+
+export const LessonScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Prisma.LessonScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([z.lazy(() => LessonScalarWhereWithAggregatesInputSchema), z.lazy(() => LessonScalarWhereWithAggregatesInputSchema).array()]).optional(),
+  OR: z.lazy(() => LessonScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([z.lazy(() => LessonScalarWhereWithAggregatesInputSchema), z.lazy(() => LessonScalarWhereWithAggregatesInputSchema).array()]).optional(),
+  id: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  title: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  content: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  slug: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
 }).strict();
 
 export const UserCreateInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateInput> = z.object({
@@ -182,6 +245,55 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.U
   role: z.union([z.lazy(() => RoleSchema), z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
+}).strict();
+
+export const LessonCreateInputSchema: z.ZodType<PrismaClient.Prisma.LessonCreateInput> = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string(),
+  content: z.string(),
+  slug: z.string(),
+}).strict();
+
+export const LessonUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.LessonUncheckedCreateInput> = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string(),
+  content: z.string(),
+  slug: z.string(),
+}).strict();
+
+export const LessonUpdateInputSchema: z.ZodType<PrismaClient.Prisma.LessonUpdateInput> = z.object({
+  id: z.union([z.string().uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  content: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+}).strict();
+
+export const LessonUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.LessonUncheckedUpdateInput> = z.object({
+  id: z.union([z.string().uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  content: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+}).strict();
+
+export const LessonCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.LessonCreateManyInput> = z.object({
+  id: z.string().uuid().optional(),
+  title: z.string(),
+  content: z.string(),
+  slug: z.string(),
+}).strict();
+
+export const LessonUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.LessonUpdateManyMutationInput> = z.object({
+  id: z.union([z.string().uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  content: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+}).strict();
+
+export const LessonUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.LessonUncheckedUpdateManyInput> = z.object({
+  id: z.union([z.string().uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  content: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const StringFilterSchema: z.ZodType<PrismaClient.Prisma.StringFilter> = z.object({
@@ -320,6 +432,27 @@ export const DateTimeWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.D
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
   _max: z.lazy(() => NestedDateTimeFilterSchema).optional(),
+}).strict();
+
+export const LessonCountOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.LessonCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  content: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+}).strict();
+
+export const LessonMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.LessonMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  content: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+}).strict();
+
+export const LessonMinOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.LessonMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  content: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
 }).strict();
 
 export const StringFieldUpdateOperationsInputSchema: z.ZodType<PrismaClient.Prisma.StringFieldUpdateOperationsInput> = z.object({
@@ -527,6 +660,65 @@ export const UserFindUniqueOrThrowArgsSchema: z.ZodType<PrismaClient.Prisma.User
   where: UserWhereUniqueInputSchema,
 }).strict();
 
+export const LessonFindFirstArgsSchema: z.ZodType<PrismaClient.Prisma.LessonFindFirstArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereInputSchema.optional(),
+  orderBy: z.union([LessonOrderByWithRelationInputSchema.array(), LessonOrderByWithRelationInputSchema]).optional(),
+  cursor: LessonWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: LessonScalarFieldEnumSchema.array().optional(),
+}).strict();
+
+export const LessonFindFirstOrThrowArgsSchema: z.ZodType<PrismaClient.Prisma.LessonFindFirstOrThrowArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereInputSchema.optional(),
+  orderBy: z.union([LessonOrderByWithRelationInputSchema.array(), LessonOrderByWithRelationInputSchema]).optional(),
+  cursor: LessonWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: LessonScalarFieldEnumSchema.array().optional(),
+}).strict();
+
+export const LessonFindManyArgsSchema: z.ZodType<PrismaClient.Prisma.LessonFindManyArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereInputSchema.optional(),
+  orderBy: z.union([LessonOrderByWithRelationInputSchema.array(), LessonOrderByWithRelationInputSchema]).optional(),
+  cursor: LessonWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: LessonScalarFieldEnumSchema.array().optional(),
+}).strict();
+
+export const LessonAggregateArgsSchema: z.ZodType<PrismaClient.Prisma.LessonAggregateArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereInputSchema.optional(),
+  orderBy: z.union([LessonOrderByWithRelationInputSchema.array(), LessonOrderByWithRelationInputSchema]).optional(),
+  cursor: LessonWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict();
+
+export const LessonGroupByArgsSchema: z.ZodType<PrismaClient.Prisma.LessonGroupByArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereInputSchema.optional(),
+  orderBy: z.union([LessonOrderByWithAggregationInputSchema.array(), LessonOrderByWithAggregationInputSchema]).optional(),
+  by: LessonScalarFieldEnumSchema.array(),
+  having: LessonScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict();
+
+export const LessonFindUniqueArgsSchema: z.ZodType<PrismaClient.Prisma.LessonFindUniqueArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereUniqueInputSchema,
+}).strict();
+
+export const LessonFindUniqueOrThrowArgsSchema: z.ZodType<PrismaClient.Prisma.LessonFindUniqueOrThrowArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereUniqueInputSchema,
+}).strict();
+
 export const UserCreateArgsSchema: z.ZodType<PrismaClient.Prisma.UserCreateArgs> = z.object({
   select: UserSelectSchema.optional(),
   data: z.union([UserCreateInputSchema, UserUncheckedCreateInputSchema]),
@@ -562,4 +754,41 @@ export const UserUpdateManyArgsSchema: z.ZodType<PrismaClient.Prisma.UserUpdateM
 
 export const UserDeleteManyArgsSchema: z.ZodType<PrismaClient.Prisma.UserDeleteManyArgs> = z.object({
   where: UserWhereInputSchema.optional(),
+}).strict();
+
+export const LessonCreateArgsSchema: z.ZodType<PrismaClient.Prisma.LessonCreateArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  data: z.union([LessonCreateInputSchema, LessonUncheckedCreateInputSchema]),
+}).strict();
+
+export const LessonUpsertArgsSchema: z.ZodType<PrismaClient.Prisma.LessonUpsertArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereUniqueInputSchema,
+  create: z.union([LessonCreateInputSchema, LessonUncheckedCreateInputSchema]),
+  update: z.union([LessonUpdateInputSchema, LessonUncheckedUpdateInputSchema]),
+}).strict();
+
+export const LessonCreateManyArgsSchema: z.ZodType<PrismaClient.Prisma.LessonCreateManyArgs> = z.object({
+  data: LessonCreateManyInputSchema.array(),
+  skipDuplicates: z.boolean().optional(),
+}).strict();
+
+export const LessonDeleteArgsSchema: z.ZodType<PrismaClient.Prisma.LessonDeleteArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  where: LessonWhereUniqueInputSchema,
+}).strict();
+
+export const LessonUpdateArgsSchema: z.ZodType<PrismaClient.Prisma.LessonUpdateArgs> = z.object({
+  select: LessonSelectSchema.optional(),
+  data: z.union([LessonUpdateInputSchema, LessonUncheckedUpdateInputSchema]),
+  where: LessonWhereUniqueInputSchema,
+}).strict();
+
+export const LessonUpdateManyArgsSchema: z.ZodType<PrismaClient.Prisma.LessonUpdateManyArgs> = z.object({
+  data: z.union([LessonUpdateManyMutationInputSchema, LessonUncheckedUpdateManyInputSchema]),
+  where: LessonWhereInputSchema.optional(),
+}).strict();
+
+export const LessonDeleteManyArgsSchema: z.ZodType<PrismaClient.Prisma.LessonDeleteManyArgs> = z.object({
+  where: LessonWhereInputSchema.optional(),
 }).strict();

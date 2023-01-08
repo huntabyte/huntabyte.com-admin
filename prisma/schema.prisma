@@ -34,3 +34,10 @@ model User {
 
     @@map("users")
 }
+
+model Lesson {
+    id      String @id @default(uuid())
+    title   String
+    content String
+    slug    String
+}
