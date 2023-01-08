@@ -22,3 +22,30 @@ export const modulesWithLessons = Prisma.validator<Prisma.ModuleArgs>()({
 export type ModulesWithLessons = Prisma.ModuleGetPayload<
 	typeof modulesWithLessons
 >;
+
+export const minimumCoursesModulesLessons =
+	Prisma.validator<Prisma.CourseArgs>()({
+		select: {
+			id: true,
+			title: true,
+			slug: true,
+			modules: {
+				select: {
+					id: true,
+					title: true,
+					slug: true,
+					lessons: {
+						select: {
+							id: true,
+							title: true,
+							slug: true,
+						},
+					},
+				},
+			},
+		},
+	});
+
+export type MinimumCoursesModulesLessons = Prisma.CourseGetPayload<
+	typeof minimumCoursesModulesLessons
+>;

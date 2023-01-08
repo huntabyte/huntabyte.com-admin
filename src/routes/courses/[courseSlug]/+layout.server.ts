@@ -1,25 +1,35 @@
-import type { CoursesWithModulesAndLessons } from "$lib/prisma.types";
+import type { MinimumCoursesModulesLessons } from "$lib/prisma.types";
 import { prisma } from "$lib/server/prisma";
-import type { Course } from "@prisma/client";
 import { error } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { LayoutServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
-	let course: CoursesWithModulesAndLessons | null;
+export const load: LayoutServerLoad = async ({ params }) => {
+	let course: MinimumCoursesModulesLessons | null;
 	try {
 		course = await prisma.course.findFirst({
 			where: {
 				slug: params.courseSlug,
 			},
-			include: {
+			select: {
+				id: true,
+				title: true,
+				slug: true,
 				modules: {
 					orderBy: {
 						sortOrder: "asc",
 					},
-					include: {
+					select: {
+						id: true,
+						title: true,
+						slug: true,
 						lessons: {
 							orderBy: {
 								sortOrder: "asc",
+							},
+							select: {
+								id: true,
+								title: true,
+								slug: true,
 							},
 						},
 					},

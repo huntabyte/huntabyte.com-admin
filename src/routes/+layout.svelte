@@ -17,9 +17,10 @@
 	});
 </script>
 
-<nav class="flex bg-gray-100">
+<nav class="flex bg-gray-700 p-2">
 	<a href="/" class="flex-1">Home</a>
 	<a href="/pro" class="flex-1">Pro</a>
+	<a href="/courses" class="flex-1">Courses</a>
 	<a href="/account" class="flex-1">Account</a>
 	{#if $page.data.session?.user}
 		<a href="/logout" class="flex-1">Logout</a>
@@ -28,4 +29,6 @@
 	{/if}
 	<p>Logged in as {$page.data.session?.user.email}</p>
 </nav>
-<slot />
+<div class="p-4">
+	<slot />
+</div>

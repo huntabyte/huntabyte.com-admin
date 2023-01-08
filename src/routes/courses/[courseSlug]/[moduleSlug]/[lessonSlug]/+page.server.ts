@@ -4,7 +4,7 @@ import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { compile } from "mdsvex";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, parent }) => {
 	const { moduleSlug, lessonSlug, courseSlug } = params;
 
 	let lesson: Lesson | null;
@@ -32,7 +32,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (!lesson.content) {
 		return {
 			content: "",
-			details: lesson,
+			lesson,
 		};
 	}
 
@@ -49,6 +49,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		content: content,
-		details: lesson,
+		lesson,
 	};
 };

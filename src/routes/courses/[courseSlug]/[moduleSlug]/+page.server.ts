@@ -1,15 +1,20 @@
 import type { ModulesWithLessons } from "$lib/prisma.types";
 import { prisma } from "$lib/server/prisma";
-import type { Module } from "@prisma/client";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
+	const { moduleSlug } = params;
+
 	let module: ModulesWithLessons | null;
+
 	try {
 		module = await prisma.module.findFirst({
 			where: {
-				slug: params.moduleSlug,
+				slug: moduleSlug,
+				course: {
+					slug: params.courseSlug,
+				},
 			},
 			include: {
 				lessons: {
@@ -28,7 +33,8 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, "Not Found");
 	}
 
-	return {
-		module,
-	};
+	throw redirect(
+		303,
+		`/courses/${params.courseSlug}/${params.moduleSlug}/${module.lessons[0].slug}`,
+	);
 };

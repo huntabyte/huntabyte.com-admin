@@ -7,8 +7,6 @@
 
 <p>{course.id}</p>
 <h1>{course.title}</h1>
-<p>{course.overview}</p>
-<p>{course.status}</p>
 
 <h1>Modules</h1>
 {#each course.modules as module}
