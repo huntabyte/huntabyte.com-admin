@@ -59,7 +59,8 @@ model Module {
 model Lesson {
     id          Int      @id @default(autoincrement())
     title       String
-    overview    String?
+    overview    String   @default("")
+    videoUrl    String?  @map("video_url")
     slug        String
     status      String   @default("DRAFT") @db.VarChar(48)
     content     String
@@ -71,7 +72,18 @@ model Lesson {
     isFree      Boolean  @default(false) @map("is_free")
     sortOrder   Int      @map("sort_order")
 
+    lessonType   LessonType @relation(fields: [lessonTypeId], references: [id])
+    lessonTypeId Int        @map("lesson_type_id")
+
     @@map("lessons")
+}
+
+model LessonType {
+    id      Int      @id @default(autoincrement())
+    name    String
+    lessons Lesson[]
+
+    @@map("lesson_types")
 }
 
 model directus_activity {

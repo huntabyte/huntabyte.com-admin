@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import '$lib/styles/code/onedark.css';
+	import LessonPage from '$lib/components/lesson/LessonPage.svelte';
 
 	export let data: PageData;
 	$: ({ lesson } = data);
@@ -29,9 +30,7 @@
 	$: nextSlug = getNextNavigation($page.params.lessonSlug);
 </script>
 
-<div>
-	{@html lesson.content}
-</div>
+<LessonPage {lesson} />
 <div>
 	{#if endOfCourse}
 		<a href="/">Finish Course</a>
