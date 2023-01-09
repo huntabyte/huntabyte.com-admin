@@ -3,7 +3,6 @@
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import Navbar from '$lib/components/Navbar.svelte';
 
 	onMount(() => {
