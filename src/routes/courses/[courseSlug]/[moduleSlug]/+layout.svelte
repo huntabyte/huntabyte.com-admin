@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+
+	$: course = $page.data.course.course;
 </script>
 
 <div class="flex">
 	<nav class="w-60 p-1">
-		{#each $page.data.course.course.modules as module}
+		{#each course.modules as module}
 			<a href="/courses/{$page.params.courseSlug}/{module.slug}" class="font-semibold text-xl block"
 				>{module.title}</a
 			>

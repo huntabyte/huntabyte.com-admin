@@ -4,11 +4,16 @@
 	import '$lib/styles/code/onedark.css';
 
 	export let data: PageData;
-	let navigationOrder: string[];
+	$: ({ lesson } = data);
 
 	$: navigationOrder = $page.data.course.navigationOrder;
 	$: endOfCourse = false;
 
+	/*
+	 * Handle navigation within the lesson page by getting the next lesson slug.
+	 * If the current lesson is the last lesson, the course is complete, and currently,
+	 * the user is redirected to the home page when clicking finish course.
+	 */
 	function getNextNavigation(lessonSlug: string) {
 		const index = navigationOrder.indexOf(`${$page.params.moduleSlug}/${lessonSlug}`);
 		const nextIndex = index + 1;
@@ -25,7 +30,7 @@
 </script>
 
 <div>
-	{@html data.content}
+	{@html lesson.content}
 </div>
 <div>
 	{#if endOfCourse}

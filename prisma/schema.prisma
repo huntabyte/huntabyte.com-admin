@@ -62,7 +62,7 @@ model Lesson {
     overview    String?
     slug        String
     status      String   @default("DRAFT") @db.VarChar(48)
-    content     String?
+    content     String
     moduleId    Int      @map("module_id")
     contentType String   @default("VIDEO") @map("content_type") @db.VarChar(48)
     createdAt   DateTime @default(now()) @map("created_at")

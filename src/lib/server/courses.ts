@@ -88,3 +88,70 @@ const courseNavigationOrder = (course: CoursePageContent) => {
 
 	return navOrder;
 };
+
+export const getAllCourses = async () => {
+	let courses: CoursePageContent[];
+	try {
+		courses = await prisma.course.findMany({
+			select: {
+				id: true,
+				title: true,
+				slug: true,
+				modules: {
+					select: {
+						id: true,
+						title: true,
+						slug: true,
+						lessons: {
+							select: {
+								id: true,
+								title: true,
+								slug: true,
+							},
+						},
+					},
+				},
+			},
+		});
+	} catch (err) {
+		console.error(err);
+		throw error(500, "Internal Server Error");
+	}
+
+	return courses;
+};
+
+export const moduleWithLesson = Prisma.validator<Prisma.ModuleArgs>()({
+	select: {
+		lessons: {
+			select: {
+				slug: true,
+			},
+		},
+	},
+});
+
+export type ModuleWithLesson = Prisma.ModuleGetPayload<typeof moduleWithLesson>;
+
+export const getFirstLessonSlug = async (slug: string) => {
+	let module: ModuleWithLesson;
+	try {
+		module = await prisma.module.findFirstOrThrow({
+			where: {
+				slug,
+			},
+			select: {
+				lessons: {
+					select: {
+						slug: true,
+					},
+				},
+			},
+		});
+	} catch (err) {
+		console.error(err);
+		throw error(404, "Not found");
+	}
+
+	return module.lessons[0].slug;
+};
