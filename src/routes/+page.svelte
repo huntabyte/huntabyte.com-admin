@@ -16,7 +16,7 @@
 								class="flex items-center rounded-full bg-black p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
 							>
 								<span
-									class="rounded-full bg-primary-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white"
+									class="rounded-full bg-primary-600 px-3 py-0.5 text-sm font-semibold leading-5 text-white"
 									>Coming Soon</span
 								>
 								<span class="ml-4 text-sm">Learn more</span>
@@ -40,7 +40,7 @@
 							class="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:mt-6 xl:text-6xl"
 						>
 							<span class="block">Unleash the full potential of</span>
-							<span class="block text-primary-400">Svelte & SvelteKit.</span>
+							<span class="block text-primary-500">Svelte & SvelteKit.</span>
 						</h1>
 						<p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
 							Build practical, real-world projects with SvelteKit and LearnSvelte.com. Our immersive
@@ -60,11 +60,7 @@
 										/>
 									</div>
 									<div class="mt-3 sm:mt-0 sm:ml-3">
-										<button
-											type="submit"
-											class="block w-full rounded-md bg-primary-500 py-3 px-4 font-medium text-white shadow hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 focus:ring-offset-gray-900"
-											>Start free trial</button
-										>
+										<button type="submit" class="btn-primary">Start free trial</button>
 									</div>
 								</div>
 								<p class="mt-3 text-sm text-gray-300 sm:mt-4">
