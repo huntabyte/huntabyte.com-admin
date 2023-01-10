@@ -46,10 +46,9 @@
 						</div>
 						<div class="flex flex-1 flex-col p-2">
 							<div class="flex flex-1 flex-col justify-between rounded-2xl bg-gray-50 p-6 sm:p-8">
-								<ul role="list" class="space-y-6">
+								<ul class="space-y-6">
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +70,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +93,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +116,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -175,10 +171,9 @@
 						</div>
 						<div class="flex flex-1 flex-col p-2">
 							<div class="flex flex-1 flex-col justify-between rounded-2xl bg-gray-50 p-6 sm:p-8">
-								<ul role="list" class="space-y-6">
+								<ul class="space-y-6">
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +195,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +218,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +241,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +264,6 @@
 
 									<li class="flex items-start">
 										<div class="flex-shrink-0">
-											<!-- Heroicon name: outline/check -->
 											<svg
 												class="h-6 w-6 text-primary-600"
 												xmlns="http://www.w3.org/2000/svg"

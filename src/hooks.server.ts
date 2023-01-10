@@ -1,12 +1,13 @@
-import "$lib/supabase"
-import { getSupabase } from "@supabase/auth-helpers-sveltekit"
-import type { Handle } from "@sveltejs/kit"
+import "$lib/supabase";
+import { getSupabase } from "@supabase/auth-helpers-sveltekit";
+import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const { session, supabaseClient } = await getSupabase(event)
+	const { session, supabaseClient } = await getSupabase(event);
+	console.log(session);
 
-	event.locals.sb = supabaseClient
-	event.locals.session = session
+	event.locals.sb = supabaseClient;
+	event.locals.session = session;
 
-	return await resolve(event)
-}
+	return await resolve(event);
+};
