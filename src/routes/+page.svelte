@@ -1,5 +1,4 @@
-<script>
-	import HeroImage from '$lib/components/HeroImage.svelte';
+<script lang="ts">
 </script>
 
 <main>
