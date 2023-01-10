@@ -33,4 +33,24 @@ export const actions: Actions = {
 
 		throw redirect(303, session.url)
 	},
+	updateCustomer: async ({ locals }) => {
+		if (!locals.session) {
+			throw redirect(303, "/login")
+		}
+
+		try {
+			await prisma.sBUser.update({
+				where: {
+					id: locals.session.user.id,
+				},
+				data: {
+					raw_user_meta_data: JSON.stringify({
+						customerId: "cus_JZ0X0Q2Q0X0Q2Q",
+					}),
+				},
+			})
+		} catch (err) {
+			console.log(err)
+		}
+	},
 }

@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
 }
 
 generator zod {
@@ -11,6 +12,7 @@ datasource db {
     provider          = "postgresql"
     url               = env("DATABASE_URL")
     shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+    schemas           = ["auth", "public"]
 }
 
 model User {
@@ -23,59 +25,105 @@ model User {
     updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
 
     @@map("users")
+    @@schema("public")
+}
+
+model SBUser {
+    instance_id                 String?       @db.Uuid
+    id                          String        @id @db.Uuid
+    aud                         String?       @db.VarChar(255)
+    role                        String?       @map("role") @db.VarChar(255)
+    email                       String?       @db.VarChar(255)
+    encrypted_password          String?       @db.VarChar(255)
+    email_confirmed_at          DateTime?     @db.Timestamptz(6)
+    invited_at                  DateTime?     @db.Timestamptz(6)
+    confirmation_token          String?       @db.VarChar(255)
+    confirmation_sent_at        DateTime?     @db.Timestamptz(6)
+    recovery_token              String?       @db.VarChar(255)
+    recovery_sent_at            DateTime?     @db.Timestamptz(6)
+    email_change_token_new      String?       @db.VarChar(255)
+    email_change                String?       @db.VarChar(255)
+    email_change_sent_at        DateTime?     @db.Timestamptz(6)
+    last_sign_in_at             DateTime?     @db.Timestamptz(6)
+    raw_app_meta_data           Json?
+    raw_user_meta_data          Json?
+    is_super_admin              Boolean?
+    createdAt                   DateTime?     @map("created_at") @db.Timestamptz(6)
+    updatedAt                   DateTime?     @updatedAt @map("updated_at") @db.Timestamptz(6)
+    phone                       String?       @unique @db.VarChar(15)
+    phone_confirmed_at          DateTime?     @db.Timestamptz(6)
+    phone_change                String?       @default("") @db.VarChar(15)
+    phone_change_token          String?       @default("") @db.VarChar(255)
+    phone_change_sent_at        DateTime?     @db.Timestamptz(6)
+    confirmed_at                DateTime?     @default(dbgenerated("LEAST(email_confirmed_at, phone_confirmed_at)")) @db.Timestamptz(6)
+    email_change_token_current  String?       @default("") @db.VarChar(255)
+    email_change_confirm_status Int?          @default(0) @db.SmallInt
+    banned_until                DateTime?     @db.Timestamptz(6)
+    reauthentication_token      String?       @default("") @db.VarChar(255)
+    reauthentication_sent_at    DateTime?     @db.Timestamptz(6)
+    is_sso_user                 Boolean       @default(false)
+    identities                  identities[]
+    mfa_factors                 mfa_factors[]
+    sessions                    sessions[]
+
+    @@index([instance_id])
+    @@map("users")
+    @@schema("auth")
 }
 
 model Course {
-    id              Int      @id @default(autoincrement())
     title           String
     overview        String
     slug            String   @unique
     stripeProductId String?  @unique @map("stripe_product_id")
-    status          String   @default("DRAFT") @db.VarChar(48)
     lastRevised     DateTime @default(now()) @map("last_revised")
     createdAt       DateTime @default(now()) @map("created_at")
     updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+    status          String   @default("DRAFT") @db.VarChar(48)
+    id              Int      @id @default(autoincrement())
     modules         Module[]
 
     @@map("courses")
+    @@schema("public")
 }
 
 model Module {
-    id        Int      @id @default(autoincrement())
     title     String
     overview  String?
     slug      String
-    status    String   @default("DRAFT") @db.VarChar(48)
-    courseId  Int      @map("course_id")
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+    status    String   @default("DRAFT") @db.VarChar(48)
+    id        Int      @id @default(autoincrement())
+    courseId  Int      @map("course_id")
+    sortOrder Int      @map("sort_order")
     lessons   Lesson[]
     course    Course   @relation(fields: [courseId], references: [id])
-    sortOrder Int      @map("sort_order")
 
     @@map("modules")
+    @@schema("public")
 }
 
 model Lesson {
-    id          Int      @id @default(autoincrement())
-    title       String
-    overview    String   @default("")
-    videoUrl    String?  @map("video_url")
-    slug        String
-    status      String   @default("DRAFT") @db.VarChar(48)
-    content     String
-    moduleId    Int      @map("module_id")
-    contentType String   @default("VIDEO") @map("content_type") @db.VarChar(48)
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-    module      Module   @relation(fields: [moduleId], references: [id])
-    isFree      Boolean  @default(false) @map("is_free")
-    sortOrder   Int      @map("sort_order")
-
-    lessonType   LessonType @relation(fields: [lessonTypeId], references: [id])
+    title        String
+    overview     String     @default("")
+    slug         String
+    content      String
+    createdAt    DateTime   @default(now()) @map("created_at")
+    updatedAt    DateTime   @default(now()) @updatedAt @map("updated_at")
+    status       String     @default("DRAFT") @db.VarChar(48)
+    contentType  String     @default("VIDEO") @map("content_type") @db.VarChar(48)
+    id           Int        @id @default(autoincrement())
+    moduleId     Int        @map("module_id")
+    isFree       Boolean    @default(false) @map("is_free")
+    sortOrder    Int        @map("sort_order")
+    videoUrl     String?    @map("video_url")
     lessonTypeId Int        @map("lesson_type_id")
+    lessonType   LessonType @relation(fields: [lessonTypeId], references: [id])
+    module       Module     @relation(fields: [moduleId], references: [id])
 
     @@map("lessons")
+    @@schema("public")
 }
 
 model LessonType {
@@ -84,6 +132,7 @@ model LessonType {
     lessons Lesson[]
 
     @@map("lesson_types")
+    @@schema("public")
 }
 
 model directus_activity {
@@ -98,6 +147,8 @@ model directus_activity {
     comment            String?
     origin             String?              @db.VarChar(255)
     directus_revisions directus_revisions[]
+
+    @@schema("public")
 }
 
 model directus_collections {
@@ -122,6 +173,8 @@ model directus_collections {
     directus_collections       directus_collections?  @relation("directus_collectionsTodirectus_collections", fields: [group], references: [collection], onDelete: NoAction, onUpdate: NoAction, map: "directus_collections_group_foreign")
     other_directus_collections directus_collections[] @relation("directus_collectionsTodirectus_collections")
     directus_shares            directus_shares[]
+
+    @@schema("public")
 }
 
 model directus_dashboards {
@@ -134,6 +187,8 @@ model directus_dashboards {
     color           String?           @db.VarChar(255)
     directus_users  directus_users?   @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_dashboards_user_created_foreign")
     directus_panels directus_panels[]
+
+    @@schema("public")
 }
 
 model directus_fields {
@@ -156,6 +211,8 @@ model directus_fields {
     group              String?  @db.VarChar(64)
     validation         Json?    @db.Json
     validation_message String?
+
+    @@schema("public")
 }
 
 model directus_files {
@@ -186,6 +243,8 @@ model directus_files {
     directus_settings_directus_settings_project_logoTodirectus_files      directus_settings[] @relation("directus_settings_project_logoTodirectus_files")
     directus_settings_directus_settings_public_backgroundTodirectus_files directus_settings[] @relation("directus_settings_public_backgroundTodirectus_files")
     directus_settings_directus_settings_public_foregroundTodirectus_files directus_settings[] @relation("directus_settings_public_foregroundTodirectus_files")
+
+    @@schema("public")
 }
 
 model directus_flows {
@@ -203,6 +262,8 @@ model directus_flows {
     user_created        String?               @db.Uuid
     directus_users      directus_users?       @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_flows_user_created_foreign")
     directus_operations directus_operations[]
+
+    @@schema("public")
 }
 
 model directus_folders {
@@ -213,12 +274,16 @@ model directus_folders {
     directus_folders       directus_folders?   @relation("directus_foldersTodirectus_folders", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_folders_parent_foreign")
     other_directus_folders directus_folders[]  @relation("directus_foldersTodirectus_folders")
     directus_settings      directus_settings[]
+
+    @@schema("public")
 }
 
 model directus_migrations {
     version   String    @id @db.VarChar(255)
     name      String    @db.VarChar(255)
     timestamp DateTime? @default(now()) @db.Timestamptz(6)
+
+    @@schema("public")
 }
 
 model directus_notifications {
@@ -233,6 +298,8 @@ model directus_notifications {
     item                                                            String?         @db.VarChar(255)
     directus_users_directus_notifications_recipientTodirectus_users directus_users  @relation("directus_notifications_recipientTodirectus_users", fields: [recipient], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_notifications_recipient_foreign")
     directus_users_directus_notifications_senderTodirectus_users    directus_users? @relation("directus_notifications_senderTodirectus_users", fields: [sender], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_notifications_sender_foreign")
+
+    @@schema("public")
 }
 
 model directus_operations {
@@ -254,6 +321,8 @@ model directus_operations {
     directus_operations_directus_operations_resolveTodirectus_operations       directus_operations? @relation("directus_operations_resolveTodirectus_operations", fields: [resolve], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_operations_resolve_foreign")
     other_directus_operations_directus_operations_resolveTodirectus_operations directus_operations? @relation("directus_operations_resolveTodirectus_operations")
     directus_users                                                             directus_users?      @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_operations_user_created_foreign")
+
+    @@schema("public")
 }
 
 model directus_panels {
@@ -274,6 +343,8 @@ model directus_panels {
     user_created        String?             @db.Uuid
     directus_dashboards directus_dashboards @relation(fields: [dashboard], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_panels_dashboard_foreign")
     directus_users      directus_users?     @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_panels_user_created_foreign")
+
+    @@schema("public")
 }
 
 model directus_permissions {
@@ -286,6 +357,8 @@ model directus_permissions {
     presets        Json?           @db.Json
     fields         String?
     directus_roles directus_roles? @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_permissions_role_foreign")
+
+    @@schema("public")
 }
 
 model directus_presets {
@@ -304,6 +377,8 @@ model directus_presets {
     color            String?         @db.VarChar(255)
     directus_roles   directus_roles? @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_presets_role_foreign")
     directus_users   directus_users? @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_presets_user_foreign")
+
+    @@schema("public")
 }
 
 model directus_relations {
@@ -317,6 +392,8 @@ model directus_relations {
     junction_field          String? @db.VarChar(64)
     sort_field              String? @db.VarChar(64)
     one_deselect_action     String  @default("nullify") @db.VarChar(255)
+
+    @@schema("public")
 }
 
 model directus_revisions {
@@ -330,6 +407,8 @@ model directus_revisions {
     directus_activity        directus_activity    @relation(fields: [activity], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_revisions_activity_foreign")
     directus_revisions       directus_revisions?  @relation("directus_revisionsTodirectus_revisions", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_revisions_parent_foreign")
     other_directus_revisions directus_revisions[] @relation("directus_revisionsTodirectus_revisions")
+
+    @@schema("public")
 }
 
 model directus_roles {
@@ -345,6 +424,8 @@ model directus_roles {
     directus_presets     directus_presets[]
     directus_shares      directus_shares[]
     directus_users       directus_users[]
+
+    @@schema("public")
 }
 
 model directus_sessions {
@@ -357,6 +438,8 @@ model directus_sessions {
     origin          String?          @db.VarChar(255)
     directus_shares directus_shares? @relation(fields: [share], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_sessions_share_foreign")
     directus_users  directus_users?  @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_sessions_user_foreign")
+
+    @@schema("public")
 }
 
 model directus_settings {
@@ -385,6 +468,8 @@ model directus_settings {
     directus_files_directus_settings_public_backgroundTodirectus_files directus_files?   @relation("directus_settings_public_backgroundTodirectus_files", fields: [public_background], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_settings_public_background_foreign")
     directus_files_directus_settings_public_foregroundTodirectus_files directus_files?   @relation("directus_settings_public_foregroundTodirectus_files", fields: [public_foreground], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_settings_public_foreground_foreign")
     directus_folders                                                   directus_folders? @relation(fields: [storage_default_folder], references: [id], onUpdate: NoAction, map: "directus_settings_storage_default_folder_foreign")
+
+    @@schema("public")
 }
 
 model directus_shares {
@@ -404,6 +489,8 @@ model directus_shares {
     directus_collections directus_collections? @relation(fields: [collection], references: [collection], onDelete: Cascade, onUpdate: NoAction, map: "directus_shares_collection_foreign")
     directus_roles       directus_roles?       @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_shares_role_foreign")
     directus_users       directus_users?       @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_shares_user_created_foreign")
+
+    @@schema("public")
 }
 
 model directus_users {
@@ -441,6 +528,8 @@ model directus_users {
     directus_sessions                                                       directus_sessions[]
     directus_shares                                                         directus_shares[]
     directus_roles                                                          directus_roles?          @relation(fields: [role], references: [id], onUpdate: NoAction, map: "directus_users_role_foreign")
+
+    @@schema("public")
 }
 
 model directus_webhooks {
@@ -453,10 +542,211 @@ model directus_webhooks {
     actions     String  @db.VarChar(100)
     collections String  @db.VarChar(255)
     headers     Json?   @db.Json
+
+    @@schema("public")
+}
+
+model audit_log_entries {
+    instance_id String?   @db.Uuid
+    id          String    @id @db.Uuid
+    payload     Json?     @db.Json
+    created_at  DateTime? @db.Timestamptz(6)
+    ip_address  String    @default("") @db.VarChar(64)
+
+    @@index([instance_id], map: "audit_logs_instance_id_idx")
+    @@schema("auth")
+}
+
+model identities {
+    id              String
+    user_id         String    @db.Uuid
+    identity_data   Json
+    provider        String
+    last_sign_in_at DateTime? @db.Timestamptz(6)
+    created_at      DateTime? @db.Timestamptz(6)
+    updated_at      DateTime? @db.Timestamptz(6)
+    email           String?   @default(dbgenerated("lower((identity_data ->> 'email'::text))"))
+    users           SBUser    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@id([provider, id])
+    @@index([email])
+    @@index([user_id])
+    @@schema("auth")
+}
+
+model instances {
+    id              String    @id @db.Uuid
+    uuid            String?   @db.Uuid
+    raw_base_config String?
+    created_at      DateTime? @db.Timestamptz(6)
+    updated_at      DateTime? @db.Timestamptz(6)
+
+    @@schema("auth")
+}
+
+model mfa_amr_claims {
+    session_id            String   @db.Uuid
+    created_at            DateTime @db.Timestamptz(6)
+    updated_at            DateTime @db.Timestamptz(6)
+    authentication_method String
+    id                    String   @id(map: "amr_id_pk") @db.Uuid
+    sessions              sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@unique([session_id, authentication_method], map: "mfa_amr_claims_session_id_authentication_method_pkey")
+    @@schema("auth")
+}
+
+model mfa_challenges {
+    id          String      @id @db.Uuid
+    factor_id   String      @db.Uuid
+    created_at  DateTime    @db.Timestamptz(6)
+    verified_at DateTime?   @db.Timestamptz(6)
+    ip_address  String      @db.Inet
+    mfa_factors mfa_factors @relation(fields: [factor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "mfa_challenges_auth_factor_id_fkey")
+
+    @@schema("auth")
+}
+
+model mfa_factors {
+    id             String           @id @db.Uuid
+    user_id        String           @db.Uuid
+    friendly_name  String?
+    factor_type    factor_type
+    status         factor_status
+    created_at     DateTime         @db.Timestamptz(6)
+    updated_at     DateTime         @db.Timestamptz(6)
+    secret         String?
+    mfa_challenges mfa_challenges[]
+    users          SBUser           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([user_id, created_at], map: "factor_id_created_at_idx")
+    @@schema("auth")
+}
+
+model refresh_tokens {
+    instance_id String?   @db.Uuid
+    id          BigInt    @id @default(autoincrement())
+    token       String?   @unique(map: "refresh_tokens_token_unique") @db.VarChar(255)
+    user_id     String?   @db.VarChar(255)
+    revoked     Boolean?
+    created_at  DateTime? @db.Timestamptz(6)
+    updated_at  DateTime? @db.Timestamptz(6)
+    parent      String?   @db.VarChar(255)
+    session_id  String?   @db.Uuid
+    sessions    sessions? @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([instance_id])
+    @@index([instance_id, user_id])
+    @@index([parent])
+    @@index([session_id, revoked])
+    @@index([token])
+    @@schema("auth")
+}
+
+model saml_providers {
+    id                String        @id @db.Uuid
+    sso_provider_id   String        @db.Uuid
+    entity_id         String        @unique
+    metadata_xml      String
+    metadata_url      String?
+    attribute_mapping Json?
+    created_at        DateTime?     @db.Timestamptz(6)
+    updated_at        DateTime?     @db.Timestamptz(6)
+    sso_providers     sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([sso_provider_id])
+    @@schema("auth")
+}
+
+model saml_relay_states {
+    id              String        @id @db.Uuid
+    sso_provider_id String        @db.Uuid
+    request_id      String
+    for_email       String?
+    redirect_to     String?
+    from_ip_address String?       @db.Inet
+    created_at      DateTime?     @db.Timestamptz(6)
+    updated_at      DateTime?     @db.Timestamptz(6)
+    sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([for_email])
+    @@index([sso_provider_id])
+    @@schema("auth")
+}
+
+model schema_migrations {
+    version String @id @db.VarChar(255)
+
+    @@schema("auth")
+}
+
+model sessions {
+    id             String           @id @db.Uuid
+    user_id        String           @db.Uuid
+    created_at     DateTime?        @db.Timestamptz(6)
+    updated_at     DateTime?        @db.Timestamptz(6)
+    factor_id      String?          @db.Uuid
+    aal            aal_level?
+    not_after      DateTime?        @db.Timestamptz(6)
+    mfa_amr_claims mfa_amr_claims[]
+    refresh_tokens refresh_tokens[]
+    users          SBUser           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([user_id])
+    @@index([user_id, created_at], map: "user_id_created_at_idx")
+    @@schema("auth")
+}
+
+model sso_domains {
+    id              String        @id @db.Uuid
+    sso_provider_id String        @db.Uuid
+    domain          String
+    created_at      DateTime?     @db.Timestamptz(6)
+    updated_at      DateTime?     @db.Timestamptz(6)
+    sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([sso_provider_id])
+    @@schema("auth")
+}
+
+model sso_providers {
+    id                String              @id @db.Uuid
+    resource_id       String?
+    created_at        DateTime?           @db.Timestamptz(6)
+    updated_at        DateTime?           @db.Timestamptz(6)
+    saml_providers    saml_providers[]
+    saml_relay_states saml_relay_states[]
+    sso_domains       sso_domains[]
+
+    @@schema("auth")
 }
 
 enum Role {
     ADMIN
     PRO
     FREE
+
+    @@schema("public")
+}
+
+enum aal_level {
+    aal1
+    aal2
+    aal3
+
+    @@schema("auth")
+}
+
+enum factor_status {
+    unverified
+    verified
+
+    @@schema("auth")
+}
+
+enum factor_type {
+    totp
+    webauthn
+
+    @@schema("auth")
 }

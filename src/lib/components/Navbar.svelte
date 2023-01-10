@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Logo from './Logo.svelte';
-	import { page } from '$app/stores';
+	import Logo from './Logo.svelte'
+	import { page } from '$app/stores'
 
 	const navigation = [
 		{
@@ -19,10 +19,10 @@
 			label: 'Account',
 			href: '/account'
 		}
-	];
+	]
 
-	const activeNavItem = 'text-primary-500 border-b-2 border-primary-500';
-	const activeMobileNavItem = 'bg-gray-600 border-primary-500 text-primary-700 ';
+	const activeNavItem = 'text-primary-500 border-b-2 border-primary-500'
+	const activeMobileNavItem = 'bg-gray-600 border-primary-500 text-primary-700 '
 </script>
 
 <nav class="bg-inherit">
@@ -51,7 +51,9 @@
 			>
 				<div class="relative ml-3">
 					{#if $page.data.session}
-						<button type="button" class="btn-primary">Logout</button>
+						<form action="/logout">
+							<button type="submit" class="btn-primary">Logout</button>
+						</form>
 					{:else}
 						<a href="/login" class="btn-primary">Login</a>
 					{/if}

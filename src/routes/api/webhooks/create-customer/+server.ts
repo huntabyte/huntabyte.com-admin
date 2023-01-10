@@ -30,12 +30,12 @@ export const POST: RequestHandler = async ({ url, request }) => {
 	})
 
 	try {
-		await prisma.user.update({
+		await prisma.sBUser.update({
 			where: {
 				id: parsedBody.data.record.id,
 			},
 			data: {
-				customerId: stripeCustomer.id,
+				raw_user_meta_data: JSON.stringify({ customerId: stripeCustomer.id }),
 			},
 		})
 	} catch (err) {
