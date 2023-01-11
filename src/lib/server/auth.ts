@@ -8,6 +8,9 @@ import { error } from "@sveltejs/kit"
 
 export type Awaitable<T> = T | PromiseLike<T>
 
+/**
+ * Magic Link verification token
+ */
 export interface VerificationToken {
 	identifier: string
 	token: string
@@ -31,21 +34,6 @@ const options = {
 	sessionKeyPrefix: "user:session",
 	sessionByUserIdKeyPrefix: "user:session:by-user-id:",
 	verificationTokenKeyPrefix: "user:token:",
-}
-
-const isoDateRegex =
-	/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/
-
-function isDate(value: any) {
-	return value && isoDateRegex.test(value) && !isNaN(Date.parse(value))
-}
-
-export function hydrateDates(json: object) {
-	return Object.entries(json).reduce((acc, [key, val]) => {
-		acc[key] = isDate(val) ? new Date(val as string) : val
-
-		return acc
-	}, {} as any)
 }
 
 const { baseKeyPrefix } = options
@@ -74,14 +62,12 @@ const setSession = async (
 	return session
 }
 
-const getSession = async (sid: string) => {
-	const session = (await redis.get(
-		`${sessionKeyPrefix}${sid}`,
-	)) as AuthSession | null
+export async function getSession(sid: string) {
+	const session = await redis.get(`${sessionKeyPrefix}${sid}`)
 	if (!session) {
 		return null
 	}
-	return hydrateDates(session)
+	return JSON.parse(session) as AuthSession
 }
 
 export async function createUser(email: string) {
@@ -156,7 +142,7 @@ export async function useVerificationToken(
 		return null
 	}
 	await redis.del(tokenKey)
-	return hydrateDates(token)
+	return token
 }
 
 export async function sendMagicLink(email: string) {
@@ -198,4 +184,11 @@ export async function handleLogin(email: string) {
 
 	const session = await createSession(sessionObj)
 	return session
+}
+
+export async function getAuthSession(sid: string | undefined) {
+	if (!sid) {
+		return null
+	}
+	return await getSession(sid)
 }
