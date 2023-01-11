@@ -1,6 +1,5 @@
 import nodeMailer from "nodemailer"
 import {
-	EMAIL_FROM,
 	EMAIL_SERVER_HOST,
 	EMAIL_SERVER_PASSWORD,
 	EMAIL_SERVER_PORT,
@@ -26,9 +25,9 @@ export interface MailOptions {
 export function sendEmail(mailOptions: MailOptions) {
 	return transport.sendMail(mailOptions, (error) => {
 		if (error) {
-			console.error(error)
+			throw new Error("Error sending email")
 		} else {
-			console.log("Sent email")
+			console.log("Successfully sent email.")
 		}
 	})
 }
@@ -40,7 +39,7 @@ export function sendMagicLinkEmail(email: string, token: string) {
 		to: email,
 		html: magicLinkTemplate({
 			email,
-			link: `http://localhost:5173/auth/verify?token=${token}&identifier=${email}`,
+			link: `http://localhost:5173/auth/magic?token=${token}&identifier=${email}`,
 		}),
 	}
 

@@ -39,6 +39,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 	cookies.set("hbyte-session", session.sid, {
 		path: "/",
+		maxAge: 60 * 60 * 24 * 14,
 	})
 
 	throw redirect(303, "/")
