@@ -1,12 +1,10 @@
-import { getAuthSession } from "$lib/server/auth"
+import { handleSession } from "$lib/server/auth"
 import type { Handle } from "@sveltejs/kit"
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const { cookies } = event
-	const sid = cookies.get("hbyte-session")
+	event.locals.session = await handleSession(event.cookies)
 
-	const session = await getAuthSession(sid)
-	console.log(session)
+	console.log(event.locals.session)
 
 	return resolve(event)
 }

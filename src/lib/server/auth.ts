@@ -4,30 +4,8 @@ import { redis } from "./redis"
 import { createHash } from "$lib/utils"
 import { AUTH_SECRET } from "$env/static/private"
 import { sendMagicLinkEmail } from "$lib/server/email"
-import { error } from "@sveltejs/kit"
-
-export type Awaitable<T> = T | PromiseLike<T>
-
-/**
- * Magic Link verification token
- */
-export interface VerificationToken {
-	identifier: string
-	token: string
-}
-
-/**
- * The session object implementing this interface
- * is used to look up the user in the database.
- */
-export interface AuthSession {
-	/** A randomly generated value used to get ahold of the session. */
-	sid: string
-	/** Connects the active session to a user in the database */
-	user: User
-	/** The absolute date when the session expires. */
-	expires: Date
-}
+import { error, type Cookies } from "@sveltejs/kit"
+import type { AuthSession, VerificationToken } from "$lib/types"
 
 const options = {
 	baseKeyPrefix: "",
@@ -146,8 +124,6 @@ export async function useVerificationToken(
 }
 
 export async function sendMagicLink(email: string) {
-	console.log("Send magic link to", email)
-
 	const token = await createHash(`${crypto.randomUUID()}${AUTH_SECRET}`)
 
 	const verificationToken: VerificationToken = {
@@ -186,9 +162,29 @@ export async function handleLogin(email: string) {
 	return session
 }
 
-export async function getAuthSession(sid: string | undefined) {
+export async function handleSession(cookies: Cookies) {
+	const sid = cookies.get("hbyte-session")
+
 	if (!sid) {
 		return null
 	}
-	return await getSession(sid)
+
+	let session: AuthSession | null = null
+
+	try {
+		session = await getSession(sid)
+	} catch (err) {
+		console.error(err)
+	}
+
+	if (!session) {
+		return null
+	}
+
+	if (session.expires < new Date(Date.now())) {
+		await deleteSession(sid)
+		cookies.delete("hbyte-session")
+	}
+
+	return await setSession(sid, { ...session })
 }

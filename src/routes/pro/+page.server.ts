@@ -1,4 +1,4 @@
-import { prisma } from "$lib/server/prisma"
+import { p } from "$lib/server/prisma"
 import { stripe } from "$lib/server/stripe"
 import type { User } from "@prisma/client"
 import { error, redirect } from "@sveltejs/kit"
@@ -29,7 +29,7 @@ export const actions: Actions = {
 
 		let user: User | null
 		try {
-			user = await prisma.user.findUnique({
+			user = await p.user.findUnique({
 				where: {
 					id: locals.session.user.id,
 				},
