@@ -1,6 +1,5 @@
 import { error, fail } from "@sveltejs/kit"
 import type { Actions } from "./$types"
-import { sendMagicLinkEmail } from "$lib/server/email"
 import { sendMagicLink } from "$lib/server/auth"
 
 export const actions: Actions = {
@@ -16,6 +15,9 @@ export const actions: Actions = {
 		} catch (err) {
 			console.error(err)
 			throw error(500, "Something went wrong sending email.")
+		}
+		return {
+			success: true,
 		}
 	},
 }

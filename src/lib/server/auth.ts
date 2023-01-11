@@ -1,127 +1,16 @@
 import type { User } from "@prisma/client"
-import { p } from "$lib/server/prisma"
-import { redis } from "./redis"
 import { createHash } from "$lib/utils"
 import { AUTH_SECRET } from "$env/static/private"
 import { sendMagicLinkEmail } from "$lib/server/email"
-import { error, type Cookies } from "@sveltejs/kit"
+import { error, type RequestEvent } from "@sveltejs/kit"
 import type { AuthSession, VerificationToken } from "$lib/types"
-
-const options = {
-	baseKeyPrefix: "",
-	sessionKeyPrefix: "user:session",
-	sessionByUserIdKeyPrefix: "user:session:by-user-id:",
-	verificationTokenKeyPrefix: "user:token:",
-}
-
-const { baseKeyPrefix } = options
-const sessionKeyPrefix = `${baseKeyPrefix}${options.sessionKeyPrefix}`
-const sessionByUserIdKeyPrefix = `${baseKeyPrefix}${options.sessionByUserIdKeyPrefix}`
-const verificationTokenKeyPrefix = `${baseKeyPrefix}${options.verificationTokenKeyPrefix}`
-const ONE_WEEK = 60 * 60 * 24 * 7
-
-const setObjectAsJson = async (
-	key: string,
-	obj: any,
-	EX: number = ONE_WEEK,
-) => {
-	await redis.set(key, JSON.stringify(obj), {
-		EX: EX,
-	})
-}
-
-const setSession = async (
-	sid: string,
-	session: AuthSession,
-): Promise<AuthSession> => {
-	const sessionKey = `${sessionKeyPrefix}${sid}`
-	await setObjectAsJson(sessionKey, session)
-	await redis.set(`${sessionByUserIdKeyPrefix}${session.user.id}`, sessionKey)
-	return session
-}
-
-export async function getSession(sid: string) {
-	const session = await redis.get(`${sessionKeyPrefix}${sid}`)
-	if (!session) {
-		return null
-	}
-	return JSON.parse(session) as AuthSession
-}
-
-export async function createUser(email: string) {
-	return await p.user.create({
-		data: {
-			email,
-		},
-	})
-}
-
-export async function getUser(id: string) {
-	return await p.user.findFirst({ where: { id: id } })
-}
-export async function getUserByEmail(email: string) {
-	return await p.user.findFirst({ where: { email: email } })
-}
-
-export async function updateUser({ id, ...data }: Partial<User>) {
-	return await p.user.update({ where: { id: id }, data })
-}
-
-export async function deleteUser(id: string) {
-	return await p.user.delete({ where: { id: id } })
-}
-
-export async function createSession(session: AuthSession) {
-	return await setSession(session.sid, session)
-}
-
-export async function getSessionAndUser(sid: string) {
-	const session = (await getSession(sid)) as AuthSession
-	if (!session) {
-		return null
-	}
-	const user = await p.user.findUnique({
-		where: {
-			id: session.user.id,
-		},
-	})
-	return { session, user }
-}
-
-export async function updateSession(updates: AuthSession) {
-	const session = await getSession(updates.sid)
-	if (!session) {
-		return null
-	}
-	return await setSession(updates.sid, { ...session, ...updates })
-}
-
-export async function deleteSession(sid: string) {
-	await redis.del(`${sessionKeyPrefix}${sid}`)
-}
-
-export async function createVerificationToken(
-	verificationToken: VerificationToken,
-) {
-	await setObjectAsJson(
-		`${verificationTokenKeyPrefix}${verificationToken.identifier}:${verificationToken.token}`,
-		verificationToken,
-	)
-	return verificationToken
-}
-
-export async function useVerificationToken(
-	verificationToken: VerificationToken,
-) {
-	const tokenKey = `${verificationTokenKeyPrefix}${verificationToken.identifier}:${verificationToken.token}`
-	const token = (await redis.get(tokenKey)) as VerificationToken | null
-
-	if (!token) {
-		return null
-	}
-	await redis.del(tokenKey)
-	return token
-}
+import {
+	createSession,
+	createVerificationToken,
+	deleteSession,
+	useVerificationToken,
+} from "$lib/server/sessions"
+import { createUser, getUserByEmail } from "$lib/server/users"
 
 export async function sendMagicLink(email: string) {
 	const token = await createHash(`${crypto.randomUUID()}${AUTH_SECRET}`)
@@ -134,6 +23,44 @@ export async function sendMagicLink(email: string) {
 	await createVerificationToken(verificationToken)
 
 	sendMagicLinkEmail(email, token)
+}
+
+export async function handleMagicLinkVerification(event: RequestEvent) {
+	const token = event.url.searchParams.get("token")
+	const email = event.url.searchParams.get("identifier")
+	if (!token) {
+		console.error("Missing token")
+		throw error(400, "Invalid request")
+	}
+	if (!email) {
+		console.error("Missing email")
+		throw error(400, "Invalid request")
+	}
+	const requestToken: VerificationToken = {
+		identifier: email,
+		token,
+	}
+
+	const verificationToken = await useVerificationToken(requestToken)
+	if (!verificationToken) {
+		console.error("Invalid token")
+		throw error(401, "Verification token invalid or expired. Please try again.")
+	}
+
+	let session: AuthSession
+	try {
+		session = await handleLogin(email)
+	} catch (err) {
+		console.error(err)
+		throw error(500, "Error creating session")
+	}
+
+	event.cookies.set("hbyte-session", session.sid, {
+		path: "/",
+		maxAge: 60 * 60 * 24 * 14,
+	})
+
+	return session
 }
 
 export async function handleLogin(email: string) {
@@ -162,29 +89,18 @@ export async function handleLogin(email: string) {
 	return session
 }
 
-export async function handleSession(cookies: Cookies) {
-	const sid = cookies.get("hbyte-session")
-
-	if (!sid) {
-		return null
-	}
-
-	let session: AuthSession | null = null
-
+export async function handleLogout(event: RequestEvent) {
 	try {
-		session = await getSession(sid)
+		const sid = event.cookies.get("hbyte-session")
+		if (sid) {
+			await deleteSession(sid)
+		}
+		event.cookies.delete("hbyte-session")
+		// Not sure if this is needed but I'm adding just in case :)
+		event.locals.session = null
 	} catch (err) {
-		console.error(err)
+		event.cookies.delete("hbyte-session")
+		// Not sure if this is needed but I'm adding just in case :)
+		event.locals.session = null
 	}
-
-	if (!session) {
-		return null
-	}
-
-	if (session.expires < new Date(Date.now())) {
-		await deleteSession(sid)
-		cookies.delete("hbyte-session")
-	}
-
-	return await setSession(sid, { ...session })
 }
