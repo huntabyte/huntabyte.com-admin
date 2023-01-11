@@ -15,18 +15,37 @@ datasource db {
 }
 
 model User {
-    id         String   @id
-    email      String   @unique
-    name       String?
-    customerId String?  @unique
-    role       Role     @default(FREE)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @default(now()) @updatedAt
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?
+    role          String?
+    customerId    String?
+    accounts      Account[]
+}
 
-    @@map("users")
+model Account {
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Course {
+    id              Int      @id @default(autoincrement())
     title           String
     overview        String
     slug            String   @unique
@@ -35,20 +54,19 @@ model Course {
     createdAt       DateTime @default(now())
     updatedAt       DateTime @default(now()) @updatedAt
     status          String   @default("DRAFT") @db.VarChar(48)
-    id              Int      @id @default(autoincrement())
     modules         Module[]
 
     @@map("courses")
 }
 
 model Module {
+    id        Int      @id @default(autoincrement())
     title     String
     overview  String?
     slug      String
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
     status    String   @default("DRAFT") @db.VarChar(48)
-    id        Int      @id @default(autoincrement())
     sortOrder Int
     lessons   Lesson[]
     course    Course   @relation(fields: [courseId], references: [id])
@@ -59,6 +77,7 @@ model Module {
 }
 
 model Lesson {
+    id           Int        @id @default(autoincrement())
     title        String
     overview     String     @default("")
     slug         String
@@ -67,7 +86,6 @@ model Lesson {
     updatedAt    DateTime   @default(now()) @updatedAt
     status       String     @default("DRAFT") @db.VarChar(48)
     contentType  String     @default("VIDEO") @db.VarChar(48)
-    id           Int        @id @default(autoincrement())
     moduleId     Int
     isFree       Boolean    @default(false)
     sortOrder    Int
