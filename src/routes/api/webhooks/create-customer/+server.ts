@@ -2,7 +2,7 @@ import type { RequestHandler } from "./$types"
 import { API_KEY } from "$env/static/private"
 import { json } from "@sveltejs/kit"
 import { stripe } from "$lib/server/stripe"
-import { prisma } from "$lib/server/prisma"
+import { p } from "$lib/server/prisma"
 import { z } from "zod"
 
 const CreateCustomerSchema = z.object({
@@ -30,13 +30,11 @@ export const POST: RequestHandler = async ({ url, request }) => {
 	})
 
 	try {
-		await prisma.sBUser.update({
+		await p.user.update({
 			where: {
 				id: parsedBody.data.record.id,
 			},
-			data: {
-				raw_user_meta_data: JSON.stringify({ customerId: stripeCustomer.id }),
-			},
+			data: { customerId: stripeCustomer.id },
 		})
 	} catch (err) {
 		console.error(err)

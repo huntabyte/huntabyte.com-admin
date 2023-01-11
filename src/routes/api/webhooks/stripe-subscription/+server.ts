@@ -1,5 +1,5 @@
 import { STRIPE_SIGNING_SECRET } from "$env/static/private"
-import { prisma } from "$lib/server/prisma"
+import { p } from "$lib/server/prisma"
 import { stripe } from "$lib/server/stripe"
 import { Role } from "@prisma/client"
 import { json } from "@sveltejs/kit"
@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	switch (event.type) {
 		case "customer.subscription.updated":
 			try {
-				await prisma.user.update({
+				await p.user.update({
 					where: {
 						customerId: customer.data.customer,
 					},
@@ -59,7 +59,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			break
 		case "customer.subscription.deleted":
 			try {
-				await prisma.user.update({
+				await p.user.update({
 					where: {
 						customerId: customer.data.customer,
 					},
