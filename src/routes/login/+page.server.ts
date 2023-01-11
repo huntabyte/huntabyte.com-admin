@@ -1,23 +1,21 @@
 import { error, fail } from "@sveltejs/kit"
 import type { Actions } from "./$types"
+import { sendMagicLinkEmail } from "$lib/server/email"
+import { sendMagicLink } from "$lib/server/auth"
 
 export const actions: Actions = {
-	login: async ({ locals, request }) => {
+	login: async ({ request }) => {
 		const { email } = Object.fromEntries(await request.formData())
 
 		if (!email) {
-			throw fail(400, { message: "Email is required" })
+			return fail(400, { message: "Missing email" })
 		}
 
-		await locals.sb.auth.signInWithOtp({
-			email: email as string,
-			options: {
-				emailRedirectTo: "http://localhost:5173",
-			},
-		})
-
-		return {
-			success: true,
+		try {
+			await sendMagicLink(email as string)
+		} catch (err) {
+			console.error(err)
+			throw error(500, "Something went wrong sending email.")
 		}
 	},
 }

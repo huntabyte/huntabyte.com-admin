@@ -1,15 +1,15 @@
 import { PrismaClient } from "@prisma/client"
 
 interface CustomNodeJSGlobal extends NodeJS.Global {
-	prisma: PrismaClient
+	p: PrismaClient
 }
 
 declare const global: CustomNodeJSGlobal
 
-const prisma = global.prisma || new PrismaClient()
+const p = global.p || new PrismaClient()
 
 if (process.env.NODE_ENV === "development") {
-	global.prisma = prisma
+	global.p = p
 }
 
-export { prisma }
+export { p }

@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
-import { prisma } from "$lib/server/prisma";
-import { error } from "@sveltejs/kit";
+import { Prisma } from "@prisma/client"
+import { p } from "$lib/server/prisma"
+import { error } from "@sveltejs/kit"
 
 export const coursePageContent = Prisma.validator<Prisma.CourseArgs>()({
 	select: {
@@ -22,17 +22,17 @@ export const coursePageContent = Prisma.validator<Prisma.CourseArgs>()({
 			},
 		},
 	},
-});
+})
 
 export type CoursePageContent = Prisma.CourseGetPayload<
 	typeof coursePageContent
->;
+>
 
 // Get minimum content needed for the course landing page.
 export const getCoursePageData = async (courseSlug: string) => {
-	let course: CoursePageContent;
+	let course: CoursePageContent
 	try {
-		course = await prisma.course.findFirstOrThrow({
+		course = await p.course.findFirstOrThrow({
 			where: {
 				slug: courseSlug,
 			},
@@ -62,37 +62,37 @@ export const getCoursePageData = async (courseSlug: string) => {
 					},
 				},
 			},
-		});
+		})
 	} catch (err) {
-		console.error(err);
-		throw error(404, "Not found");
+		console.error(err)
+		throw error(404, "Not found")
 	}
 
-	const navigationOrder = courseNavigationOrder(course);
+	const navigationOrder = courseNavigationOrder(course)
 
 	return {
 		course,
 		navigationOrder,
-	};
-};
+	}
+}
 
 const courseNavigationOrder = (course: CoursePageContent) => {
-	let navOrder: string[] = [];
+	let navOrder: string[] = []
 
 	course.modules.forEach((module) => {
-		navOrder.push(module.slug);
+		navOrder.push(module.slug)
 		module.lessons.forEach((lesson) => {
-			navOrder.push(`${module.slug}/${lesson.slug}`);
-		});
-	});
+			navOrder.push(`${module.slug}/${lesson.slug}`)
+		})
+	})
 
-	return navOrder;
-};
+	return navOrder
+}
 
 export const getAllCourses = async () => {
-	let courses: CoursePageContent[];
+	let courses: CoursePageContent[]
 	try {
-		courses = await prisma.course.findMany({
+		courses = await p.course.findMany({
 			select: {
 				id: true,
 				title: true,
@@ -112,14 +112,14 @@ export const getAllCourses = async () => {
 					},
 				},
 			},
-		});
+		})
 	} catch (err) {
-		console.error(err);
-		throw error(500, "Internal Server Error");
+		console.error(err)
+		throw error(500, "Internal Server Error")
 	}
 
-	return courses;
-};
+	return courses
+}
 
 export const moduleWithLesson = Prisma.validator<Prisma.ModuleArgs>()({
 	select: {
@@ -129,14 +129,14 @@ export const moduleWithLesson = Prisma.validator<Prisma.ModuleArgs>()({
 			},
 		},
 	},
-});
+})
 
-export type ModuleWithLesson = Prisma.ModuleGetPayload<typeof moduleWithLesson>;
+export type ModuleWithLesson = Prisma.ModuleGetPayload<typeof moduleWithLesson>
 
 export const getFirstLessonSlug = async (slug: string) => {
-	let module: ModuleWithLesson;
+	let module: ModuleWithLesson
 	try {
-		module = await prisma.module.findFirstOrThrow({
+		module = await p.module.findFirstOrThrow({
 			where: {
 				slug,
 			},
@@ -147,11 +147,11 @@ export const getFirstLessonSlug = async (slug: string) => {
 					},
 				},
 			},
-		});
+		})
 	} catch (err) {
-		console.error(err);
-		throw error(404, "Not found");
+		console.error(err)
+		throw error(404, "Not found")
 	}
 
-	return module.lessons[0].slug;
-};
+	return module.lessons[0].slug
+}
