@@ -30,6 +30,7 @@
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"prisma": "^4.8.1",
+		"redis": "^4.5.1",
 		"rome": "^11.0.0",
 		"stripe": "^11.6.0",
 		"stripe-event-types": "^1.0.2",

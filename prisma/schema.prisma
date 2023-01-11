@@ -9,99 +9,53 @@ generator zod {
 }
 
 datasource db {
-    provider          = "postgresql"
-    url               = env("DATABASE_URL")
-    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-    schemas           = ["auth", "public"]
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 model User {
     id         String   @id
     email      String   @unique
     name       String?
-    customerId String?  @unique @map("customer_id")
-    role       Role     @default(FREE) @map("role")
-    createdAt  DateTime @default(now()) @map("created_at")
-    updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+    customerId String?  @unique
+    role       Role     @default(FREE)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now()) @updatedAt
 
     @@map("users")
-    @@schema("public")
-}
-
-model SBUser {
-    instance_id                 String?       @db.Uuid
-    id                          String        @id @db.Uuid
-    aud                         String?       @db.VarChar(255)
-    role                        String?       @map("role") @db.VarChar(255)
-    email                       String?       @db.VarChar(255)
-    encrypted_password          String?       @db.VarChar(255)
-    email_confirmed_at          DateTime?     @db.Timestamptz(6)
-    invited_at                  DateTime?     @db.Timestamptz(6)
-    confirmation_token          String?       @db.VarChar(255)
-    confirmation_sent_at        DateTime?     @db.Timestamptz(6)
-    recovery_token              String?       @db.VarChar(255)
-    recovery_sent_at            DateTime?     @db.Timestamptz(6)
-    email_change_token_new      String?       @db.VarChar(255)
-    email_change                String?       @db.VarChar(255)
-    email_change_sent_at        DateTime?     @db.Timestamptz(6)
-    last_sign_in_at             DateTime?     @db.Timestamptz(6)
-    raw_app_meta_data           Json?
-    raw_user_meta_data          Json?
-    is_super_admin              Boolean?
-    createdAt                   DateTime?     @map("created_at") @db.Timestamptz(6)
-    updatedAt                   DateTime?     @updatedAt @map("updated_at") @db.Timestamptz(6)
-    phone                       String?       @unique @db.VarChar(15)
-    phone_confirmed_at          DateTime?     @db.Timestamptz(6)
-    phone_change                String?       @default("") @db.VarChar(15)
-    phone_change_token          String?       @default("") @db.VarChar(255)
-    phone_change_sent_at        DateTime?     @db.Timestamptz(6)
-    confirmed_at                DateTime?     @default(dbgenerated("LEAST(email_confirmed_at, phone_confirmed_at)")) @db.Timestamptz(6)
-    email_change_token_current  String?       @default("") @db.VarChar(255)
-    email_change_confirm_status Int?          @default(0) @db.SmallInt
-    banned_until                DateTime?     @db.Timestamptz(6)
-    reauthentication_token      String?       @default("") @db.VarChar(255)
-    reauthentication_sent_at    DateTime?     @db.Timestamptz(6)
-    is_sso_user                 Boolean       @default(false)
-    identities                  identities[]
-    mfa_factors                 mfa_factors[]
-    sessions                    sessions[]
-
-    @@index([instance_id])
-    @@map("users")
-    @@schema("auth")
 }
 
 model Course {
     title           String
     overview        String
     slug            String   @unique
-    stripeProductId String?  @unique @map("stripe_product_id")
-    lastRevised     DateTime @default(now()) @map("last_revised")
-    createdAt       DateTime @default(now()) @map("created_at")
-    updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+    stripeProductId String?  @unique
+    lastRevised     DateTime @default(now())
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now()) @updatedAt
     status          String   @default("DRAFT") @db.VarChar(48)
     id              Int      @id @default(autoincrement())
     modules         Module[]
 
     @@map("courses")
-    @@schema("public")
 }
 
 model Module {
     title     String
     overview  String?
     slug      String
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
     status    String   @default("DRAFT") @db.VarChar(48)
     id        Int      @id @default(autoincrement())
-    courseId  Int      @map("course_id")
-    sortOrder Int      @map("sort_order")
+    sortOrder Int
     lessons   Lesson[]
     course    Course   @relation(fields: [courseId], references: [id])
+    courseId  Int
 
+    @@index([courseId])
     @@map("modules")
-    @@schema("public")
 }
 
 model Lesson {
@@ -109,21 +63,22 @@ model Lesson {
     overview     String     @default("")
     slug         String
     content      String
-    createdAt    DateTime   @default(now()) @map("created_at")
-    updatedAt    DateTime   @default(now()) @updatedAt @map("updated_at")
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @default(now()) @updatedAt
     status       String     @default("DRAFT") @db.VarChar(48)
-    contentType  String     @default("VIDEO") @map("content_type") @db.VarChar(48)
+    contentType  String     @default("VIDEO") @db.VarChar(48)
     id           Int        @id @default(autoincrement())
-    moduleId     Int        @map("module_id")
-    isFree       Boolean    @default(false) @map("is_free")
-    sortOrder    Int        @map("sort_order")
-    videoUrl     String?    @map("video_url")
-    lessonTypeId Int        @map("lesson_type_id")
+    moduleId     Int
+    isFree       Boolean    @default(false)
+    sortOrder    Int
+    videoUrl     String?
+    lessonTypeId Int
     lessonType   LessonType @relation(fields: [lessonTypeId], references: [id])
     module       Module     @relation(fields: [moduleId], references: [id])
 
+    @@index([lessonTypeId])
+    @@index([moduleId])
     @@map("lessons")
-    @@schema("public")
 }
 
 model LessonType {
@@ -132,621 +87,10 @@ model LessonType {
     lessons Lesson[]
 
     @@map("lesson_types")
-    @@schema("public")
-}
-
-model directus_activity {
-    id                 Int                  @id @default(autoincrement())
-    action             String               @db.VarChar(45)
-    user               String?              @db.Uuid
-    timestamp          DateTime             @default(now()) @db.Timestamptz(6)
-    ip                 String?              @db.VarChar(50)
-    user_agent         String?              @db.VarChar(255)
-    collection         String               @db.VarChar(64)
-    item               String               @db.VarChar(255)
-    comment            String?
-    origin             String?              @db.VarChar(255)
-    directus_revisions directus_revisions[]
-
-    @@schema("public")
-}
-
-model directus_collections {
-    collection                 String                 @id @db.VarChar(64)
-    icon                       String?                @db.VarChar(30)
-    note                       String?
-    display_template           String?                @db.VarChar(255)
-    hidden                     Boolean                @default(false)
-    singleton                  Boolean                @default(false)
-    translations               Json?                  @db.Json
-    archive_field              String?                @db.VarChar(64)
-    archive_app_filter         Boolean                @default(true)
-    archive_value              String?                @db.VarChar(255)
-    unarchive_value            String?                @db.VarChar(255)
-    sort_field                 String?                @db.VarChar(64)
-    accountability             String?                @default("all") @db.VarChar(255)
-    color                      String?                @db.VarChar(255)
-    item_duplication_fields    Json?                  @db.Json
-    sort                       Int?
-    group                      String?                @db.VarChar(64)
-    collapse                   String                 @default("open") @db.VarChar(255)
-    directus_collections       directus_collections?  @relation("directus_collectionsTodirectus_collections", fields: [group], references: [collection], onDelete: NoAction, onUpdate: NoAction, map: "directus_collections_group_foreign")
-    other_directus_collections directus_collections[] @relation("directus_collectionsTodirectus_collections")
-    directus_shares            directus_shares[]
-
-    @@schema("public")
-}
-
-model directus_dashboards {
-    id              String            @id @db.Uuid
-    name            String            @db.VarChar(255)
-    icon            String            @default("dashboard") @db.VarChar(30)
-    note            String?
-    date_created    DateTime?         @default(now()) @db.Timestamptz(6)
-    user_created    String?           @db.Uuid
-    color           String?           @db.VarChar(255)
-    directus_users  directus_users?   @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_dashboards_user_created_foreign")
-    directus_panels directus_panels[]
-
-    @@schema("public")
-}
-
-model directus_fields {
-    id                 Int      @id @default(autoincrement())
-    collection         String   @db.VarChar(64)
-    field              String   @db.VarChar(64)
-    special            String?  @db.VarChar(64)
-    interface          String?  @db.VarChar(64)
-    options            Json?    @db.Json
-    display            String?  @db.VarChar(64)
-    display_options    Json?    @db.Json
-    readonly           Boolean  @default(false)
-    hidden             Boolean  @default(false)
-    sort               Int?
-    width              String?  @default("full") @db.VarChar(30)
-    translations       Json?    @db.Json
-    note               String?
-    conditions         Json?    @db.Json
-    required           Boolean? @default(false)
-    group              String?  @db.VarChar(64)
-    validation         Json?    @db.Json
-    validation_message String?
-
-    @@schema("public")
-}
-
-model directus_files {
-    id                                                                    String              @id @db.Uuid
-    storage                                                               String              @db.VarChar(255)
-    filename_disk                                                         String?             @db.VarChar(255)
-    filename_download                                                     String              @db.VarChar(255)
-    title                                                                 String?             @db.VarChar(255)
-    type                                                                  String?             @db.VarChar(255)
-    folder                                                                String?             @db.Uuid
-    uploaded_by                                                           String?             @db.Uuid
-    uploaded_on                                                           DateTime            @default(now()) @db.Timestamptz(6)
-    modified_by                                                           String?             @db.Uuid
-    modified_on                                                           DateTime            @default(now()) @db.Timestamptz(6)
-    charset                                                               String?             @db.VarChar(50)
-    filesize                                                              BigInt?
-    width                                                                 Int?
-    height                                                                Int?
-    duration                                                              Int?
-    embed                                                                 String?             @db.VarChar(200)
-    description                                                           String?
-    location                                                              String?
-    tags                                                                  String?
-    metadata                                                              Json?               @db.Json
-    directus_folders                                                      directus_folders?   @relation(fields: [folder], references: [id], onUpdate: NoAction, map: "directus_files_folder_foreign")
-    directus_users_directus_files_modified_byTodirectus_users             directus_users?     @relation("directus_files_modified_byTodirectus_users", fields: [modified_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_files_modified_by_foreign")
-    directus_users_directus_files_uploaded_byTodirectus_users             directus_users?     @relation("directus_files_uploaded_byTodirectus_users", fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_files_uploaded_by_foreign")
-    directus_settings_directus_settings_project_logoTodirectus_files      directus_settings[] @relation("directus_settings_project_logoTodirectus_files")
-    directus_settings_directus_settings_public_backgroundTodirectus_files directus_settings[] @relation("directus_settings_public_backgroundTodirectus_files")
-    directus_settings_directus_settings_public_foregroundTodirectus_files directus_settings[] @relation("directus_settings_public_foregroundTodirectus_files")
-
-    @@schema("public")
-}
-
-model directus_flows {
-    id                  String                @id @db.Uuid
-    name                String                @db.VarChar(255)
-    icon                String?               @db.VarChar(30)
-    color               String?               @db.VarChar(255)
-    description         String?
-    status              String                @default("active") @db.VarChar(255)
-    trigger             String?               @db.VarChar(255)
-    accountability      String?               @default("all") @db.VarChar(255)
-    options             Json?                 @db.Json
-    operation           String?               @unique(map: "directus_flows_operation_unique") @db.Uuid
-    date_created        DateTime?             @default(now()) @db.Timestamptz(6)
-    user_created        String?               @db.Uuid
-    directus_users      directus_users?       @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_flows_user_created_foreign")
-    directus_operations directus_operations[]
-
-    @@schema("public")
-}
-
-model directus_folders {
-    id                     String              @id @db.Uuid
-    name                   String              @db.VarChar(255)
-    parent                 String?             @db.Uuid
-    directus_files         directus_files[]
-    directus_folders       directus_folders?   @relation("directus_foldersTodirectus_folders", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_folders_parent_foreign")
-    other_directus_folders directus_folders[]  @relation("directus_foldersTodirectus_folders")
-    directus_settings      directus_settings[]
-
-    @@schema("public")
-}
-
-model directus_migrations {
-    version   String    @id @db.VarChar(255)
-    name      String    @db.VarChar(255)
-    timestamp DateTime? @default(now()) @db.Timestamptz(6)
-
-    @@schema("public")
-}
-
-model directus_notifications {
-    id                                                              Int             @id @default(autoincrement())
-    timestamp                                                       DateTime?       @default(now()) @db.Timestamptz(6)
-    status                                                          String?         @default("inbox") @db.VarChar(255)
-    recipient                                                       String          @db.Uuid
-    sender                                                          String?         @db.Uuid
-    subject                                                         String          @db.VarChar(255)
-    message                                                         String?
-    collection                                                      String?         @db.VarChar(64)
-    item                                                            String?         @db.VarChar(255)
-    directus_users_directus_notifications_recipientTodirectus_users directus_users  @relation("directus_notifications_recipientTodirectus_users", fields: [recipient], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_notifications_recipient_foreign")
-    directus_users_directus_notifications_senderTodirectus_users    directus_users? @relation("directus_notifications_senderTodirectus_users", fields: [sender], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_notifications_sender_foreign")
-
-    @@schema("public")
-}
-
-model directus_operations {
-    id                                                                         String               @id @db.Uuid
-    name                                                                       String?              @db.VarChar(255)
-    key                                                                        String               @db.VarChar(255)
-    type                                                                       String               @db.VarChar(255)
-    position_x                                                                 Int
-    position_y                                                                 Int
-    options                                                                    Json?                @db.Json
-    resolve                                                                    String?              @unique(map: "directus_operations_resolve_unique") @db.Uuid
-    reject                                                                     String?              @unique(map: "directus_operations_reject_unique") @db.Uuid
-    flow                                                                       String               @db.Uuid
-    date_created                                                               DateTime?            @default(now()) @db.Timestamptz(6)
-    user_created                                                               String?              @db.Uuid
-    directus_flows                                                             directus_flows       @relation(fields: [flow], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_operations_flow_foreign")
-    directus_operations_directus_operations_rejectTodirectus_operations        directus_operations? @relation("directus_operations_rejectTodirectus_operations", fields: [reject], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_operations_reject_foreign")
-    other_directus_operations_directus_operations_rejectTodirectus_operations  directus_operations? @relation("directus_operations_rejectTodirectus_operations")
-    directus_operations_directus_operations_resolveTodirectus_operations       directus_operations? @relation("directus_operations_resolveTodirectus_operations", fields: [resolve], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_operations_resolve_foreign")
-    other_directus_operations_directus_operations_resolveTodirectus_operations directus_operations? @relation("directus_operations_resolveTodirectus_operations")
-    directus_users                                                             directus_users?      @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_operations_user_created_foreign")
-
-    @@schema("public")
-}
-
-model directus_panels {
-    id                  String              @id @db.Uuid
-    dashboard           String              @db.Uuid
-    name                String?             @db.VarChar(255)
-    icon                String?             @db.VarChar(30)
-    color               String?             @db.VarChar(10)
-    show_header         Boolean             @default(false)
-    note                String?
-    type                String              @db.VarChar(255)
-    position_x          Int
-    position_y          Int
-    width               Int
-    height              Int
-    options             Json?               @db.Json
-    date_created        DateTime?           @default(now()) @db.Timestamptz(6)
-    user_created        String?             @db.Uuid
-    directus_dashboards directus_dashboards @relation(fields: [dashboard], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_panels_dashboard_foreign")
-    directus_users      directus_users?     @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_panels_user_created_foreign")
-
-    @@schema("public")
-}
-
-model directus_permissions {
-    id             Int             @id @default(autoincrement())
-    role           String?         @db.Uuid
-    collection     String          @db.VarChar(64)
-    action         String          @db.VarChar(10)
-    permissions    Json?           @db.Json
-    validation     Json?           @db.Json
-    presets        Json?           @db.Json
-    fields         String?
-    directus_roles directus_roles? @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_permissions_role_foreign")
-
-    @@schema("public")
-}
-
-model directus_presets {
-    id               Int             @id @default(autoincrement())
-    bookmark         String?         @db.VarChar(255)
-    user             String?         @db.Uuid
-    role             String?         @db.Uuid
-    collection       String?         @db.VarChar(64)
-    search           String?         @db.VarChar(100)
-    layout           String?         @default("tabular") @db.VarChar(100)
-    layout_query     Json?           @db.Json
-    layout_options   Json?           @db.Json
-    refresh_interval Int?
-    filter           Json?           @db.Json
-    icon             String          @default("bookmark_outline") @db.VarChar(30)
-    color            String?         @db.VarChar(255)
-    directus_roles   directus_roles? @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_presets_role_foreign")
-    directus_users   directus_users? @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_presets_user_foreign")
-
-    @@schema("public")
-}
-
-model directus_relations {
-    id                      Int     @id @default(autoincrement())
-    many_collection         String  @db.VarChar(64)
-    many_field              String  @db.VarChar(64)
-    one_collection          String? @db.VarChar(64)
-    one_field               String? @db.VarChar(64)
-    one_collection_field    String? @db.VarChar(64)
-    one_allowed_collections String?
-    junction_field          String? @db.VarChar(64)
-    sort_field              String? @db.VarChar(64)
-    one_deselect_action     String  @default("nullify") @db.VarChar(255)
-
-    @@schema("public")
-}
-
-model directus_revisions {
-    id                       Int                  @id @default(autoincrement())
-    activity                 Int
-    collection               String               @db.VarChar(64)
-    item                     String               @db.VarChar(255)
-    data                     Json?                @db.Json
-    delta                    Json?                @db.Json
-    parent                   Int?
-    directus_activity        directus_activity    @relation(fields: [activity], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_revisions_activity_foreign")
-    directus_revisions       directus_revisions?  @relation("directus_revisionsTodirectus_revisions", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_revisions_parent_foreign")
-    other_directus_revisions directus_revisions[] @relation("directus_revisionsTodirectus_revisions")
-
-    @@schema("public")
-}
-
-model directus_roles {
-    id                   String                 @id @db.Uuid
-    name                 String                 @db.VarChar(100)
-    icon                 String                 @default("supervised_user_circle") @db.VarChar(30)
-    description          String?
-    ip_access            String?
-    enforce_tfa          Boolean                @default(false)
-    admin_access         Boolean                @default(false)
-    app_access           Boolean                @default(true)
-    directus_permissions directus_permissions[]
-    directus_presets     directus_presets[]
-    directus_shares      directus_shares[]
-    directus_users       directus_users[]
-
-    @@schema("public")
-}
-
-model directus_sessions {
-    token           String           @id @db.VarChar(64)
-    user            String?          @db.Uuid
-    expires         DateTime         @db.Timestamptz(6)
-    ip              String?          @db.VarChar(255)
-    user_agent      String?          @db.VarChar(255)
-    share           String?          @db.Uuid
-    origin          String?          @db.VarChar(255)
-    directus_shares directus_shares? @relation(fields: [share], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_sessions_share_foreign")
-    directus_users  directus_users?  @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_sessions_user_foreign")
-
-    @@schema("public")
-}
-
-model directus_settings {
-    id                                                                 Int               @id @default(autoincrement())
-    project_name                                                       String            @default("Directus") @db.VarChar(100)
-    project_url                                                        String?           @db.VarChar(255)
-    project_color                                                      String?           @db.VarChar(50)
-    project_logo                                                       String?           @db.Uuid
-    public_foreground                                                  String?           @db.Uuid
-    public_background                                                  String?           @db.Uuid
-    public_note                                                        String?
-    auth_login_attempts                                                Int?              @default(25)
-    auth_password_policy                                               String?           @db.VarChar(100)
-    storage_asset_transform                                            String?           @default("all") @db.VarChar(7)
-    storage_asset_presets                                              Json?             @db.Json
-    custom_css                                                         String?
-    storage_default_folder                                             String?           @db.Uuid
-    basemaps                                                           Json?             @db.Json
-    mapbox_key                                                         String?           @db.VarChar(255)
-    module_bar                                                         Json?             @db.Json
-    project_descriptor                                                 String?           @db.VarChar(100)
-    translation_strings                                                Json?             @db.Json
-    default_language                                                   String            @default("en-US") @db.VarChar(255)
-    custom_aspect_ratios                                               Json?             @db.Json
-    directus_files_directus_settings_project_logoTodirectus_files      directus_files?   @relation("directus_settings_project_logoTodirectus_files", fields: [project_logo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_settings_project_logo_foreign")
-    directus_files_directus_settings_public_backgroundTodirectus_files directus_files?   @relation("directus_settings_public_backgroundTodirectus_files", fields: [public_background], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_settings_public_background_foreign")
-    directus_files_directus_settings_public_foregroundTodirectus_files directus_files?   @relation("directus_settings_public_foregroundTodirectus_files", fields: [public_foreground], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "directus_settings_public_foreground_foreign")
-    directus_folders                                                   directus_folders? @relation(fields: [storage_default_folder], references: [id], onUpdate: NoAction, map: "directus_settings_storage_default_folder_foreign")
-
-    @@schema("public")
-}
-
-model directus_shares {
-    id                   String                @id @db.Uuid
-    name                 String?               @db.VarChar(255)
-    collection           String?               @db.VarChar(64)
-    item                 String?               @db.VarChar(255)
-    role                 String?               @db.Uuid
-    password             String?               @db.VarChar(255)
-    user_created         String?               @db.Uuid
-    date_created         DateTime?             @default(now()) @db.Timestamptz(6)
-    date_start           DateTime?             @db.Timestamptz(6)
-    date_end             DateTime?             @db.Timestamptz(6)
-    times_used           Int?                  @default(0)
-    max_uses             Int?
-    directus_sessions    directus_sessions[]
-    directus_collections directus_collections? @relation(fields: [collection], references: [collection], onDelete: Cascade, onUpdate: NoAction, map: "directus_shares_collection_foreign")
-    directus_roles       directus_roles?       @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "directus_shares_role_foreign")
-    directus_users       directus_users?       @relation(fields: [user_created], references: [id], onUpdate: NoAction, map: "directus_shares_user_created_foreign")
-
-    @@schema("public")
-}
-
-model directus_users {
-    id                                                                      String                   @id @db.Uuid
-    first_name                                                              String?                  @db.VarChar(50)
-    last_name                                                               String?                  @db.VarChar(50)
-    email                                                                   String?                  @unique(map: "directus_users_email_unique") @db.VarChar(128)
-    password                                                                String?                  @db.VarChar(255)
-    location                                                                String?                  @db.VarChar(255)
-    title                                                                   String?                  @db.VarChar(50)
-    description                                                             String?
-    tags                                                                    Json?                    @db.Json
-    avatar                                                                  String?                  @db.Uuid
-    language                                                                String?                  @db.VarChar(255)
-    theme                                                                   String?                  @default("auto") @db.VarChar(20)
-    tfa_secret                                                              String?                  @db.VarChar(255)
-    status                                                                  String                   @default("active") @db.VarChar(16)
-    role                                                                    String?                  @db.Uuid
-    token                                                                   String?                  @unique(map: "directus_users_token_unique") @db.VarChar(255)
-    last_access                                                             DateTime?                @db.Timestamptz(6)
-    last_page                                                               String?                  @db.VarChar(255)
-    provider                                                                String                   @default("default") @db.VarChar(128)
-    external_identifier                                                     String?                  @unique(map: "directus_users_external_identifier_unique") @db.VarChar(255)
-    auth_data                                                               Json?                    @db.Json
-    email_notifications                                                     Boolean?                 @default(true)
-    directus_dashboards                                                     directus_dashboards[]
-    directus_files_directus_files_modified_byTodirectus_users               directus_files[]         @relation("directus_files_modified_byTodirectus_users")
-    directus_files_directus_files_uploaded_byTodirectus_users               directus_files[]         @relation("directus_files_uploaded_byTodirectus_users")
-    directus_flows                                                          directus_flows[]
-    directus_notifications_directus_notifications_recipientTodirectus_users directus_notifications[] @relation("directus_notifications_recipientTodirectus_users")
-    directus_notifications_directus_notifications_senderTodirectus_users    directus_notifications[] @relation("directus_notifications_senderTodirectus_users")
-    directus_operations                                                     directus_operations[]
-    directus_panels                                                         directus_panels[]
-    directus_presets                                                        directus_presets[]
-    directus_sessions                                                       directus_sessions[]
-    directus_shares                                                         directus_shares[]
-    directus_roles                                                          directus_roles?          @relation(fields: [role], references: [id], onUpdate: NoAction, map: "directus_users_role_foreign")
-
-    @@schema("public")
-}
-
-model directus_webhooks {
-    id          Int     @id @default(autoincrement())
-    name        String  @db.VarChar(255)
-    method      String  @default("POST") @db.VarChar(10)
-    url         String  @db.VarChar(255)
-    status      String  @default("active") @db.VarChar(10)
-    data        Boolean @default(true)
-    actions     String  @db.VarChar(100)
-    collections String  @db.VarChar(255)
-    headers     Json?   @db.Json
-
-    @@schema("public")
-}
-
-model audit_log_entries {
-    instance_id String?   @db.Uuid
-    id          String    @id @db.Uuid
-    payload     Json?     @db.Json
-    created_at  DateTime? @db.Timestamptz(6)
-    ip_address  String    @default("") @db.VarChar(64)
-
-    @@index([instance_id], map: "audit_logs_instance_id_idx")
-    @@schema("auth")
-}
-
-model identities {
-    id              String
-    user_id         String    @db.Uuid
-    identity_data   Json
-    provider        String
-    last_sign_in_at DateTime? @db.Timestamptz(6)
-    created_at      DateTime? @db.Timestamptz(6)
-    updated_at      DateTime? @db.Timestamptz(6)
-    email           String?   @default(dbgenerated("lower((identity_data ->> 'email'::text))"))
-    users           SBUser    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@id([provider, id])
-    @@index([email])
-    @@index([user_id])
-    @@schema("auth")
-}
-
-model instances {
-    id              String    @id @db.Uuid
-    uuid            String?   @db.Uuid
-    raw_base_config String?
-    created_at      DateTime? @db.Timestamptz(6)
-    updated_at      DateTime? @db.Timestamptz(6)
-
-    @@schema("auth")
-}
-
-model mfa_amr_claims {
-    session_id            String   @db.Uuid
-    created_at            DateTime @db.Timestamptz(6)
-    updated_at            DateTime @db.Timestamptz(6)
-    authentication_method String
-    id                    String   @id(map: "amr_id_pk") @db.Uuid
-    sessions              sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@unique([session_id, authentication_method], map: "mfa_amr_claims_session_id_authentication_method_pkey")
-    @@schema("auth")
-}
-
-model mfa_challenges {
-    id          String      @id @db.Uuid
-    factor_id   String      @db.Uuid
-    created_at  DateTime    @db.Timestamptz(6)
-    verified_at DateTime?   @db.Timestamptz(6)
-    ip_address  String      @db.Inet
-    mfa_factors mfa_factors @relation(fields: [factor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "mfa_challenges_auth_factor_id_fkey")
-
-    @@schema("auth")
-}
-
-model mfa_factors {
-    id             String           @id @db.Uuid
-    user_id        String           @db.Uuid
-    friendly_name  String?
-    factor_type    factor_type
-    status         factor_status
-    created_at     DateTime         @db.Timestamptz(6)
-    updated_at     DateTime         @db.Timestamptz(6)
-    secret         String?
-    mfa_challenges mfa_challenges[]
-    users          SBUser           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([user_id, created_at], map: "factor_id_created_at_idx")
-    @@schema("auth")
-}
-
-model refresh_tokens {
-    instance_id String?   @db.Uuid
-    id          BigInt    @id @default(autoincrement())
-    token       String?   @unique(map: "refresh_tokens_token_unique") @db.VarChar(255)
-    user_id     String?   @db.VarChar(255)
-    revoked     Boolean?
-    created_at  DateTime? @db.Timestamptz(6)
-    updated_at  DateTime? @db.Timestamptz(6)
-    parent      String?   @db.VarChar(255)
-    session_id  String?   @db.Uuid
-    sessions    sessions? @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([instance_id])
-    @@index([instance_id, user_id])
-    @@index([parent])
-    @@index([session_id, revoked])
-    @@index([token])
-    @@schema("auth")
-}
-
-model saml_providers {
-    id                String        @id @db.Uuid
-    sso_provider_id   String        @db.Uuid
-    entity_id         String        @unique
-    metadata_xml      String
-    metadata_url      String?
-    attribute_mapping Json?
-    created_at        DateTime?     @db.Timestamptz(6)
-    updated_at        DateTime?     @db.Timestamptz(6)
-    sso_providers     sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([sso_provider_id])
-    @@schema("auth")
-}
-
-model saml_relay_states {
-    id              String        @id @db.Uuid
-    sso_provider_id String        @db.Uuid
-    request_id      String
-    for_email       String?
-    redirect_to     String?
-    from_ip_address String?       @db.Inet
-    created_at      DateTime?     @db.Timestamptz(6)
-    updated_at      DateTime?     @db.Timestamptz(6)
-    sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([for_email])
-    @@index([sso_provider_id])
-    @@schema("auth")
-}
-
-model schema_migrations {
-    version String @id @db.VarChar(255)
-
-    @@schema("auth")
-}
-
-model sessions {
-    id             String           @id @db.Uuid
-    user_id        String           @db.Uuid
-    created_at     DateTime?        @db.Timestamptz(6)
-    updated_at     DateTime?        @db.Timestamptz(6)
-    factor_id      String?          @db.Uuid
-    aal            aal_level?
-    not_after      DateTime?        @db.Timestamptz(6)
-    mfa_amr_claims mfa_amr_claims[]
-    refresh_tokens refresh_tokens[]
-    users          SBUser           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([user_id])
-    @@index([user_id, created_at], map: "user_id_created_at_idx")
-    @@schema("auth")
-}
-
-model sso_domains {
-    id              String        @id @db.Uuid
-    sso_provider_id String        @db.Uuid
-    domain          String
-    created_at      DateTime?     @db.Timestamptz(6)
-    updated_at      DateTime?     @db.Timestamptz(6)
-    sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-    @@index([sso_provider_id])
-    @@schema("auth")
-}
-
-model sso_providers {
-    id                String              @id @db.Uuid
-    resource_id       String?
-    created_at        DateTime?           @db.Timestamptz(6)
-    updated_at        DateTime?           @db.Timestamptz(6)
-    saml_providers    saml_providers[]
-    saml_relay_states saml_relay_states[]
-    sso_domains       sso_domains[]
-
-    @@schema("auth")
 }
 
 enum Role {
     ADMIN
     PRO
     FREE
-
-    @@schema("public")
-}
-
-enum aal_level {
-    aal1
-    aal2
-    aal3
-
-    @@schema("auth")
-}
-
-enum factor_status {
-    unverified
-    verified
-
-    @@schema("auth")
-}
-
-enum factor_type {
-    totp
-    webauthn
-
-    @@schema("auth")
 }
