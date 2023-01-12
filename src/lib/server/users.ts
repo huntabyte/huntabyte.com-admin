@@ -1,10 +1,13 @@
 import { p } from "$lib/server/prisma"
 import type { User } from "@prisma/client"
+import { createCustomer } from "$lib/server/stripe"
 
 export async function createUser(email: string) {
+	const customerId = await createCustomer(email)
 	return await p.user.create({
 		data: {
 			email,
+			customerId,
 		},
 	})
 }

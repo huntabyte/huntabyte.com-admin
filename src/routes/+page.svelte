@@ -31,10 +31,10 @@
 						<a href="/pro" class="btn-primary"> Go Pro </a>
 						<a
 							href="/courses"
-							class="inline-block rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-50 ring-1 ring-gray-100 hover:ring-gray-200"
+							class="flex items-center justify-center rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-50 ring-1 ring-gray-100 hover:ring-gray-200 "
 						>
 							Explore Courses
-							<span class="text-gray-100" aria-hidden="true">&rarr;</span>
+							<span class="text-gray-100 ml-1" aria-hidden="true">&rarr;</span>
 						</a>
 					</div>
 				</div>
