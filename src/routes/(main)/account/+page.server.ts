@@ -10,7 +10,7 @@ export const actions: Actions = {
 			throw redirect(303, "/login")
 		}
 
-		const user = router
+		const user = await router
 			.createCaller(await createContext(event))
 			.users.getById(event.locals.session.userId)
 

@@ -52,6 +52,8 @@
 		"@trpc/client": "^10.9.0",
 		"@trpc/server": "^10.9.0",
 		"@types/nodemailer": "^6.4.7",
+		"svelte-headlessui": "^0.0.13",
+		"svelte-transition": "^0.0.7",
 		"trpc-sveltekit": "^3.2.4",
 		"zod-prisma-types": "^1.6.2"
 	}
