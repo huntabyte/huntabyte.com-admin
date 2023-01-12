@@ -7,6 +7,8 @@ specifiers:
   '@sveltejs/adapter-auto': ^1.0.0
   '@sveltejs/kit': ^1.0.0
   '@tailwindcss/forms': ^0.5.3
+  '@trpc/client': ^10.9.0
+  '@trpc/server': ^10.9.0
   '@types/nodemailer': ^6.4.7
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
@@ -29,6 +31,7 @@ specifiers:
   svelte-check: ^2.9.2
   svelte-preprocess: ^4.10.7
   tailwindcss: ^3.1.5
+  trpc-sveltekit: ^3.2.4
   tslib: ^2.4.1
   typescript: ^4.9.3
   vite: ^4.0.0
@@ -39,7 +42,10 @@ specifiers:
 dependencies:
   '@supabase/supabase-js': 2.2.3
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
+  '@trpc/client': 10.9.0_@trpc+server@10.9.0
+  '@trpc/server': 10.9.0
   '@types/nodemailer': 6.4.7
+  trpc-sveltekit: 3.2.4
   zod-prisma-types: 1.6.2
 
 devDependencies:
@@ -617,6 +623,18 @@ packages:
     dependencies:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.2.4_postcss@8.4.21
+    dev: false
+
+  /@trpc/client/10.9.0_@trpc+server@10.9.0:
+    resolution: {integrity: sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==}
+    peerDependencies:
+      '@trpc/server': 10.9.0
+    dependencies:
+      '@trpc/server': 10.9.0
+    dev: false
+
+  /@trpc/server/10.9.0:
+    resolution: {integrity: sha512-5psyZgbvy29pJND32hwkWTMbv6s86IbsPOeDopsgNF0VegZT6Dsijmb7Ub/TDhuJVQVq5u4u5briMXi3SxmBkw==}
     dev: false
 
   /@ts-morph/common/0.17.0:
@@ -2466,6 +2484,13 @@ packages:
 
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    dev: false
+
+  /trpc-sveltekit/3.2.4:
+    resolution: {integrity: sha512-m7nU+pEfJNna/++yc6kuwe2GUbgRAuxl8PY8jTV9zKKbWhgOfpvjhRP0QgbbhnBXN9rKkQhTJZBDrBwZSszjqQ==}
+    dependencies:
+      '@trpc/client': 10.9.0_@trpc+server@10.9.0
+      '@trpc/server': 10.9.0
     dev: false
 
   /ts-morph/16.0.0:

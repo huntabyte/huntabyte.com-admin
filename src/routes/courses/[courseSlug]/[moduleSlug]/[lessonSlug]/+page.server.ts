@@ -1,8 +1,11 @@
-import type { PageServerLoad } from "./$types";
-import { getLesson } from "$lib/server/lessons";
+import type { PageServerLoad } from "./$types"
+import { router } from "$lib/trpc/router"
+import { createContext } from "$lib/trpc/context"
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async (event) => {
 	return {
-		lesson: getLesson(params),
-	};
-};
+		lesson: router
+			.createCaller(await createContext(event))
+			.lessons.getBySlug(event.params),
+	}
+}

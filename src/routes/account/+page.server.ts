@@ -1,19 +1,18 @@
-import { prisma } from "$lib/server/prisma"
 import { stripe } from "$lib/server/stripe"
+import { createContext } from "$lib/trpc/context"
+import { router } from "$lib/trpc/router"
 import { error, redirect } from "@sveltejs/kit"
 import type { Actions } from "./$types"
 
 export const actions: Actions = {
-	customerPortal: async ({ locals }) => {
-		if (!locals.session) {
+	customerPortal: async (event) => {
+		if (!event.locals.session) {
 			throw redirect(303, "/login")
 		}
 
-		const user = await prisma.user.findUnique({
-			where: {
-				id: locals.session.user.id,
-			},
-		})
+		const user = router
+			.createCaller(await createContext(event))
+			.users.getById(event.locals.session.userId)
 
 		if (!user) {
 			throw error(500, "Could not find user.")
@@ -32,25 +31,5 @@ export const actions: Actions = {
 		}
 
 		throw redirect(303, session.url)
-	},
-	updateCustomer: async ({ locals }) => {
-		if (!locals.session) {
-			throw redirect(303, "/login")
-		}
-
-		try {
-			await prisma.sBUser.update({
-				where: {
-					id: locals.session.user.id,
-				},
-				data: {
-					raw_user_meta_data: JSON.stringify({
-						customerId: "cus_JZ0X0Q2Q0X0Q2Q",
-					}),
-				},
-			})
-		} catch (err) {
-			console.log(err)
-		}
 	},
 }

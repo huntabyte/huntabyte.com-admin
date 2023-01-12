@@ -13,7 +13,6 @@ const EventCustomerSchema = z.object({
 })
 
 export const POST: RequestHandler = async ({ request }) => {
-	console.log("Stripe webhook received")
 	const stripeSignature = request.headers.get("stripe-signature")
 
 	if (!stripeSignature) {

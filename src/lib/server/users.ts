@@ -21,6 +21,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function updateUser({ id, ...data }: Partial<User>) {
+	// Make sure to update redis session with updated user data
 	return await p.user.update({ where: { id: id }, data })
 }
 

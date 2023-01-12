@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/stores'
 
-	$: course = $page.data.course.course;
+	$: course = $page.data.course.course
 </script>
 
 <div class="flex">
