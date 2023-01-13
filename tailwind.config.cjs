@@ -17,7 +17,7 @@ const config = {
 					900: "#0d0f12",
 					1000: "#060709",
 				},
-				primary: {
+				secondary: {
 					50: "#FFF8F5",
 					100: "#FFEEE5",
 					200: "#FFD9C7",
@@ -29,7 +29,7 @@ const config = {
 					800: "#C23D00",
 					900: "#8A2C00",
 				},
-				secondary: {
+				primary: {
 					50: "#edfff8",
 					100: "#d5fff2",
 					200: "#aeffe4",

@@ -52,6 +52,7 @@
 		"@trpc/client": "^10.9.0",
 		"@trpc/server": "^10.9.0",
 		"@types/nodemailer": "^6.4.7",
+		"iconify-icon": "^1.0.2",
 		"svelte-headlessui": "^0.0.13",
 		"svelte-transition": "^0.0.7",
 		"trpc-sveltekit": "^3.2.4",

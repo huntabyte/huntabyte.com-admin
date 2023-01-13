@@ -2,6 +2,6 @@
 	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
 </script>
 
-<PageWrapper title="Dashboard">
-	<p>Welcome to the dashboard</p>
+<PageWrapper title="Articles">
+	<p>Welcome to the articles</p>
 </PageWrapper>
