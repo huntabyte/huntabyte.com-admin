@@ -1,7 +1,6 @@
 <script lang="ts">
 	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
+	import SectionHeader from '$lib/components/admin/SectionHeader.svelte'
 </script>
 
-<PageWrapper title="Articles">
-	<p>Welcome to the articles</p>
-</PageWrapper>
+<SectionHeader heading="Manage Articles" />
