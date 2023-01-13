@@ -13,6 +13,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
   autoprefixer: ^10.4.7
+  classnames: ^2.3.2
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -48,6 +49,7 @@ dependencies:
   '@trpc/client': 10.9.0_@trpc+server@10.9.0
   '@trpc/server': 10.9.0
   '@types/nodemailer': 6.4.7
+  classnames: 2.3.2
   iconify-icon: 1.0.2
   svelte-headlessui: 0.0.13
   svelte-transition: 0.0.7
@@ -1056,6 +1058,10 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /cluster-key-slot/1.1.1:
     resolution: {integrity: sha512-rwHwUfXL40Chm1r08yrhU3qpUvdVlgkKNeyeGPOxnW8/SyVDvgRaed/Uz54AqWNaTCAThlj6QAs3TZcKI0xDEw==}
