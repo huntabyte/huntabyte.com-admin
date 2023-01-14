@@ -4,7 +4,7 @@
 
 	export let courses: CoursesWithModulesAndLessons[]
 
-	const tableHeadings = ['ID', 'Title', 'Slug', 'Stripe ID', 'Status', 'Modules', '']
+	const tableHeadings = ['ID', 'Title', 'Slug', 'Stripe ID', 'Status', '']
 </script>
 
 <div class="mt-8 flex flex-col">
@@ -46,13 +46,12 @@
 									class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6"
 									>{course.status}</td
 								>
+
 								<td
-									class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6"
-									>{course.modules.length}</td
+									class="relative whitespace-nowrap py-4 pr-4 text-right text-sm font-medium sm:pr-6 flex items-center justify-end gap-2"
 								>
-								<td
-									class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-								>
+									<Button size="xs" color="primary">Modules</Button>
+									<Button size="xs" color="primary">Lessons</Button>
 									<Button size="xs" color="secondary">Edit</Button>
 								</td>
 							</tr>

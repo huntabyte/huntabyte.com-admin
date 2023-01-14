@@ -33,6 +33,16 @@ export const modules = t.router({
 
 		return module.lessons[0].slug
 	}),
+	getByCourseSlug: t.procedure.input(z.string()).query(async ({ input }) => {
+		return p.module.findMany({
+			where: {
+				slug: input,
+			},
+			include: {
+				lessons: true,
+			},
+		})
+	}),
 })
 
 export type ModuleRouter = typeof modules
