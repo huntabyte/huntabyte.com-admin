@@ -1,6 +1,9 @@
 <script lang="ts">
+	import CoursesTable from '$lib/components/admin/CoursesTable.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
+	import type { PageData } from './$types'
+	export let data: PageData
 </script>
 
 <PageHeading>
@@ -9,3 +12,4 @@
 		<Button>New Course</Button>
 	</div>
 </PageHeading>
+<CoursesTable courses={data.courses} />

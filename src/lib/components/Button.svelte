@@ -5,7 +5,7 @@
 	export let type: 'button' | 'submit' | 'reset' = 'button'
 	export let color: 'primary' | 'secondary' | 'error' = 'primary'
 	export let outline: boolean = false
-	export let size: 'sm' | 'md' | 'lg' = 'md'
+	export let size: 'xs' | 'sm' | 'md' | 'lg' = 'md'
 
 	const colorClasses = {
 		primary:
@@ -26,7 +26,8 @@
 	}
 
 	const sizeClasses = {
-		sm: 'py-2 px-3 text-base',
+		xs: 'py-1.5 px-2.5 text-sm',
+		sm: 'py-2 px-3 text-sm',
 		md: 'py-2.5 px-4 text-base',
 		lg: 'py-3.5 px-5 text-lg'
 	}
