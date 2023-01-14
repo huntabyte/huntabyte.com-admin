@@ -1,6 +1,11 @@
 <script lang="ts">
-	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
-	import SectionHeader from '$lib/components/admin/SectionHeader.svelte'
+	import PageHeading from '$lib/components/admin/PageHeading.svelte'
+	import Button from '$lib/components/Button.svelte'
 </script>
 
-<SectionHeader heading="Manage Articles" />
+<PageHeading>
+	<h2 slot="heading" class="text-3xl font-bold">Manage Articles</h2>
+	<div slot="actions">
+		<Button>New Article</Button>
+	</div>
+</PageHeading>

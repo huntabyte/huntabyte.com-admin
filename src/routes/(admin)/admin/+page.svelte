@@ -1,7 +1,7 @@
 <script lang="ts">
-	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
+	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 </script>
 
-<PageWrapper title="Dashboard">
-	<p>Welcome to the dashboard</p>
-</PageWrapper>
+<PageHeading>
+	<h2 slot="heading" class="text-3xl font-bold">Dashboard</h2>
+</PageHeading>

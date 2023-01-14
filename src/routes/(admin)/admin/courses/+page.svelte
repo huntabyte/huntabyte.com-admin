@@ -1,7 +1,11 @@
 <script lang="ts">
-	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
+	import PageHeading from '$lib/components/admin/PageHeading.svelte'
+	import Button from '$lib/components/Button.svelte'
 </script>
 
-<PageWrapper title="Courses">
-	<p>Welcome to the courses</p>
-</PageWrapper>
+<PageHeading>
+	<h2 slot="heading" class="text-3xl font-bold">Manage Courses</h2>
+	<div slot="actions">
+		<Button>New Course</Button>
+	</div>
+</PageHeading>

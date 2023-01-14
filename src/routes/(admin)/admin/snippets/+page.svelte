@@ -1,7 +1,11 @@
 <script lang="ts">
-	import PageWrapper from '$lib/components/admin/PageWrapper.svelte'
+	import PageHeading from '$lib/components/admin/PageHeading.svelte'
+	import Button from '$lib/components/Button.svelte'
 </script>
 
-<PageWrapper title="Snippets">
-	<p>Welcome to the snippets</p>
-</PageWrapper>
+<PageHeading>
+	<h2 slot="heading" class="text-3xl font-bold">Manage Snippets</h2>
+	<div slot="actions">
+		<Button>New Snippet</Button>
+	</div>
+</PageHeading>
