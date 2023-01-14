@@ -13,13 +13,13 @@
 
 	let inputClass: string
 	const defaultClasses =
-		'w-full max-w-lg rounded-md  shadow-sm  focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 sm:max-w-xs sm:text-sm text-gray-900 group-hover:bg-gray-50 focus:bg-gray-50 transition-all duration-100 ease-in-out'
+		'w-full block rounded-md shadow-sm focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 sm:max-w-xs sm:text-sm text-gray-900 group-hover:bg-gray-50 focus:bg-gray-50 transition-all duration-100 ease-in-out p-4'
 	$: inputClass = classNames(defaultClasses, colorClasses[color])
 </script>
 
-<div class="flex flex-col group">
+<div>
 	{#if label}
-		<label for="first-name" class="text-sm font-medium text-gray-100 sm:mt-px sm:pt-2"
+		<label for="first-name" class="block w-full text-sm font-medium text-gray-100 sm:mt-px sm:pt-2"
 			>{label}</label
 		>
 	{/if}

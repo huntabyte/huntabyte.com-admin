@@ -50,7 +50,7 @@
 								<td
 									class="relative whitespace-nowrap py-4 pr-4 text-right text-sm font-medium sm:pr-6 flex items-center justify-end gap-2"
 								>
-									<Button href="/admin/courses/${course.slug}/content" size="xs" color="primary"
+									<Button href="/admin/courses/{course.slug}/content" size="xs" color="primary"
 										>Content</Button
 									>
 									<Button size="xs" color="secondary">Edit</Button>
