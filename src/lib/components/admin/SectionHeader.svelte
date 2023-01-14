@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from '../Button.svelte'
+
 	export let heading: string = ''
 </script>
 

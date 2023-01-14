@@ -17,6 +17,7 @@
         "story:preview": "histoire preview"
     },
     "devDependencies": {
+        "@histoire/plugin-svelte": "^0.12.4",
         "@playwright/test": "^1.28.1",
         "@prisma/client": "^4.8.1",
         "@sveltejs/adapter-auto": "^1.0.0",
@@ -27,6 +28,7 @@
         "eslint": "^8.28.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-svelte3": "^4.0.0",
+        "histoire": "^0.12.4",
         "mdsvex": "^0.10.6",
         "nodemailer": "^6.8.0",
         "postcss": "^8.4.14",
