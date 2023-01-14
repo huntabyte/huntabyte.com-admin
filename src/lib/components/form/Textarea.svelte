@@ -23,7 +23,7 @@
 
 	let inputClass: string
 	const defaultClasses =
-		'block w-full p-4 rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-300 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent'
+		'block w-full p-4 rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent resize-none'
 	$: inputClass = classNames(defaultClasses, colorClasses[color])
 </script>
 

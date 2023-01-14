@@ -6,6 +6,7 @@
 	export let color: 'primary' | 'secondary' | 'error' = 'primary'
 	export let outline: boolean = false
 	export let size: 'xs' | 'sm' | 'md' | 'lg' = 'md'
+	export let classes: string = ''
 
 	const colorClasses = {
 		primary:
@@ -37,6 +38,7 @@
 	let buttonClass: string
 
 	$: buttonClass = classNames(
+		classes,
 		defaultClasses,
 		sizeClasses[size],
 		outline ? outlineClasses[color] : colorClasses[color]
