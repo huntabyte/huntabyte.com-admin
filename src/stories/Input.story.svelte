@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Hst } from '@histoire/plugin-svelte'
-	import Input from '../lib/components/Input.svelte'
+	import Input from '$lib/components/form/Input.svelte'
 	export let Hst: Hst
 
 	let disabled: boolean = false
@@ -14,17 +14,17 @@
 	</svelte:fragment>
 	<Hst.Variant title="primary">
 		<div class="p-2">
-			<Input color="primary" {disabled} {label} />
+			<Input color="primary" {disabled} {label} name="one" />
 		</div>
 	</Hst.Variant>
 	<Hst.Variant title="secondary">
 		<div class="p-2">
-			<Input color="secondary" {disabled} {label} />
+			<Input color="secondary" {disabled} {label} name="two" />
 		</div>
 	</Hst.Variant>
 	<Hst.Variant title="error">
 		<div class="p-2">
-			<Input color="error" {disabled} {label} />
+			<Input color="error" {disabled} {label} name="three" />
 		</div>
 	</Hst.Variant>
 </Hst.Story>
