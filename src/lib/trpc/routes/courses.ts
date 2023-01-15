@@ -18,6 +18,12 @@ export const courses = t.router({
 			},
 		})
 	}),
+	getBySlug: t.procedure.input(z.string()).query(({ input }) =>
+		p.course.findUniqueOrThrow({
+			where: { slug: input },
+			include: { modules: { include: { lessons: true } } },
+		}),
+	),
 })
 
 export type CourseRouter = typeof courses

@@ -3,21 +3,25 @@
 
 	export let href: string | undefined = undefined
 	export let type: 'button' | 'submit' | 'reset' = 'button'
-	export let color: 'primary' | 'secondary' | 'error' = 'primary'
+	export let color: 'default' | 'primary' | 'secondary' | 'error' = 'default'
 	export let outline: boolean = false
 	export let size: 'xs' | 'sm' | 'md' | 'lg' = 'md'
 	export let classes: string = ''
 
 	const colorClasses = {
+		default:
+			'bg-gray-50 text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 transition-all duration-100 ease-in-out',
 		primary:
-			'bg-primary-500 text-gray-1000 hover:bg-primary-600 hover:text-gray-900 focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out',
+			'bg-primary-500 text-gray-900 hover:bg-primary-600 hover:text-gray-900 focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out',
 		secondary:
-			'bg-secondary-500 text-gray-1000 hover:bg-secondary-600 hover:text-gray-900 focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out',
+			'bg-secondary-500 text-gray-900 hover:bg-secondary-600 hover:text-gray-900 focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out',
 		error:
-			'bg-error-500 text-gray-1000 hover:bg-error-600 hover:text-gray-900 focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out'
+			'bg-error-500 text-gray-900 hover:bg-error-600 hover:text-gray-900 focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out'
 	}
 
 	const outlineClasses = {
+		default:
+			'bg-transparent border-2 border-gray-50 text-gray-50 hover:bg-gray-100 hover:bg-opacity-10 transition-all duration-100 ease-in-out',
 		primary:
 			'bg-transparent border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:bg-opacity-10 transition-all duration-100 ease-in-out',
 		secondary:

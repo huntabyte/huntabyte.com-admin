@@ -6,3 +6,7 @@ export async function createHash(message: string) {
 		.join("")
 		.toString()
 }
+
+export function cloneObj<T>(obj: T): T {
+	return structuredClone(obj)
+}

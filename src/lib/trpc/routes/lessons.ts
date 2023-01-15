@@ -1,6 +1,7 @@
 import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
+import { LessonCreateInputSchema } from "$lib/schemas/generated"
 
 const lessonParams = z.object({
 	lessonSlug: z.string(),
@@ -23,6 +24,9 @@ export const lessons = t.router({
 			},
 		})
 	}),
+	create: t.procedure
+		.input(LessonCreateInputSchema)
+		.mutation(({ input }) => p.lesson.create({ data: input })),
 })
 
 export type LessonRouter = typeof lessons
