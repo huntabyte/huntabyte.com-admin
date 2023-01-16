@@ -44,7 +44,12 @@
 		<div slot="content" class="space-y-2">
 			<Input type="text" name="slug" label="Slug" />
 			<Select name="moduleId" label="Module" options={moduleOptions} />
-			<Input type="number" name="sortOrder" label="Sort Order" value="0" />
+			<Input
+				type="number"
+				name="sortOrder"
+				label="Sort Order"
+				value={data.course._count.lessons + 1}
+			/>
 			<Select
 				name="contentType"
 				label="Content Type"

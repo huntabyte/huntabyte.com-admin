@@ -1,39 +1,68 @@
 <script lang="ts">
-	import Badge from '$lib/components/Badge.svelte'
-	import type { Lesson } from '@prisma/client'
+	import { page } from '$app/stores'
+	import { flip } from 'svelte/animate'
+	import { dndzone } from 'svelte-dnd-action'
+	import type { Lesson, Module } from '@prisma/client'
+	import Badge from '../Badge.svelte'
+	import { trpc } from '$lib/trpc/client'
 
 	export let lessons: Lesson[]
+	export let module: Module
+
+	let items: any[] = []
+	const flipDurationMs = 200
+
+	function handleDndConsider(e: CustomEvent<DndEvent>) {
+		items = e.detail.items
+	}
+	async function handleDndFinalize(e: CustomEvent<DndEvent>) {
+		items = e.detail.items
+		items = items.map((item, idx) => {
+			return { ...item, sortOrder: idx }
+		})
+		const res = await trpc($page).modules.updateLessons.mutate({
+			moduleId: module.id,
+			lessons: items
+		})
+		console.log(res)
+	}
+
+	$: items = lessons.map((lesson) => {
+		return lesson
+	})
 </script>
 
 <div class=" shadow border-t-2 border-gray-600">
-	<ul class="divide-y-2 divide-gray-500 mt-2">
-		{#each lessons as lesson}
-			<li>
-				<a
-					href="/admin/courses/{lesson.courseId}/lessons/{lesson.id}"
-					class="block hover:bg-gray-800"
-				>
+	<ul
+		use:dndzone={{ items, flipDurationMs }}
+		on:consider={handleDndConsider}
+		on:finalize={handleDndFinalize}
+		class="divide-y-2 divide-gray-500 mt-2"
+	>
+		{#each items as item (item.id)}
+			<li animate:flip={{ duration: flipDurationMs }}>
+				<a href="/admin/courses/{item.courseId}/lessons/{item.id}" class="block hover:bg-gray-800">
 					<div class="flex items-center  py-4 px-4">
 						<div class="flex min-w-0 flex-1 items-center">
 							<div class="min-w-0 flex-1 grid grid-cols-2 gap-4 items-center">
 								<div>
-									<p class="truncate font-medium text-primary-600">{lesson.title}</p>
+									<p class="truncate font-medium text-primary-600">{item.title}</p>
 									<p class="mt-2 flex items-center text-sm text-gray-100">
 										<span class="truncate">Hunter Johnston</span>
 									</p>
 								</div>
 								<div class="flex gap-4 items-center justify-self-end">
-									{#if lesson.status === 'PUBLISHED'}
+									{#if item.status === 'PUBLISHED'}
 										<Badge color="primary">
-											{lesson.status}
+											{item.status}
 										</Badge>
-									{:else if lesson.status === 'DRAFT'}
+									{:else if item.status === 'DRAFT'}
 										<Badge color="secondary">
-											{lesson.status}
+											{item.status}
 										</Badge>
-									{:else if lesson.status === 'ARCHIVED'}
+									{:else if item.status === 'ARCHIVED'}
 										<Badge color="default">
-											{lesson.status}
+											{item.status}
 										</Badge>
 									{/if}
 									<div>

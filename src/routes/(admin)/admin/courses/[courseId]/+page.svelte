@@ -1,6 +1,5 @@
 <script lang="ts">
 	import LessonsList from '$lib/components/admin/LessonsList.svelte'
-	import ModuleList from '$lib/components/admin/ModuleList.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import Modal from '$lib/components/admin/Modal.svelte'
@@ -60,19 +59,24 @@
 </PageHeading>
 <div class="pt-8 space-y-8">
 	<div class="space-y-4">
-		<PageHeading>
-			<h3 slot="heading" class="text-2xl font-normal">Modules</h3>
-			<div slot="actions">
-				<Button on:click={dialog.open} size="sm">New Module</Button>
-			</div>
-		</PageHeading>
-		{#if data.course.modules.length > 0}
-			<ModuleList modules={data.course.modules} />
-		{:else}
-			<p>No modules yet.</p>
-		{/if}
+		{#each data.course.modules as module}
+			<PageHeading>
+				<h3 slot="heading" class="text-2xl font-normal">{module.title}</h3>
+				<div slot="actions">
+					<Button on:click={dialog.open} size="sm">Edit Module</Button>
+					<Button href="/admin/courses/{data.course.id}/lessons/new?moduleId={module.id}" size="sm"
+						>New Lesson</Button
+					>
+				</div>
+			</PageHeading>
+			{#if module.lessons.length > 0}
+				<LessonsList lessons={module.lessons} {module} />
+			{:else}
+				<p>No lessons yet.</p>
+			{/if}
+		{/each}
 	</div>
-	<div class="space-y-4">
+	<!-- <div class="space-y-4">
 		<PageHeading>
 			<h3 slot="heading" class="text-2xl font-normal">Lessons</h3>
 			<div slot="actions">
@@ -84,5 +88,5 @@
 		{:else}
 			<p>No lessons yet.</p>
 		{/if}
-	</div>
+	</div> -->
 </div>

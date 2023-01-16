@@ -14,11 +14,22 @@ export const courses = t.router({
 		return await p.course.findMany({
 			include: {
 				modules: {
+					orderBy: {
+						sortOrder: "asc",
+					},
 					include: {
-						lessons: true,
+						lessons: {
+							orderBy: {
+								sortOrder: "asc",
+							},
+						},
 					},
 				},
-				lessons: true,
+				lessons: {
+					orderBy: {
+						sortOrder: "asc",
+					},
+				},
 			},
 		})
 	}),
@@ -32,11 +43,28 @@ export const courses = t.router({
 		p.course.findUniqueOrThrow({
 			where: { id: input },
 			include: {
-				lessons: true,
-				modules: {
-					include: {
-						lessons: true,
+				lessons: {
+					orderBy: {
+						sortOrder: "asc",
 					},
+				},
+				modules: {
+					orderBy: {
+						sortOrder: "asc",
+					},
+					include: {
+						lessons: {
+							orderBy: {
+								sortOrder: "asc",
+							},
+						},
+						_count: {
+							select: { lessons: true },
+						},
+					},
+				},
+				_count: {
+					select: { lessons: true, modules: true },
 				},
 			},
 		}),
