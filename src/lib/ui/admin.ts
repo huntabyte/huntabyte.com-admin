@@ -7,6 +7,7 @@ export const articleSlideoverDialog = createDialog()
 export const lessonSlideoverDialog = createDialog()
 
 export const createModuleModal = createDialog()
+export const updateModuleModal = createDialog()
 
 export const navigation = [
 	{

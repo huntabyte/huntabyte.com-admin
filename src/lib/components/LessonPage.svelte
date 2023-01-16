@@ -2,7 +2,6 @@
 	import type { Lesson } from '@prisma/client'
 
 	export let lesson: Lesson
-	console.log(lesson)
 </script>
 
 <div class="flex flex-col">

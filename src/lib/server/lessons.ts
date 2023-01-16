@@ -8,8 +8,6 @@ export const compileContent = async (htmlString: string) => {
 		htmlString,
 	)
 
-	console.log("Markdown:", markdown)
-
 	const compiledContent = (
 		await compile(markdown, {
 			smartypants: {

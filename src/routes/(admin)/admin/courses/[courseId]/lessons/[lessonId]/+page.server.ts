@@ -18,8 +18,6 @@ export const actions: Actions = {
 			await event.request.formData(),
 		) as unknown as z.infer<typeof CreateLessonSchema>
 
-		console.log(body)
-
 		try {
 			await router.createCaller(await createContext(event)).lessons.update({
 				id: Number(event.params.lessonId),
