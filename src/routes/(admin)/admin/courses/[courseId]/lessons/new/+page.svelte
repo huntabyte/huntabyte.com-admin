@@ -27,8 +27,7 @@
 	<PageHeading>
 		<h2 slot="heading">New Lesson</h2>
 		<div slot="actions" class="space-x-1">
-			<Button type="submit" size="sm" color="primary">Save</Button>
-			<Button type="button" size="sm" on:click={dialog.open}>Details</Button>
+			<Button type="button" size="sm" color="primary" on:click={dialog.open}>Continue</Button>
 		</div>
 	</PageHeading>
 	<input
@@ -55,8 +54,8 @@
 			<Input name="videoUrl" label="Video URL" />
 		</div>
 		<div slot="actions" class="space-x-2">
-			<Button type="button" size="sm" color="error" outline>Delete Lesson</Button>
-			<Button type="submit" size="sm" color="primary">Update Lesson</Button>
+			<Button type="button" size="sm" color="error" outline on:click={dialog.close}>Cancel</Button>
+			<Button type="submit" size="sm" color="primary">Create Lesson</Button>
 		</div>
 	</Slideover>
 </form>

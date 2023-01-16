@@ -5,7 +5,7 @@
 	export let modules: Module[]
 </script>
 
-<div class="overflow-hidden shadow border-t-2 border-gray-600">
+<div class="shadow border-t-2 border-gray-600">
 	<ul class="divide-y-2 divide-gray-500 mt-2">
 		{#each modules as module}
 			<li>

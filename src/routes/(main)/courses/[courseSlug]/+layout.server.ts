@@ -1,4 +1,3 @@
-import { getCoursePageData } from "$lib/server/courses"
 import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
 import type { LayoutServerLoad } from "./$types"

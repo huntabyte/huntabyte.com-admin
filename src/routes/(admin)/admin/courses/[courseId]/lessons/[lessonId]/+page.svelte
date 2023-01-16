@@ -24,7 +24,7 @@
 	]
 
 	const submitUpdateLesson: SubmitFunction = () => {
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			switch (result.type) {
 				case 'success':
 					dialog.close()

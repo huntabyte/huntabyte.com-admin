@@ -21,6 +21,8 @@ export const actions: Actions = {
 			return fail(400, { message: "Invalid data" })
 		}
 
-		throw redirect(303, `/admin/courses/${event.params.courseId}`)
+		return {
+			success: true,
+		}
 	},
 }

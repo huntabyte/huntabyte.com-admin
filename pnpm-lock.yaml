@@ -44,6 +44,7 @@ specifiers:
   tailwindcss: ^3.1.5
   trpc-sveltekit: ^3.2.4
   tslib: ^2.4.1
+  turndown: ^7.1.1
   typescript: ^4.9.3
   vite: ^4.0.0
   vitest: ^0.25.3
@@ -66,6 +67,7 @@ dependencies:
   svelte-headlessui: 0.0.13
   svelte-transition: 0.0.7
   trpc-sveltekit: 3.2.4
+  turndown: 7.1.1
   zod-prisma-types: 1.6.2
 
 devDependencies:
@@ -1762,6 +1764,10 @@ packages:
     dependencies:
       webidl-conversions: 7.0.0
     dev: true
+
+  /domino/2.1.6:
+    resolution: {integrity: sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==}
+    dev: false
 
   /dot-case/3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
@@ -3783,6 +3789,12 @@ packages:
       tslib: 1.14.1
       typescript: 4.9.4
     dev: true
+
+  /turndown/7.1.1:
+    resolution: {integrity: sha512-BEkXaWH7Wh7e9bd2QumhfAXk5g34+6QUmmWx+0q6ThaVOLuLUqsnkq35HQ5SBHSaxjSfSM7US5o4lhJNH7B9MA==}
+    dependencies:
+      domino: 2.1.6
+    dev: false
 
   /type-check/0.3.2:
     resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}

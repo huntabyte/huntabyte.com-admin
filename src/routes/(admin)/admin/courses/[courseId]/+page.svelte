@@ -9,11 +9,30 @@
 	import { createModuleModal as dialog } from '$lib/ui/admin'
 	import Input from '$lib/components/form/Input.svelte'
 	import Icon from '$lib/components/Icon.svelte'
+	import { enhance, type SubmitFunction } from '$app/forms'
+	import toast from 'svelte-french-toast'
+
+	const submitCreateModule: SubmitFunction = () => {
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'success':
+					toast.success('Module created successfully')
+					dialog.close()
+					await update()
+					break
+				case 'failure':
+					toast.error('Failed to create module')
+					break
+				default:
+					break
+			}
+		}
+	}
 </script>
 
 <!-- Create Module Modal -->
 <Modal {dialog}>
-	<form method="POST" action="?/createModule" class="space-y-2">
+	<form method="POST" action="?/createModule" class="space-y-2" use:enhance={submitCreateModule}>
 		<div class="flex w-full justify-between items-center">
 			<h3 class="font-medium text-2xl">
 				<span class="text-secondary-500">{data.course.title}</span>
@@ -35,6 +54,7 @@
 		</div>
 	</form>
 </Modal>
+
 <PageHeading>
 	<h2 slot="heading" class="text-3xl font-bold">{data.course.title}</h2>
 </PageHeading>
