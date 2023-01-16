@@ -23,6 +23,8 @@ export const UserScalarFieldEnumSchema = z.nativeEnum(PrismaClient.Prisma.UserSc
 // CUSTOM ENUMS
 //------------------------------------------------------
 
+export const PublishStatusSchema = z.nativeEnum(PrismaClient.PublishStatus);
+
 export const RoleSchema = z.nativeEnum(PrismaClient.Role);
 
 /////////////////////////////////////////
@@ -44,28 +46,26 @@ export const UserSchema = z.object({
 //------------------------------------------------------
 
 export const CourseSchema = z.object({
+  status: PublishStatusSchema,
   id: z.number().int(),
   title: z.string(),
-  overview: z.string(),
+  description: z.string().nullish(),
   slug: z.string(),
   stripeProductId: z.string().nullish(),
   lastRevised: z.date(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  status: z.string(),
 });
 
 // MODULE
 //------------------------------------------------------
 
 export const ModuleSchema = z.object({
+  status: PublishStatusSchema,
   id: z.number().int(),
   title: z.string(),
-  overview: z.string().nullish(),
-  slug: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  status: z.string(),
   sortOrder: z.number().int(),
   courseId: z.number().int(),
 });
@@ -74,13 +74,13 @@ export const ModuleSchema = z.object({
 //------------------------------------------------------
 
 export const LessonSchema = z.object({
+  status: PublishStatusSchema,
   id: z.number().int(),
   title: z.string(),
   slug: z.string().nullish(),
   content: z.string().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  status: z.string(),
   contentType: z.string(),
   moduleId: z.number().int().nullish(),
   isFree: z.boolean(),
@@ -127,7 +127,7 @@ export const CourseCountOutputTypeSelectSchema: z.ZodType<PrismaClient.Prisma.Co
 export const CourseSelectSchema: z.ZodType<PrismaClient.Prisma.CourseSelect> = z.object({
   id: z.boolean().optional(),
   title: z.boolean().optional(),
-  overview: z.boolean().optional(),
+  description: z.boolean().optional(),
   slug: z.boolean().optional(),
   stripeProductId: z.boolean().optional(),
   lastRevised: z.boolean().optional(),
@@ -163,8 +163,6 @@ export const ModuleCountOutputTypeSelectSchema: z.ZodType<PrismaClient.Prisma.Mo
 export const ModuleSelectSchema: z.ZodType<PrismaClient.Prisma.ModuleSelect> = z.object({
   id: z.boolean().optional(),
   title: z.boolean().optional(),
-  overview: z.boolean().optional(),
-  slug: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   status: z.boolean().optional(),
@@ -259,20 +257,20 @@ export const CourseWhereInputSchema: z.ZodType<PrismaClient.Prisma.CourseWhereIn
   NOT: z.union([z.lazy(() => CourseWhereInputSchema), z.lazy(() => CourseWhereInputSchema).array()]).optional(),
   id: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
   title: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-  overview: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  description: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
   slug: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
   stripeProductId: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
   lastRevised: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   modules: z.lazy(() => ModuleListRelationFilterSchema).optional(),
 }).strict();
 
 export const CourseOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prisma.CourseOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   slug: z.lazy(() => SortOrderSchema).optional(),
   stripeProductId: z.lazy(() => SortOrderSchema).optional(),
   lastRevised: z.lazy(() => SortOrderSchema).optional(),
@@ -291,7 +289,7 @@ export const CourseWhereUniqueInputSchema: z.ZodType<PrismaClient.Prisma.CourseW
 export const CourseOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Prisma.CourseOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   slug: z.lazy(() => SortOrderSchema).optional(),
   stripeProductId: z.lazy(() => SortOrderSchema).optional(),
   lastRevised: z.lazy(() => SortOrderSchema).optional(),
@@ -311,13 +309,13 @@ export const CourseScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.
   NOT: z.union([z.lazy(() => CourseScalarWhereWithAggregatesInputSchema), z.lazy(() => CourseScalarWhereWithAggregatesInputSchema).array()]).optional(),
   id: z.union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()]).optional(),
   title: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
-  overview: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  description: z.union([z.lazy(() => StringNullableWithAggregatesFilterSchema), z.string()]).optional().nullable(),
   slug: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
   stripeProductId: z.union([z.lazy(() => StringNullableWithAggregatesFilterSchema), z.string()]).optional().nullable(),
   lastRevised: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusWithAggregatesFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
 }).strict();
 
 export const ModuleWhereInputSchema: z.ZodType<PrismaClient.Prisma.ModuleWhereInput> = z.object({
@@ -326,11 +324,9 @@ export const ModuleWhereInputSchema: z.ZodType<PrismaClient.Prisma.ModuleWhereIn
   NOT: z.union([z.lazy(() => ModuleWhereInputSchema), z.lazy(() => ModuleWhereInputSchema).array()]).optional(),
   id: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
   title: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-  overview: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
-  slug: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   sortOrder: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
   lessons: z.lazy(() => LessonListRelationFilterSchema).optional(),
   course: z.union([z.lazy(() => CourseRelationFilterSchema), z.lazy(() => CourseWhereInputSchema)]).optional(),
@@ -340,8 +336,6 @@ export const ModuleWhereInputSchema: z.ZodType<PrismaClient.Prisma.ModuleWhereIn
 export const ModuleOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prisma.ModuleOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
-  slug: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
@@ -358,8 +352,6 @@ export const ModuleWhereUniqueInputSchema: z.ZodType<PrismaClient.Prisma.ModuleW
 export const ModuleOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Prisma.ModuleOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
-  slug: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
@@ -378,11 +370,9 @@ export const ModuleScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.
   NOT: z.union([z.lazy(() => ModuleScalarWhereWithAggregatesInputSchema), z.lazy(() => ModuleScalarWhereWithAggregatesInputSchema).array()]).optional(),
   id: z.union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()]).optional(),
   title: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
-  overview: z.union([z.lazy(() => StringNullableWithAggregatesFilterSchema), z.string()]).optional().nullable(),
-  slug: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusWithAggregatesFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   sortOrder: z.union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()]).optional(),
   courseId: z.union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()]).optional(),
 }).strict();
@@ -397,7 +387,7 @@ export const LessonWhereInputSchema: z.ZodType<PrismaClient.Prisma.LessonWhereIn
   content: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
   createdAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   contentType: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
   moduleId: z.union([z.lazy(() => IntNullableFilterSchema), z.number()]).optional().nullable(),
   isFree: z.union([z.lazy(() => BoolFilterSchema), z.boolean()]).optional(),
@@ -456,7 +446,7 @@ export const LessonScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.
   content: z.union([z.lazy(() => StringNullableWithAggregatesFilterSchema), z.string()]).optional().nullable(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusWithAggregatesFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   contentType: z.union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()]).optional(),
   moduleId: z.union([z.lazy(() => IntNullableWithAggregatesFilterSchema), z.number()]).optional().nullable(),
   isFree: z.union([z.lazy(() => BoolWithAggregatesFilterSchema), z.boolean()]).optional(),
@@ -522,97 +512,95 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.U
 
 export const CourseCreateInputSchema: z.ZodType<PrismaClient.Prisma.CourseCreateInput> = z.object({
   title: z.string(),
-  overview: z.string(),
+  description: z.string().optional().nullable(),
   slug: z.string(),
   stripeProductId: z.string().optional().nullable(),
   lastRevised: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   modules: z.lazy(() => ModuleCreateNestedManyWithoutCourseInputSchema).optional(),
 }).strict();
 
 export const CourseUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.CourseUncheckedCreateInput> = z.object({
   id: z.number().int().optional(),
   title: z.string(),
-  overview: z.string(),
+  description: z.string().optional().nullable(),
   slug: z.string(),
   stripeProductId: z.string().optional().nullable(),
   lastRevised: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   modules: z.lazy(() => ModuleUncheckedCreateNestedManyWithoutCourseInputSchema).optional(),
 }).strict();
 
 export const CourseUpdateInputSchema: z.ZodType<PrismaClient.Prisma.CourseUpdateInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   modules: z.lazy(() => ModuleUpdateManyWithoutCourseNestedInputSchema).optional(),
 }).strict();
 
 export const CourseUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.CourseUncheckedUpdateInput> = z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   modules: z.lazy(() => ModuleUncheckedUpdateManyWithoutCourseNestedInputSchema).optional(),
 }).strict();
 
 export const CourseCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.CourseCreateManyInput> = z.object({
   id: z.number().int().optional(),
   title: z.string(),
-  overview: z.string(),
+  description: z.string().optional().nullable(),
   slug: z.string(),
   stripeProductId: z.string().optional().nullable(),
   lastRevised: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
 }).strict();
 
 export const CourseUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.CourseUpdateManyMutationInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const CourseUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.CourseUncheckedUpdateManyInput> = z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const ModuleCreateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreateInput> = z.object({
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number().int(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().int().optional(),
   lessons: z.lazy(() => LessonCreateNestedManyWithoutModuleInputSchema).optional(),
   course: z.lazy(() => CourseCreateNestedOneWithoutModulesInputSchema),
 }).strict();
@@ -620,23 +608,19 @@ export const ModuleCreateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreate
 export const ModuleUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedCreateInput> = z.object({
   id: z.number().int().optional(),
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number().int(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().int().optional(),
   lessons: z.lazy(() => LessonUncheckedCreateNestedManyWithoutModuleInputSchema).optional(),
   courseId: z.number().int(),
 }).strict();
 
 export const ModuleUpdateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdateInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   lessons: z.lazy(() => LessonUpdateManyWithoutModuleNestedInputSchema).optional(),
   course: z.lazy(() => CourseUpdateOneRequiredWithoutModulesNestedInputSchema).optional(),
@@ -645,11 +629,9 @@ export const ModuleUpdateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdate
 export const ModuleUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedUpdateInput> = z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   lessons: z.lazy(() => LessonUncheckedUpdateManyWithoutModuleNestedInputSchema).optional(),
   courseId: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
@@ -658,33 +640,27 @@ export const ModuleUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.Mod
 export const ModuleCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreateManyInput> = z.object({
   id: z.number().int().optional(),
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number().int(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().int().optional(),
   courseId: z.number().int(),
 }).strict();
 
 export const ModuleUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdateManyMutationInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const ModuleUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedUpdateManyInput> = z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   courseId: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
@@ -695,7 +671,7 @@ export const LessonCreateInputSchema: z.ZodType<PrismaClient.Prisma.LessonCreate
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   isFree: z.boolean().optional(),
   sortOrder: z.number().int().optional(),
@@ -710,7 +686,7 @@ export const LessonUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.Les
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   moduleId: z.number().int().optional().nullable(),
   isFree: z.boolean().optional(),
@@ -724,7 +700,7 @@ export const LessonUpdateInputSchema: z.ZodType<PrismaClient.Prisma.LessonUpdate
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
@@ -739,7 +715,7 @@ export const LessonUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.Les
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   moduleId: z.union([z.number().int(), z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)]).optional().nullable(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
@@ -754,7 +730,7 @@ export const LessonCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.LessonCr
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   moduleId: z.number().int().optional().nullable(),
   isFree: z.boolean().optional(),
@@ -768,7 +744,7 @@ export const LessonUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
@@ -782,7 +758,7 @@ export const LessonUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   moduleId: z.union([z.number().int(), z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)]).optional().nullable(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
@@ -915,6 +891,13 @@ export const DateTimeFilterSchema: z.ZodType<PrismaClient.Prisma.DateTimeFilter>
   not: z.union([z.date(), z.lazy(() => NestedDateTimeFilterSchema)]).optional(),
 }).strict();
 
+export const EnumPublishStatusFilterSchema: z.ZodType<PrismaClient.Prisma.EnumPublishStatusFilter> = z.object({
+  equals: z.lazy(() => PublishStatusSchema).optional(),
+  in: z.lazy(() => PublishStatusSchema).array().optional(),
+  notIn: z.lazy(() => PublishStatusSchema).array().optional(),
+  not: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => NestedEnumPublishStatusFilterSchema)]).optional(),
+}).strict();
+
 export const ModuleListRelationFilterSchema: z.ZodType<PrismaClient.Prisma.ModuleListRelationFilter> = z.object({
   every: z.lazy(() => ModuleWhereInputSchema).optional(),
   some: z.lazy(() => ModuleWhereInputSchema).optional(),
@@ -928,7 +911,7 @@ export const ModuleOrderByRelationAggregateInputSchema: z.ZodType<PrismaClient.P
 export const CourseCountOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.CourseCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   slug: z.lazy(() => SortOrderSchema).optional(),
   stripeProductId: z.lazy(() => SortOrderSchema).optional(),
   lastRevised: z.lazy(() => SortOrderSchema).optional(),
@@ -944,7 +927,7 @@ export const CourseAvgOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma
 export const CourseMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.CourseMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   slug: z.lazy(() => SortOrderSchema).optional(),
   stripeProductId: z.lazy(() => SortOrderSchema).optional(),
   lastRevised: z.lazy(() => SortOrderSchema).optional(),
@@ -956,7 +939,7 @@ export const CourseMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma
 export const CourseMinOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.CourseMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
+  description: z.lazy(() => SortOrderSchema).optional(),
   slug: z.lazy(() => SortOrderSchema).optional(),
   stripeProductId: z.lazy(() => SortOrderSchema).optional(),
   lastRevised: z.lazy(() => SortOrderSchema).optional(),
@@ -999,6 +982,16 @@ export const DateTimeWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.D
   _max: z.lazy(() => NestedDateTimeFilterSchema).optional(),
 }).strict();
 
+export const EnumPublishStatusWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.EnumPublishStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => PublishStatusSchema).optional(),
+  in: z.lazy(() => PublishStatusSchema).array().optional(),
+  notIn: z.lazy(() => PublishStatusSchema).array().optional(),
+  not: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => NestedEnumPublishStatusWithAggregatesFilterSchema)]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumPublishStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumPublishStatusFilterSchema).optional(),
+}).strict();
+
 export const LessonListRelationFilterSchema: z.ZodType<PrismaClient.Prisma.LessonListRelationFilter> = z.object({
   every: z.lazy(() => LessonWhereInputSchema).optional(),
   some: z.lazy(() => LessonWhereInputSchema).optional(),
@@ -1017,8 +1010,6 @@ export const LessonOrderByRelationAggregateInputSchema: z.ZodType<PrismaClient.P
 export const ModuleCountOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
-  slug: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
@@ -1035,8 +1026,6 @@ export const ModuleAvgOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma
 export const ModuleMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
-  slug: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
@@ -1047,8 +1036,6 @@ export const ModuleMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma
 export const ModuleMinOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.ModuleMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   title: z.lazy(() => SortOrderSchema).optional(),
-  overview: z.lazy(() => SortOrderSchema).optional(),
-  slug: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
@@ -1192,6 +1179,10 @@ export const ModuleUncheckedCreateNestedManyWithoutCourseInputSchema: z.ZodType<
 
 export const DateTimeFieldUpdateOperationsInputSchema: z.ZodType<PrismaClient.Prisma.DateTimeFieldUpdateOperationsInput> = z.object({
   set: z.date().optional(),
+}).strict();
+
+export const EnumPublishStatusFieldUpdateOperationsInputSchema: z.ZodType<PrismaClient.Prisma.EnumPublishStatusFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => PublishStatusSchema).optional(),
 }).strict();
 
 export const ModuleUpdateManyWithoutCourseNestedInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdateManyWithoutCourseNestedInput> = z.object({
@@ -1426,6 +1417,13 @@ export const NestedDateTimeFilterSchema: z.ZodType<PrismaClient.Prisma.NestedDat
   not: z.union([z.date(), z.lazy(() => NestedDateTimeFilterSchema)]).optional(),
 }).strict();
 
+export const NestedEnumPublishStatusFilterSchema: z.ZodType<PrismaClient.Prisma.NestedEnumPublishStatusFilter> = z.object({
+  equals: z.lazy(() => PublishStatusSchema).optional(),
+  in: z.lazy(() => PublishStatusSchema).array().optional(),
+  notIn: z.lazy(() => PublishStatusSchema).array().optional(),
+  not: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => NestedEnumPublishStatusFilterSchema)]).optional(),
+}).strict();
+
 export const NestedIntWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.NestedIntWithAggregatesFilter> = z.object({
   equals: z.number().optional(),
   in: z.number().array().optional(),
@@ -1465,6 +1463,16 @@ export const NestedDateTimeWithAggregatesFilterSchema: z.ZodType<PrismaClient.Pr
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedDateTimeFilterSchema).optional(),
   _max: z.lazy(() => NestedDateTimeFilterSchema).optional(),
+}).strict();
+
+export const NestedEnumPublishStatusWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.NestedEnumPublishStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => PublishStatusSchema).optional(),
+  in: z.lazy(() => PublishStatusSchema).array().optional(),
+  notIn: z.lazy(() => PublishStatusSchema).array().optional(),
+  not: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => NestedEnumPublishStatusWithAggregatesFilterSchema)]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumPublishStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumPublishStatusFilterSchema).optional(),
 }).strict();
 
 export const NestedBoolFilterSchema: z.ZodType<PrismaClient.Prisma.NestedBoolFilter> = z.object({
@@ -1509,24 +1517,20 @@ export const NestedBoolWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma
 
 export const ModuleCreateWithoutCourseInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreateWithoutCourseInput> = z.object({
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().optional(),
   lessons: z.lazy(() => LessonCreateNestedManyWithoutModuleInputSchema).optional(),
 }).strict();
 
 export const ModuleUncheckedCreateWithoutCourseInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedCreateWithoutCourseInput> = z.object({
   id: z.number().optional(),
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().optional(),
   lessons: z.lazy(() => LessonUncheckedCreateNestedManyWithoutModuleInputSchema).optional(),
 }).strict();
 
@@ -1562,11 +1566,9 @@ export const ModuleScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.ModuleS
   NOT: z.union([z.lazy(() => ModuleScalarWhereInputSchema), z.lazy(() => ModuleScalarWhereInputSchema).array()]).optional(),
   id: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
   title: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-  overview: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
-  slug: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   sortOrder: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
   courseId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
 }).strict();
@@ -1577,7 +1579,7 @@ export const LessonCreateWithoutModuleInputSchema: z.ZodType<PrismaClient.Prisma
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   isFree: z.boolean().optional(),
   sortOrder: z.number().optional(),
@@ -1591,7 +1593,7 @@ export const LessonUncheckedCreateWithoutModuleInputSchema: z.ZodType<PrismaClie
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   isFree: z.boolean().optional(),
   sortOrder: z.number().optional(),
@@ -1610,25 +1612,25 @@ export const LessonCreateManyModuleInputEnvelopeSchema: z.ZodType<PrismaClient.P
 
 export const CourseCreateWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.CourseCreateWithoutModulesInput> = z.object({
   title: z.string(),
-  overview: z.string(),
+  description: z.string().optional().nullable(),
   slug: z.string(),
   stripeProductId: z.string().optional().nullable(),
   lastRevised: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
 }).strict();
 
 export const CourseUncheckedCreateWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.CourseUncheckedCreateWithoutModulesInput> = z.object({
   id: z.number().optional(),
   title: z.string(),
-  overview: z.string(),
+  description: z.string().optional().nullable(),
   slug: z.string(),
   stripeProductId: z.string().optional().nullable(),
   lastRevised: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
 }).strict();
 
 export const CourseCreateOrConnectWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.CourseCreateOrConnectWithoutModulesInput> = z.object({
@@ -1662,7 +1664,7 @@ export const LessonScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.LessonS
   content: z.union([z.lazy(() => StringNullableFilterSchema), z.string()]).optional().nullable(),
   createdAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterSchema), z.date()]).optional(),
-  status: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumPublishStatusFilterSchema), z.lazy(() => PublishStatusSchema)]).optional(),
   contentType: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
   moduleId: z.union([z.lazy(() => IntNullableFilterSchema), z.number()]).optional().nullable(),
   isFree: z.union([z.lazy(() => BoolFilterSchema), z.boolean()]).optional(),
@@ -1677,47 +1679,43 @@ export const CourseUpsertWithoutModulesInputSchema: z.ZodType<PrismaClient.Prism
 
 export const CourseUpdateWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.CourseUpdateWithoutModulesInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const CourseUncheckedUpdateWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.CourseUncheckedUpdateWithoutModulesInput> = z.object({
   id: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   stripeProductId: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   lastRevised: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
 export const ModuleCreateWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreateWithoutLessonsInput> = z.object({
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().optional(),
   course: z.lazy(() => CourseCreateNestedOneWithoutModulesInputSchema),
 }).strict();
 
 export const ModuleUncheckedCreateWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedCreateWithoutLessonsInput> = z.object({
   id: z.number().optional(),
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().optional(),
   courseId: z.number(),
 }).strict();
 
@@ -1733,11 +1731,9 @@ export const ModuleUpsertWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prism
 
 export const ModuleUpdateWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdateWithoutLessonsInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   course: z.lazy(() => CourseUpdateOneRequiredWithoutModulesNestedInputSchema).optional(),
 }).strict();
@@ -1745,11 +1741,9 @@ export const ModuleUpdateWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prism
 export const ModuleUncheckedUpdateWithoutLessonsInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedUpdateWithoutLessonsInput> = z.object({
   id: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   courseId: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
@@ -1757,21 +1751,17 @@ export const ModuleUncheckedUpdateWithoutLessonsInputSchema: z.ZodType<PrismaCli
 export const ModuleCreateManyCourseInputSchema: z.ZodType<PrismaClient.Prisma.ModuleCreateManyCourseInput> = z.object({
   id: z.number().int().optional(),
   title: z.string(),
-  overview: z.string().optional().nullable(),
-  slug: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
-  sortOrder: z.number(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
+  sortOrder: z.number().optional(),
 }).strict();
 
 export const ModuleUpdateWithoutCourseInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUpdateWithoutCourseInput> = z.object({
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   lessons: z.lazy(() => LessonUpdateManyWithoutModuleNestedInputSchema).optional(),
 }).strict();
@@ -1779,11 +1769,9 @@ export const ModuleUpdateWithoutCourseInputSchema: z.ZodType<PrismaClient.Prisma
 export const ModuleUncheckedUpdateWithoutCourseInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedUpdateWithoutCourseInput> = z.object({
   id: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   lessons: z.lazy(() => LessonUncheckedUpdateManyWithoutModuleNestedInputSchema).optional(),
 }).strict();
@@ -1791,11 +1779,9 @@ export const ModuleUncheckedUpdateWithoutCourseInputSchema: z.ZodType<PrismaClie
 export const ModuleUncheckedUpdateManyWithoutModulesInputSchema: z.ZodType<PrismaClient.Prisma.ModuleUncheckedUpdateManyWithoutModulesInput> = z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-  overview: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
-  slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
 }).strict();
 
@@ -1806,7 +1792,7 @@ export const LessonCreateManyModuleInputSchema: z.ZodType<PrismaClient.Prisma.Le
   content: z.string().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  status: z.string().optional(),
+  status: z.lazy(() => PublishStatusSchema).optional(),
   contentType: z.string().optional(),
   isFree: z.boolean().optional(),
   sortOrder: z.number().int().optional(),
@@ -1819,7 +1805,7 @@ export const LessonUpdateWithoutModuleInputSchema: z.ZodType<PrismaClient.Prisma
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
@@ -1833,7 +1819,7 @@ export const LessonUncheckedUpdateWithoutModuleInputSchema: z.ZodType<PrismaClie
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),
@@ -1847,7 +1833,7 @@ export const LessonUncheckedUpdateManyWithoutLessonsInputSchema: z.ZodType<Prism
   content: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)]).optional().nullable(),
   createdAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
   updatedAt: z.union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)]).optional(),
-  status: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+  status: z.union([z.lazy(() => PublishStatusSchema), z.lazy(() => EnumPublishStatusFieldUpdateOperationsInputSchema)]).optional(),
   contentType: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
   isFree: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)]).optional(),
   sortOrder: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputSchema)]).optional(),

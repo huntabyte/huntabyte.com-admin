@@ -7,11 +7,13 @@
 		color?: 'primary' | 'secondary' | 'error'
 		type?: string
 		name: string
+		classes: string
 	}
 	export let label: string | undefined = undefined
 
 	export let color: 'primary' | 'secondary' | 'error' = 'primary'
 	export let type: string = 'text'
+	export let classes: string
 
 	export let name: string
 
@@ -24,7 +26,7 @@
 	let inputClass: string
 	const defaultClasses =
 		'block w-full p-4 rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent disabled:bg-gray-500 disabled:text-gray-400 disabled:cursor-not-allowed'
-	$: inputClass = classNames(defaultClasses, colorClasses[color])
+	$: inputClass = classNames(classes, defaultClasses, colorClasses[color])
 </script>
 
 <div>

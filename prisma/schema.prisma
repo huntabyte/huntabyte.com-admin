@@ -40,7 +40,6 @@ model Course {
 model Module {
     id        Int           @id @default(autoincrement())
     title     String
-    slug      String?
     createdAt DateTime      @default(now())
     updatedAt DateTime      @default(now()) @updatedAt
     status    PublishStatus @default(DRAFT)

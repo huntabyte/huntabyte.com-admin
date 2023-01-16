@@ -1,4 +1,8 @@
-<div class="md:flex md:items-center md:justify-between w-full">
+<script lang="ts">
+	export let classes: string = ''
+</script>
+
+<div class="{classes} md:flex md:items-center md:justify-between w-full">
 	<div class="min-w-0 flex-1">
 		<slot name="heading" />
 	</div>

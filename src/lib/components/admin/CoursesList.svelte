@@ -9,7 +9,7 @@
 	<ul class="divide-y-2 divide-gray-500">
 		{#each courses as course}
 			<li>
-				<a href="/admin/courses/{course.slug}" class="block hover:bg-gray-800">
+				<a href="/admin/courses/{course.id}" class="block hover:bg-gray-800">
 					<div class="flex items-center  py-4 px-4">
 						<div class="flex min-w-0 flex-1 items-center">
 							<div class="min-w-0 flex-1 grid grid-cols-2 gap-4 items-center">

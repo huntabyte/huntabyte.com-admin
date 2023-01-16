@@ -9,7 +9,7 @@
 <PageHeading>
 	<h2 slot="heading" class="text-3xl font-bold">Courses</h2>
 	<div slot="actions">
-		<Button color="default">New Course</Button>
+		<Button href="/admin/courses/new" color="default">New Course</Button>
 	</div>
 </PageHeading>
 <CoursesList courses={data.courses} />

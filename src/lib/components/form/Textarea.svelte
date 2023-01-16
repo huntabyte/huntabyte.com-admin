@@ -7,6 +7,7 @@
 		color?: 'primary' | 'secondary' | 'error'
 		name: string
 		rows?: number
+		classes: string
 	}
 	export let label: string | undefined = undefined
 
@@ -14,6 +15,7 @@
 
 	export let name: string
 	export let rows: number = 3
+	export let classes: string = ''
 
 	const colorClasses = {
 		primary: 'focus:ring-primary-500 focus:border-primary-500 border-gray-200',
@@ -24,7 +26,7 @@
 	let inputClass: string
 	const defaultClasses =
 		'block w-full p-4 rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent resize-none disabled:bg-gray-500 disabled:text-gray-400 disabled:cursor-not-allowed'
-	$: inputClass = classNames(defaultClasses, colorClasses[color])
+	$: inputClass = classNames(classes, defaultClasses, colorClasses[color])
 </script>
 
 <div>

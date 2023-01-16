@@ -7,6 +7,9 @@
 
 <PageHeading>
 	<h2 slot="heading" class="text-3xl font-bold">{data.course.title}</h2>
+	<div slot="actions">
+		<Button href="/admin/courses/{data.course.id}/modules/new" size="sm">New Module</Button>
+	</div>
 </PageHeading>
 <div class="pt-8 space-y-6">
 	{#each data.course.modules as module}
@@ -14,7 +17,7 @@
 			<PageHeading>
 				<h3 slot="heading" class="text-2xl font-normal">Module: {module.title}</h3>
 				<div slot="actions">
-					<Button href="/admin/courses/{data.course.slug}/create?module={module.id}" size="sm"
+					<Button href="/admin/courses/{data.course.id}/create?module={module.id}" size="sm"
 						>New Lesson</Button
 					>
 				</div>

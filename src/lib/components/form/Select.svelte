@@ -8,12 +8,16 @@
 		type?: string
 		name: string
 		options?: OptionItem[]
+		classes?: string
+		defaultSelection?: string
 	}
 	export let label: string | undefined = undefined
 
 	export let color: 'primary' | 'secondary' | 'error' = 'primary'
 
 	export let name: string
+	export let classes: string = ''
+	export let defaultSelection: string = ''
 
 	type OptionItem = {
 		value: string
@@ -30,7 +34,7 @@
 	let inputClass: string
 	const defaultClasses =
 		'block w-full p-4 rounded-md shadow-sm bg-transparent border-2focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent'
-	$: inputClass = classNames(defaultClasses, colorClasses[color])
+	$: inputClass = classNames(classes, defaultClasses, colorClasses[color])
 </script>
 
 <div>
@@ -38,7 +42,7 @@
 		<label for={name} class="block font-medium text-gray-100 sm:mt-px sm:pt-2">{label}</label>
 	{/if}
 	<div class="mt-1 group">
-		<select {name} id={name} class={inputClass} {...$$restProps}>
+		<select {name} id={name} class={inputClass} {...$$restProps} value={defaultSelection}>
 			{#each options as option}
 				<option value={option.value}>{option.label}</option>
 			{/each}

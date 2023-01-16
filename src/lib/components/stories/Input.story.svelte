@@ -7,7 +7,7 @@
 	let label: string = 'Label'
 </script>
 
-<Hst.Story title="Input" layout={{ type: 'grid', width: 400 }}>
+<Hst.Story title="Input" layout={{ type: 'grid', width: 300 }}>
 	<svelte:fragment slot="controls">
 		<Hst.Text bind:value={label} title="Label" />
 		<Hst.Checkbox bind:value={disabled} title="Disabled" />
