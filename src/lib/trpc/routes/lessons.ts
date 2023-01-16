@@ -1,7 +1,7 @@
 import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
-import { zfd } from "zod-form-data"
+import { zfd } from "$lib/zfd"
 
 export const CreateLessonSchema = zfd.formData({
 	title: zfd.text(),
