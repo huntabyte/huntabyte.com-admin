@@ -6,6 +6,6 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		lesson: router
 			.createCaller(await createContext(event))
-			.lessons.getBySlug(event.params),
+			.lessons.getBySlug(event.params.lessonSlug),
 	}
 }

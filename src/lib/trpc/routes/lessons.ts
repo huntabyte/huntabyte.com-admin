@@ -2,6 +2,7 @@ import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
+import { compileContent } from "$lib/server/lessons"
 
 export const CreateLessonSchema = zfd.formData({
 	title: zfd.text(),
@@ -36,6 +37,13 @@ export const lessons = t.router({
 		.mutation(({ input }) =>
 			p.lesson.update({ where: { id: input.id }, data: input.data }),
 		),
+	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {
+		const lesson = await p.lesson.findFirstOrThrow({ where: { slug: input } })
+		if (lesson.content) {
+			lesson.content = await compileContent(lesson.content)
+		}
+		return lesson
+	}),
 })
 
 export type LessonRouter = typeof lessons

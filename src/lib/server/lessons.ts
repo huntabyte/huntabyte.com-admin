@@ -1,8 +1,11 @@
 import { error } from "@sveltejs/kit"
+import Turndown from "turndown"
 import { compile } from "mdsvex"
 
 /* Receive raw markdown and compile it to HTML */
-export const compileMarkdown = async (markdown: string) => {
+export const compileContent = async (htmlString: string) => {
+	const markdown = new Turndown().turndown(htmlString)
+
 	const compiledContent = (
 		await compile(markdown, {
 			smartypants: {
