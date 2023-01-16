@@ -37,6 +37,8 @@
 			editor.destroy()
 		}
 	})
+
+	$: console.log(content)
 </script>
 
 <div bind:this={element} />

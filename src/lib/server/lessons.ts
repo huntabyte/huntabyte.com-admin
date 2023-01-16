@@ -4,7 +4,11 @@ import { compile } from "mdsvex"
 
 /* Receive raw markdown and compile it to HTML */
 export const compileContent = async (htmlString: string) => {
-	const markdown = new Turndown().turndown(htmlString)
+	const markdown = new Turndown({ codeBlockStyle: "fenced" }).turndown(
+		htmlString,
+	)
+
+	console.log("Markdown:", markdown)
 
 	const compiledContent = (
 		await compile(markdown, {

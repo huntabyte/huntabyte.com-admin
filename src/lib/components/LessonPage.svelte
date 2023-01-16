@@ -22,7 +22,7 @@
 		<h1>This is where my video goes!</h1>
 	{/if}
 	{#if lesson.content}
-		<div>
+		<div class="prose-invert prose">
 			{@html lesson.content}
 		</div>
 	{/if}
