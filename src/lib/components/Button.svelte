@@ -10,13 +10,13 @@
 
 	const colorClasses = {
 		default:
-			'bg-gray-50 text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
+			'bg-gray-50 text-gray-900 border-2 border-gray-50 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-100  focus:ring-2 focus:ring-gray-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		primary:
-			'bg-primary-500 text-gray-900 hover:bg-primary-600 hover:text-gray-900 focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
+			'bg-primary-500 text-gray-900 border-2 border-primary-500 hover:border-primary-600 hover:bg-primary-600 hover:text-gray-900  focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		secondary:
-			'bg-secondary-500 text-gray-900 hover:bg-secondary-600 hover:text-gray-900 focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
+			'bg-secondary-500 text-gray-900 border-2 border-secondary-500 hover:border-secondary-600 hover:bg-secondary-600 hover:text-gray-900  focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		error:
-			'bg-error-500 text-gray-900 hover:bg-error-600 hover:text-gray-900 focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700'
+			'bg-error-500 text-gray-900 border-2 border-error-500 hover:bg-error-600 hover:border-error-600 hover:text-gray-900  focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700'
 	}
 
 	const outlineClasses = {

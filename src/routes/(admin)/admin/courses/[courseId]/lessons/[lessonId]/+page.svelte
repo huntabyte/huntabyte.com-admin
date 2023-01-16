@@ -9,7 +9,7 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
 	import Select from '$lib/components/form/Select.svelte'
-
+	import toast from 'svelte-french-toast'
 	export let data: PageData
 
 	let content: string = data.lesson.content ?? ''
@@ -18,11 +18,17 @@
 		value: module.id
 	}))
 
+	const contentTypeOptions = [
+		{ label: 'Video', value: 'VIDEO' },
+		{ label: 'Text', value: 'TEXT' }
+	]
+
 	const submitUpdateLesson: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			switch (result.type) {
 				case 'success':
-					break
+					dialog.close()
+					toast.success('Lesson updated')
 				case 'failure':
 					break
 				default:
@@ -69,9 +75,18 @@
 				options={moduleOptions}
 				value={data.lesson.moduleId ?? ''}
 			/>
+			<Input type="number" name="sortOrder" label="Sort Order" value={data.lesson.sortOrder ?? 0} />
+			<Select
+				name="contentType"
+				label="Content Type"
+				options={contentTypeOptions}
+				value={data.lesson.contentType ?? 'VIDEO'}
+			/>
+			<Input name="videoUrl" label="Video URL" value={data.lesson.videoUrl ?? ''} />
 		</div>
-		<div slot="actions">
-			<Button type="submit" size="sm" color="primary">Save</Button>
+		<div slot="actions" class="space-x-2">
+			<Button type="button" size="sm" color="error" outline>Delete Lesson</Button>
+			<Button type="submit" size="sm" color="primary">Update Lesson</Button>
 		</div>
 	</Slideover>
 </form>

@@ -3,8 +3,10 @@
 	import MobileNav from '$lib/components/admin/MobileNav.svelte'
 	import DesktopNav from '$lib/components/admin/DesktopNav.svelte'
 	import MobileMenuButton from '$lib/components/admin/MobileMenuButton.svelte'
+	import { Toaster } from 'svelte-french-toast'
 </script>
 
+<Toaster />
 <div>
 	<MobileNav />
 	<DesktopNav />
