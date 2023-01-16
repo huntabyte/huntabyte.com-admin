@@ -20,7 +20,7 @@
 	<input
 		type="text"
 		class="outline-none bg-inherit border-none text-5xl font-bold text-gray-50 focus:ring-0 p-0 placeholder:text-gray-500 leading-3"
-		placeholder="Article title"
+		placeholder="Lesson title"
 		name="title"
 	/>
 	<input type="hidden" name="content" bind:value={content} />

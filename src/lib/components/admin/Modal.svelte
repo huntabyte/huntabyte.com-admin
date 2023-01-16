@@ -1,13 +1,8 @@
 <script lang="ts">
 	import type { Dialog } from '$lib/ui/admin'
-	import { onMount } from 'svelte'
 	import { Transition } from 'svelte-transition'
 
 	export let dialog: Dialog
-
-	onMount(() => {
-		dialog.open()
-	})
 </script>
 
 <Transition show={$dialog.expanded}>

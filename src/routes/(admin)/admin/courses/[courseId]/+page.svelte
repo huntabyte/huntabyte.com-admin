@@ -14,8 +14,11 @@
 <!-- Create Module Modal -->
 <Modal {dialog}>
 	<form method="POST" action="?/createModule" class="space-y-2">
-		<div class="flex w-full justify-between">
-			<h3 class="font-medium text-2xl">New module</h3>
+		<div class="flex w-full justify-between items-center">
+			<h3 class="font-medium text-2xl">
+				<span class="text-secondary-500">{data.course.title}</span>
+				> New module
+			</h3>
 			<Button
 				type="button"
 				outline
