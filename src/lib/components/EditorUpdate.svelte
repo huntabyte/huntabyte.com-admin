@@ -11,7 +11,7 @@
 		editor = new Editor({
 			editorProps: {
 				attributes: {
-					class: 'prose prose-lg prose-zinc focus:outline-none mt-4 dark:prose-invert w-full'
+					class: 'prose prose-zinc focus:outline-none mt-4 dark:prose-invert w-full'
 				}
 			},
 			content: content,
