@@ -8,10 +8,15 @@
 	import EditorUpdate from '$lib/components/EditorUpdate.svelte'
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
+	import Select from '$lib/components/form/Select.svelte'
 
 	export let data: PageData
 
 	let content: string = data.lesson.content ?? ''
+	const moduleOptions = data.course.modules.map((module) => ({
+		label: module.title,
+		value: module.id
+	}))
 
 	const submitUpdateLesson: SubmitFunction = () => {
 		return async ({ result, update }) => {
@@ -27,6 +32,8 @@
 			await invalidateAll()
 		}
 	}
+
+	$: console.log(data.lesson)
 </script>
 
 <form
@@ -54,8 +61,17 @@
 	<Slideover {dialog}>
 		<h2 slot="heading">Lesson Details</h2>
 		<p slot="subheading">Update lesson details using the form below</p>
-		<div slot="content">
+		<div slot="content" class="space-y-2">
 			<Input type="text" name="slug" label="Slug" value={data.lesson.slug ?? ''} />
+			<Select
+				name="moduleId"
+				label="Module"
+				options={moduleOptions}
+				value={data.lesson.moduleId ?? ''}
+			/>
+		</div>
+		<div slot="actions">
+			<Button type="submit" size="sm" color="primary">Save</Button>
 		</div>
 	</Slideover>
 </form>

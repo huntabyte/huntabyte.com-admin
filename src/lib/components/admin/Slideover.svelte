@@ -28,7 +28,7 @@
 						leaveTo="translate-x-full"
 					>
 						<div class="pointer-events-auto w-screen max-w-md">
-							<form class="flex h-full flex-col divide-y divide-gray-200 bg-gray-800 shadow-xl">
+							<div class="flex h-full flex-col divide-y divide-gray-200 bg-gray-800 shadow-xl">
 								<div class="h-0 flex-1 overflow-y-auto">
 									<div class="bg-primary-700 py-6 px-4 sm:px-6">
 										<div class="flex items-center justify-between">
@@ -77,7 +77,7 @@
 								<div class="flex flex-shrink-0 justify-end px-4 py-4 gap-4">
 									<slot name="actions" />
 								</div>
-							</form>
+							</div>
 						</div>
 					</Transition>
 				</div>
