@@ -7,7 +7,7 @@
 		color?: 'primary' | 'secondary' | 'error'
 		name: string
 		rows?: number
-		classes: string
+		classes?: string
 	}
 	export let label: string | undefined = undefined
 

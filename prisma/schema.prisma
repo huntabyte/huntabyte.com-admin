@@ -33,6 +33,7 @@ model Course {
     updatedAt       DateTime      @default(now()) @updatedAt
     status          PublishStatus @default(DRAFT)
     modules         Module[]
+    lessons         Lesson[]
 
     @@map("courses")
 }
@@ -66,7 +67,10 @@ model Lesson {
     sortOrder   Int           @default(0)
     videoUrl    String?
     module      Module?       @relation(fields: [moduleId], references: [id])
+    course      Course?       @relation(fields: [courseId], references: [id])
+    courseId    Int?
 
+    @@index([courseId])
     @@index([moduleId])
     @@map("lessons")
 }

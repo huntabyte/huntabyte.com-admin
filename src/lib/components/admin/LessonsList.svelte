@@ -5,11 +5,11 @@
 	export let lessons: Lesson[]
 </script>
 
-<div class="overflow-hidden shadow sm:rounded-md pt-6">
-	<ul class="divide-y-2 divide-gray-500">
+<div class="overflow-hidden shadow border-t-2 border-gray-600">
+	<ul class="divide-y-2 divide-gray-500 mt-2">
 		{#each lessons as lesson}
 			<li>
-				<a href="/admin/courses/{lesson.slug}" class="block hover:bg-gray-800">
+				<a href="/admin/lessons/{lesson.id}" class="block hover:bg-gray-800">
 					<div class="flex items-center  py-4 px-4">
 						<div class="flex min-w-0 flex-1 items-center">
 							<div class="min-w-0 flex-1 grid grid-cols-2 gap-4 items-center">

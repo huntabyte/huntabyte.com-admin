@@ -2,6 +2,7 @@ import { CourseCreateInputSchema } from "$lib/schemas/generated"
 import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
+import { lessons } from './lessons';
 
 
 
@@ -28,7 +29,14 @@ export const courses = t.router({
 			include: { modules: { include: { lessons: true } } },
 		}),
 	),
-    get: t.procedure.input(z.number()).query(({ input }) => p.course.findUniqueOrThrow({ where: { id: input }, include: { modules: { include: { lessons: true }}} }))
+    get: t.procedure.input(z.number()).query(({ input }) => p.course.findUniqueOrThrow({ where: { id: input }, include: {
+        lessons: true,
+        modules: {
+            include: {
+                lessons: true
+            }
+        },
+    }}))
 })
 
 export type CourseRouter = typeof courses

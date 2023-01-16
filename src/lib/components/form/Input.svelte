@@ -7,13 +7,13 @@
 		color?: 'primary' | 'secondary' | 'error'
 		type?: string
 		name: string
-		classes: string
+		classes?: string
 	}
 	export let label: string | undefined = undefined
 
 	export let color: 'primary' | 'secondary' | 'error' = 'primary'
 	export let type: string = 'text'
-	export let classes: string
+	export let classes: string = ''
 
 	export let name: string
 

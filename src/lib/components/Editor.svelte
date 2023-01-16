@@ -5,7 +5,7 @@
 	import Placeholder from '@tiptap/extension-placeholder'
 	let element: Element
 	let editor: Editor
-	export let content: string
+	export let content: string = ''
 
 	onMount(() => {
 		editor = new Editor({
