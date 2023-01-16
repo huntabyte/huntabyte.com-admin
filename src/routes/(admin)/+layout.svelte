@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../../admin.postcss'
+	import '../../admin.css'
 	import MobileNav from '$lib/components/admin/MobileNav.svelte'
 	import DesktopNav from '$lib/components/admin/DesktopNav.svelte'
 	import MobileMenuButton from '$lib/components/admin/MobileMenuButton.svelte'

@@ -1,6 +1,7 @@
 import { createDialog } from "svelte-headlessui"
 
-export const dialog = createDialog()
+export const mobileMenuDialog = createDialog()
+export const articleSlideoverDialog = createDialog()
 
 export const navigation = [
 	{

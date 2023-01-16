@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dialog } from '$lib/ui/admin'
+	import { mobileMenuDialog as dialog } from '$lib/ui/admin'
 	import Transition from 'svelte-transition'
 
 	const activeNavClass =

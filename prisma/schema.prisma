@@ -23,31 +23,30 @@ model User {
 }
 
 model Course {
-    id              Int      @id @default(autoincrement())
+    id              Int           @id @default(autoincrement())
     title           String
-    overview        String
-    slug            String   @unique
-    stripeProductId String?  @unique
-    lastRevised     DateTime @default(now())
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @default(now()) @updatedAt
-    status          String   @default("DRAFT") @db.VarChar(48)
+    description     String?
+    slug            String        @unique
+    stripeProductId String?       @unique
+    lastRevised     DateTime      @default(now())
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @default(now()) @updatedAt
+    status          PublishStatus @default(DRAFT)
     modules         Module[]
 
     @@map("courses")
 }
 
 model Module {
-    id        Int      @id @default(autoincrement())
+    id        Int           @id @default(autoincrement())
     title     String
-    overview  String?
-    slug      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now()) @updatedAt
-    status    String   @default("DRAFT") @db.VarChar(48)
-    sortOrder Int
+    slug      String?
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @default(now()) @updatedAt
+    status    PublishStatus @default(DRAFT)
+    sortOrder Int           @default(0)
     lessons   Lesson[]
-    course    Course   @relation(fields: [courseId], references: [id])
+    course    Course        @relation(fields: [courseId], references: [id])
     courseId  Int
 
     @@index([courseId])
@@ -55,34 +54,28 @@ model Module {
 }
 
 model Lesson {
-    id           Int        @id @default(autoincrement())
-    title        String
-    overview     String     @default("")
-    slug         String
-    content      String
-    createdAt    DateTime   @default(now())
-    updatedAt    DateTime   @default(now()) @updatedAt
-    status       String     @default("DRAFT") @db.VarChar(48)
-    contentType  String     @default("VIDEO") @db.VarChar(48)
-    moduleId     Int
-    isFree       Boolean    @default(false)
-    sortOrder    Int
-    videoUrl     String?
-    lessonTypeId Int
-    lessonType   LessonType @relation(fields: [lessonTypeId], references: [id])
-    module       Module     @relation(fields: [moduleId], references: [id])
+    id          Int           @id @default(autoincrement())
+    title       String
+    slug        String?
+    content     String?
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @default(now()) @updatedAt
+    status      PublishStatus @default(DRAFT)
+    contentType String        @default("VIDEO")
+    moduleId    Int?
+    isFree      Boolean       @default(false)
+    sortOrder   Int           @default(0)
+    videoUrl    String?
+    module      Module?       @relation(fields: [moduleId], references: [id])
 
-    @@index([lessonTypeId])
     @@index([moduleId])
     @@map("lessons")
 }
 
-model LessonType {
-    id      Int      @id @default(autoincrement())
-    name    String
-    lessons Lesson[]
-
-    @@map("lesson_types")
+enum PublishStatus {
+    DRAFT
+    PUBLISHED
+    ARCHIVED
 }
 
 enum Role {

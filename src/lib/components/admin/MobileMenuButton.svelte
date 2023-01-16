@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dialog } from '$lib/ui/admin'
+	import { mobileMenuDialog as dialog } from '$lib/ui/admin'
 </script>
 
 <div class="sticky top-0 z-10 bg-gray-100 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">

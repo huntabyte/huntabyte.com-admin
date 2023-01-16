@@ -31,7 +31,7 @@
 	{#if label}
 		<label for={name} class="block font-medium text-gray-100 sm:mt-px sm:pt-2">{label}</label>
 	{/if}
-	<div class="mt-1 group">
+	<div class="mt-1.5 group">
 		<input {type} {name} id={name} class={inputClass} {...$$restProps} />
 	</div>
 </div>
