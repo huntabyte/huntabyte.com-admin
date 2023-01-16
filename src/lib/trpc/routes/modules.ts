@@ -1,7 +1,5 @@
-import type { ModuleWithLesson } from "$lib/server/courses"
 import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
-import { TRPCError } from "@trpc/server"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
 
