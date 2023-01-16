@@ -7,6 +7,7 @@
 	import type { PageData } from './$types'
 	import EditorUpdate from '$lib/components/EditorUpdate.svelte'
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms'
+	import { invalidateAll } from '$app/navigation'
 
 	export let data: PageData
 
@@ -23,6 +24,7 @@
 					break
 			}
 			await applyAction(result)
+			await invalidateAll()
 		}
 	}
 </script>
@@ -34,7 +36,7 @@
 	use:enhance={submitUpdateLesson}
 >
 	<PageHeading>
-		<h2 slot="heading">New Lesson</h2>
+		<h2 slot="heading">Editing: {data.lesson.title}</h2>
 		<div slot="actions" class="space-x-1">
 			<Button type="submit" size="sm" color="primary">Save</Button>
 			<Button type="button" size="sm" on:click={dialog.open}>Details</Button>
