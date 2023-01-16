@@ -7,7 +7,7 @@
 		color?: 'primary' | 'secondary' | 'error'
 		type?: string
 		name: string
-		options?: string[]
+		options?: OptionItem[]
 	}
 	export let label: string | undefined = undefined
 
@@ -15,7 +15,11 @@
 
 	export let name: string
 
-	export let options: string[] = []
+	type OptionItem = {
+		value: string
+		label: string
+	}
+	export let options: OptionItem[] = []
 
 	const colorClasses = {
 		primary: 'focus:ring-primary-500 focus:border-primary-500 border-gray-200',
@@ -36,7 +40,7 @@
 	<div class="mt-1 group">
 		<select {name} id={name} class={inputClass} {...$$restProps}>
 			{#each options as option}
-				<option>{option}</option>
+				<option value={option.value}>{option.label}</option>
 			{/each}
 		</select>
 	</div>

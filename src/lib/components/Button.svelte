@@ -10,13 +10,13 @@
 
 	const colorClasses = {
 		default:
-			'bg-gray-50 text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 transition-all duration-100 ease-in-out',
+			'bg-gray-50 text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		primary:
-			'bg-primary-500 text-gray-900 hover:bg-primary-600 hover:text-gray-900 focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out',
+			'bg-primary-500 text-gray-900 hover:bg-primary-600 hover:text-gray-900 focus:ring-2 focus:ring-primary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		secondary:
-			'bg-secondary-500 text-gray-900 hover:bg-secondary-600 hover:text-gray-900 focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out',
+			'bg-secondary-500 text-gray-900 hover:bg-secondary-600 hover:text-gray-900 focus:ring-2 focus:ring-secondary-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700',
 		error:
-			'bg-error-500 text-gray-900 hover:bg-error-600 hover:text-gray-900 focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out'
+			'bg-error-500 text-gray-900 hover:bg-error-600 hover:text-gray-900 focus:ring-2 focus:ring-error-300 transition-all duration-100 ease-in-out disabled:bg-gray-300 disabled:text-gray-700'
 	}
 
 	const outlineClasses = {

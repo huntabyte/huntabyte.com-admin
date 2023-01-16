@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Hst } from '@histoire/plugin-svelte'
-	import Button from '../lib/components/Button.svelte'
+	import Button from '$lib/components/Button.svelte'
 	export let Hst: Hst
 
 	let disabled: boolean = false
@@ -20,6 +20,11 @@
 		</Hst.Select>
 		<Hst.Checkbox bind:value={outline} title="Outline" />
 	</svelte:fragment>
+	<Hst.Variant title="default">
+		<div class="p-8 flex w-full justify-center items-center">
+			<Button color="default" {size} {outline} {disabled}>{text}</Button>
+		</div>
+	</Hst.Variant>
 	<Hst.Variant title="primary">
 		<div class="p-8 flex w-full justify-center items-center">
 			<Button color="primary" {size} {outline} {disabled}>{text}</Button>
