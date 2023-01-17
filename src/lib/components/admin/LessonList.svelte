@@ -32,7 +32,7 @@
 	})
 </script>
 
-<div class=" shadow border-t-2 border-gray-600">
+<div class="overflow-hidden shadow border-t-2 border-gray-600">
 	<ul
 		use:dndzone={{ items, flipDurationMs }}
 		on:consider={handleDndConsider}

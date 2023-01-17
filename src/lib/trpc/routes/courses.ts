@@ -1,11 +1,20 @@
 import { CourseCreateInputSchema } from "$lib/schemas/generated"
 import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
+import { zfd } from "$lib/zfd"
 import { z } from "zod"
+
+const CreateCourseSchema = zfd.formData({
+	title: zfd.text(),
+	slug: zfd.text(),
+	description: zfd.text().nullable().optional(),
+	stripeProductId: zfd.text().nullable().optional(),
+	status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
+})
 
 export const courses = t.router({
 	create: t.procedure
-		.input(CourseCreateInputSchema)
+		.input(CreateCourseSchema)
 		.mutation(({ input }) => p.course.create({ data: input })),
 	delete: t.procedure
 		.input(z.number())

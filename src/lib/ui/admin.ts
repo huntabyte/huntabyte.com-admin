@@ -31,6 +31,11 @@ export const navigation = [
 		icon: "ph:article",
 	},
 	{
+		name: "Tags",
+		href: "/admin/tags",
+		icon: "ph:tag",
+	},
+	{
 		name: "Snippets",
 		href: "/admin/snippets",
 		icon: "ph:bookmark-simple",
