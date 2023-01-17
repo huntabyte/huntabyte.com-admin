@@ -38,8 +38,6 @@
 			await invalidateAll()
 		}
 	}
-
-	$: console.log(data.lesson)
 </script>
 
 <form

@@ -3,6 +3,7 @@
 	import { mobileMenuDialog as dialog, navigation } from '$lib/ui/admin'
 	import Transition from 'svelte-transition'
 	import { Icon } from '$lib/components'
+	import Logo from '../Logo.svelte'
 
 	export const mobileNavClasses = {
 		active: {
@@ -38,7 +39,7 @@
 				leaveFrom="translate-x-0"
 				leaveTo="-translate-x-full"
 			>
-				<div class="relative flex w-full max-w-xs flex-1 flex-col bg-gray-800">
+				<div class="relative flex w-full max-w-[16rem] flex-1 flex-col bg-gray-800">
 					<Transition
 						enter="ease-in-out duration-300"
 						enterFrom="opacity-0"
@@ -70,11 +71,9 @@
 
 						<div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
 							<div class="flex flex-shrink-0 items-center px-4">
-								<img
-									class="h-8 w-auto"
-									src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-									alt="Your Company"
-								/>
+								<div class="w-8 h-auto">
+									<Logo />
+								</div>
 							</div>
 							<nav class="mt-5 space-y-1 px-2">
 								{#each navigation as navItem}
@@ -98,19 +97,19 @@
 							</nav>
 						</div>
 						<div class="flex flex-shrink-0 bg-gray-700 p-4">
-							<a href="#" class="group block flex-shrink-0">
+							<a href="/admin/account" class="group block flex-shrink-0">
 								<div class="flex items-center">
 									<div>
 										<img
 											class="inline-block h-10 w-10 rounded-full"
-											src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+											src="https://ui-avatars.com/api/?name=Admin"
 											alt=""
 										/>
 									</div>
 									<div class="ml-3">
-										<p class="text-base font-medium text-white">Tom Cook</p>
+										<p class="text-base font-medium text-white">Admin</p>
 										<p class="text-sm font-medium text-gray-400 group-hover:text-gray-300">
-											View profile
+											Account Settings
 										</p>
 									</div>
 								</div>

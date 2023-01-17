@@ -7,7 +7,6 @@
 
 	export let data: PageData
 	let content: string = ''
-	console.log(data)
 
 	$: tagOptions = data.tags.map((tag) => ({
 		label: tag.name,
@@ -39,6 +38,7 @@
 		type="text"
 		class="outline-none bg-inherit border-none text-5xl font-bold text-gray-50 focus:ring-0 p-0 placeholder:text-gray-500 leading-3"
 		placeholder="Article title"
+		name="title"
 	/>
 	<input type="hidden" name="content" bind:value={content} />
 	<Editor bind:content />
@@ -49,6 +49,9 @@
 			<Input type="text" name="slug" label="Slug" />
 			<Select name="tags" label="Tags" options={tagOptions} />
 			<Select name="status" label="Status" options={statusOptions} value="DRAFT" />
+		</div>
+		<div slot="actions">
+			<Button type="submit">Save</Button>
 		</div>
 	</Slideover>
 </form>
