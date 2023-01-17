@@ -5,7 +5,7 @@
 	import Slideover from '$lib/components/admin/Slideover.svelte'
 	import Input from '$lib/components/form/Input.svelte'
 	import type { PageData } from './$types'
-	import EditorUpdate from '$lib/components/EditorUpdate.svelte'
+	import EditorUpdate from '$lib/components/admin/EditorUpdate.svelte'
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
 	import Select from '$lib/components/form/Select.svelte'

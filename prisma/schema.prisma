@@ -3,11 +3,6 @@ generator client {
     previewFeatures = ["multiSchema"]
 }
 
-generator zod {
-    provider = "zod-prisma-types"
-    output   = "../src/lib/schemas/generated/"
-}
-
 datasource db {
     provider     = "mysql"
     url          = env("DATABASE_URL")
@@ -79,22 +74,30 @@ model Article {
     id        Int           @id @default(autoincrement())
     title     String
     slug      String        @unique
-    content   String        @db.Text()
+    content   String?       @db.Text()
     status    PublishStatus @default(DRAFT)
     createdAt DateTime      @default(now())
     updatedAt DateTime      @default(now()) @updatedAt
-
-    Tag   Tag? @relation(fields: [tagId], references: [id])
-    tagId Int?
-
-    @@index([tagId])
+    tags      ArticleTag[]
 }
 
 model Tag {
     id   Int    @id @default(autoincrement())
     name String @unique
 
-    articles Article[]
+    articles ArticleTag[]
+}
+
+model ArticleTag {
+    articleId Int
+    article   Article @relation(fields: [articleId], references: [id])
+
+    tagId Int
+    tag   Tag @relation(fields: [tagId], references: [id])
+
+    @@id([articleId, tagId])
+    @@index([tagId])
+    @@index([articleId])
 }
 
 enum PublishStatus {

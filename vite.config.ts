@@ -2,7 +2,6 @@
 import { sveltekit } from "@sveltejs/kit/vite"
 import type { UserConfig } from "vite"
 import { HstSvelte } from "@histoire/plugin-svelte"
-import { defaultColors } from "histoire"
 
 import path from "path"
 

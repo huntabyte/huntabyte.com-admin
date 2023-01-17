@@ -6,6 +6,6 @@
 <PageHeading>
 	<h2 slot="heading" class="text-3xl font-bold">Manage Tutorials</h2>
 	<div slot="actions">
-		<Button>New Tutorial</Button>
+		<Button href="/admin/tutorials/new" color="default">New Tutorial</Button>
 	</div>
 </PageHeading>

@@ -50,8 +50,7 @@
         "typescript": "^4.9.3",
         "vite": "^4.0.0",
         "vitest": "^0.25.3",
-        "zod": "^3.20.2",
-        "zod-form-data": "^1.2.4"
+        "zod": "^3.20.2"
     },
     "type": "module",
     "dependencies": {
@@ -70,7 +69,6 @@
         "svelte-headlessui": "^0.0.13",
         "svelte-transition": "^0.0.7",
         "trpc-sveltekit": "^3.2.4",
-        "turndown": "^7.1.1",
-        "zod-prisma-types": "^1.6.2"
+        "turndown": "^7.1.1"
     }
 }

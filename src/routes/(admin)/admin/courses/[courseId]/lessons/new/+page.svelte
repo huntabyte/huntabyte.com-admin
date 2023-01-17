@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { lessonSlideoverDialog as dialog } from '$lib/ui/admin'
-	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
-	import Editor from '$lib/components/Editor.svelte'
-	import Slideover from '$lib/components/admin/Slideover.svelte'
-	import Input from '$lib/components/form/Input.svelte'
-	import Select from '$lib/components/form/Select.svelte'
+	import { Editor, Slideover, PageHeading } from '$lib/components/admin'
+	import { Input, Select } from '$lib/components/form'
 	import type { PageData } from './$types'
 
 	let content = ''

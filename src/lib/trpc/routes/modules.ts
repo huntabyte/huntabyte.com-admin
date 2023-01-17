@@ -2,8 +2,6 @@ import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
-import { CreateLessonSchema } from "./lessons"
-import { LessonSchema } from "$lib/schemas/generated"
 
 export const CreateModuleSchema = zfd.formData({
 	title: zfd.text(),

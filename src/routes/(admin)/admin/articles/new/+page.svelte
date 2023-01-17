@@ -1,19 +1,38 @@
 <script lang="ts">
+	import type { PageData } from './$types'
 	import { articleSlideoverDialog as dialog } from '$lib/ui/admin'
-	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
-	import Editor from '$lib/components/Editor.svelte'
-	import Slideover from '$lib/components/admin/Slideover.svelte'
-	import Input from '$lib/components/form/Input.svelte'
+	import { Editor, Slideover, PageHeading } from '$lib/components/admin'
+	import { Input, Select } from '$lib/components/form'
 
-	let content = ''
+	export let data: PageData
+	let content: string = ''
+	console.log(data)
+
+	$: tagOptions = data.tags.map((tag) => ({
+		label: tag.name,
+		value: tag.id
+	}))
+
+	$: statusOptions = [
+		{ label: 'Draft', value: 'DRAFT' },
+		{ label: 'Published', value: 'PUBLISHED' },
+		{ label: 'Archived', value: 'ARCHIVED' }
+	]
 </script>
 
-<form action="" class="mx-auto max-w-3xl relative">
+<form action="?/createArticle" method="POST" class="mx-auto max-w-3xl relative">
 	<PageHeading>
 		<h2 slot="heading">New Article</h2>
 		<div slot="actions">
-			<Button type="button" size="sm" on:click={dialog.open}>Details</Button>
+			<Button
+				type="button"
+				size="sm"
+				on:click={() => {
+					console.log('clicked')
+					dialog.open()
+				}}>Details</Button
+			>
 		</div>
 	</PageHeading>
 	<input
@@ -28,6 +47,8 @@
 		<p slot="subheading">Update article details using the form below</p>
 		<div slot="content">
 			<Input type="text" name="slug" label="Slug" />
+			<Select name="tags" label="Tags" options={tagOptions} />
+			<Select name="status" label="Status" options={statusOptions} value="DRAFT" />
 		</div>
 	</Slideover>
 </form>

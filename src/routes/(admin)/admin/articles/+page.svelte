@@ -1,7 +1,6 @@
 <script lang="ts">
-	import PageHeading from '$lib/components/admin/PageHeading.svelte'
-	import Button from '$lib/components/Button.svelte'
-	import Editor from '$lib/components/Editor.svelte'
+	import { PageHeading } from '$lib/components/admin'
+	import { Button } from '$lib/components'
 </script>
 
 <PageHeading>

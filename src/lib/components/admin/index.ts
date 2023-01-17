@@ -5,17 +5,19 @@ import EmptyState from "./EmptyState.svelte"
 import MobileMenuButton from "./MobileMenuButton.svelte"
 import Modal from "./Modal.svelte"
 import PageHeading from "./PageHeading.svelte"
-import SectionHeading from "./SectionHeading.svelte"
 import Slideover from "./Slideover.svelte"
+import Editor from "./Editor.svelte"
+import EditorUpdate from "./EditorUpdate.svelte"
 
 export {
 	Breadcrumbs,
 	ContentTable,
 	DesktopNav,
+	Editor,
+	EditorUpdate,
 	EmptyState,
 	MobileMenuButton,
 	Modal,
 	PageHeading,
-	SectionHeading,
 	Slideover,
 }
