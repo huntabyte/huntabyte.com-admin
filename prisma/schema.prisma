@@ -75,6 +75,28 @@ model Lesson {
     @@map("lessons")
 }
 
+model Article {
+    id        Int           @id @default(autoincrement())
+    title     String
+    slug      String        @unique
+    content   String        @db.Text()
+    status    PublishStatus @default(DRAFT)
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @default(now()) @updatedAt
+
+    Tag   Tag? @relation(fields: [tagId], references: [id])
+    tagId Int?
+
+    @@index([tagId])
+}
+
+model Tag {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+
+    articles Article[]
+}
+
 enum PublishStatus {
     DRAFT
     PUBLISHED
