@@ -26,6 +26,12 @@
 		})
 	}
 
+	const badgeMap: { [key: string]: 'primary' | 'secondary' | 'default' } = {
+		PUBLISHED: 'primary',
+		DRAFT: 'secondary',
+		ARCHIVED: 'default'
+	}
+
 	$: items = lessons.map((lesson) => {
 		return lesson
 	})
@@ -51,19 +57,9 @@
 									</p>
 								</div>
 								<div class="flex gap-4 items-center justify-self-end">
-									{#if item.status === 'PUBLISHED'}
-										<Badge color="primary">
-											{item.status}
-										</Badge>
-									{:else if item.status === 'DRAFT'}
-										<Badge color="secondary">
-											{item.status}
-										</Badge>
-									{:else if item.status === 'ARCHIVED'}
-										<Badge color="default">
-											{item.status}
-										</Badge>
-									{/if}
+									<Badge color={badgeMap[item.status]}>
+										{item.status}
+									</Badge>
 									<div>
 										<svg
 											class="h-5 w-5 text-gray-300"

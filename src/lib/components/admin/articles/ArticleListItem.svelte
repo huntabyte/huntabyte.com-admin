@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Badge } from '$lib/components'
-	import type { Course } from '@prisma/client'
-	export let course: Course
+	import type { Article } from '@prisma/client'
+
+	export let article: Article
 
 	const badgeMap: { [key: string]: 'primary' | 'secondary' | 'default' } = {
 		PUBLISHED: 'primary',
@@ -11,20 +12,21 @@
 </script>
 
 <li>
-	<a href="/admin/courses/{course.id}" class="block hover:bg-gray-800">
-		<div class="flex items-center  py-4 px-4">
+	<a href="/admin/articles/{article.id}" class="block hover:bg-gray-800">
+		<div class="flex items-center py-4 px-4">
 			<div class="flex min-w-0 flex-1 items-center">
 				<div class="min-w-0 flex-1 grid grid-cols-2 gap-4 items-center">
 					<div>
-						<p class="truncate font-medium text-primary-600">{course.title}</p>
+						<p class="truncate font-medium text-primary-600 text-left">{article.title}</p>
 						<p class="mt-2 flex items-center text-sm text-gray-100">
 							<span class="truncate">Hunter Johnston</span>
 						</p>
 					</div>
 					<div class="flex gap-4 items-center justify-self-end">
-						<Badge color={badgeMap[course.status]}>
-							{course.status}
+						<Badge color={badgeMap[article.status]}>
+							{article.status}
 						</Badge>
+
 						<div>
 							<svg
 								class="h-5 w-5 text-gray-300"
