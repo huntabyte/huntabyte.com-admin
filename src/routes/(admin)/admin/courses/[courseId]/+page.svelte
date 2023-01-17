@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LessonList from '$lib/components/admin/LessonList.svelte'
+	import { LessonList } from '$lib/components/admin/lessons'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'

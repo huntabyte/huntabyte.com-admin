@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { flip } from 'svelte/animate'
 	import { dndzone } from 'svelte-dnd-action'
 	import type { Lesson, Module } from '@prisma/client'
-	import Badge from '../Badge.svelte'
 	import { trpc } from '$lib/trpc/client'
+	import { flip } from 'svelte/animate'
+	import { Badge } from '$lib/components'
 
 	export let lessons: Lesson[]
 	export let module: Module
@@ -24,7 +24,6 @@
 			moduleId: module.id,
 			lessons: items
 		})
-		console.log(res)
 	}
 
 	$: items = lessons.map((lesson) => {

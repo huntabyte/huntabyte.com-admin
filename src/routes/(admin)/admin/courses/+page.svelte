@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CourseList from '$lib/components/admin/CourseList.svelte'
+	import CourseList from '$lib/components/admin/courses/CourseList.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'

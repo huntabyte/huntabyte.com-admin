@@ -13,7 +13,6 @@
 		aria-modal="true"
 		use:dialog.modal
 	>
-		<!-- Background backdrop, show/hide based on slide-over state. -->
 		<div class="fixed inset-0" />
 
 		<div class="fixed inset-0 overflow-hidden">
