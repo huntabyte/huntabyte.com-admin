@@ -53,6 +53,7 @@ model Lesson {
     title       String
     slug        String?
     content     String?       @db.Text()
+    markdown    String?       @db.Text()
     createdAt   DateTime      @default(now())
     updatedAt   DateTime      @default(now()) @updatedAt
     status      PublishStatus @default(DRAFT)
@@ -75,6 +76,7 @@ model Article {
     title     String
     slug      String        @unique
     content   String?       @db.Text()
+    markdown  String?       @db.Text()
     status    PublishStatus @default(DRAFT)
     createdAt DateTime      @default(now())
     updatedAt DateTime      @default(now()) @updatedAt
