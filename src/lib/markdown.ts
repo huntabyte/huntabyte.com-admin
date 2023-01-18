@@ -86,7 +86,6 @@ const mdsvexOptions: MdsvexCompileOptions = {
 // }
 
 export async function compileContent(markdown: string) {
-	console.log(markdown)
 	const result = await unified()
 		.use(remarkParse)
 		.use([remarkGfm, [remarkToc, { tight: true }]])
@@ -99,7 +98,6 @@ export async function compileContent(markdown: string) {
 		.use(rehypeStringify)
 		.process(searchAndReplace(markdown))
 
-	console.log(result.value)
 	return result.value as string
 }
 
