@@ -4,6 +4,9 @@ const config = {
 
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ["Heebo", "sans-serif"],
+			},
 			colors: {
 				gray: {
 					50: "#FAFAFB",
@@ -17,6 +20,18 @@ const config = {
 					800: "#1C1E21",
 					900: "#151719",
 				},
+				primary: {
+					50: "#edfff8",
+					100: "#d5fff2",
+					200: "#aeffe4",
+					300: "#70ffd1",
+					400: "#2bfdb7",
+					500: "#00e599",
+					600: "#00c07c",
+					700: "#009664",
+					800: "#067551",
+					900: "#076045",
+				},
 				secondary: {
 					50: "#FFF8F5",
 					100: "#FFEEE5",
@@ -29,17 +44,29 @@ const config = {
 					800: "#C23D00",
 					900: "#8A2C00",
 				},
-				primary: {
-					50: "#edfff8",
-					100: "#d5fff2",
-					200: "#aeffe4",
-					300: "#70ffd1",
-					400: "#2bfdb7",
-					500: "#00e599",
-					600: "#00c07c",
-					700: "#009664",
-					800: "#067551",
-					900: "#076045",
+				accent: {
+					50: "#fefbe8",
+					100: "#fff7c2",
+					200: "#ffea89",
+					300: "#ffd333",
+					400: "#fdc112",
+					500: "#eca706",
+					600: "#cc8002",
+					700: "#a35905",
+					800: "#86460d",
+					900: "#723a11",
+				},
+				info: {
+					50: "#eff9ff",
+					100: "#def1ff",
+					200: "#b6e5ff",
+					300: "#75d3ff",
+					400: "#2cbdff",
+					500: "#00aaff",
+					600: "#0083d4",
+					700: "#0068ab",
+					800: "#00588d",
+					900: "#064974",
 				},
 				error: {
 					50: "#fef2f2",
@@ -54,6 +81,26 @@ const config = {
 					900: "#7f1d1d",
 				},
 			},
+			typography: (theme) => ({
+				DEFAULT: {
+					css: {
+						color: theme("colors.gray.50"),
+						p: {
+							fontSize: "1.15rem",
+						},
+						a: {
+							color: theme("colors.primary.500"),
+							"&:hover": {
+								color: theme("colors.primary.600"),
+								transition: "all 0.1s ease-in-out",
+							},
+						},
+						h2: {
+							color: theme("colors.accent.300"),
+						},
+					},
+				},
+			}),
 		},
 	},
 

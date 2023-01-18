@@ -16,6 +16,10 @@
 			href: '/courses'
 		},
 		{
+			label: 'Blog',
+			href: '/blog'
+		},
+		{
 			label: 'Account',
 			href: '/account'
 		}
