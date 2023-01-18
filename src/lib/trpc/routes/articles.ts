@@ -2,7 +2,7 @@ import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
-import { compileContent, htmlToMarkdown } from "$lib/markdown"
+import { compileContent, processMarkdown } from "$lib/markdown"
 
 export const CreateArticleSchema = zfd.formData({
 	title: zfd.text(),
@@ -30,7 +30,7 @@ export const articles = t.router({
 	list: t.procedure.query(() => p.article.findMany()),
 	create: t.procedure.input(CreateArticleSchema).mutation(({ input }) => {
 		if (input.content) {
-			input.markdown = htmlToMarkdown(input.content)
+			input.markdown = processMarkdown(input.content)
 		}
 		return p.article.create({ data: input })
 	}),
@@ -42,7 +42,7 @@ export const articles = t.router({
 		),
 	update: t.procedure.input(UpdateArticleSchema).mutation(({ input }) => {
 		if (input.data.content) {
-			input.data.markdown = htmlToMarkdown(input.data.content)
+			input.data.markdown = processMarkdown(input.data.content)
 		}
 		return p.article.update({ where: { id: input.id }, data: input.data })
 	}),

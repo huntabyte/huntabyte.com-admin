@@ -66,10 +66,26 @@
         "@types/turndown": "^5.0.1",
         "classnames": "^2.3.2",
         "iconify-icon": "^1.0.2",
+        "rehype-autolink-headings": "^6.1.1",
+        "rehype-code-titles": "^1.1.0",
+        "rehype-format": "^4.0.1",
+        "rehype-prism-plus": "^1.5.0",
+        "rehype-raw": "^6.1.1",
+        "rehype-remark": "^9.1.2",
+        "rehype-sanitize": "^5.0.1",
+        "rehype-stringify": "^9.0.3",
+        "rehype-toc": "^3.0.2",
+        "remark-gfm": "^3.0.1",
+        "remark-heading-id": "^1.0.0",
+        "remark-parse": "^10.0.1",
+        "remark-rehype": "^10.1.0",
+        "remark-slug": "^7.0.1",
+        "remark-toc": "^8.0.1",
         "svelte-french-toast": "^1.0.3",
         "svelte-headlessui": "^0.0.13",
         "svelte-transition": "^0.0.7",
         "trpc-sveltekit": "^3.2.4",
-        "turndown": "^7.1.1"
+        "turndown": "^7.1.1",
+        "unified": "^10.1.2"
     }
 }
