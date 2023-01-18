@@ -2,7 +2,7 @@ import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
-import { compileContent, htmlToMarkdown } from "$lib/utils"
+import { compileContent, htmlToMarkdown } from "$lib/markdown"
 
 export const CreateArticleSchema = zfd.formData({
 	title: zfd.text(),

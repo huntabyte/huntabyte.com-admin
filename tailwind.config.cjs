@@ -95,8 +95,21 @@ const config = {
 								transition: "all 0.1s ease-in-out",
 							},
 						},
+						h1: {
+							color: theme("colors.accent.300"),
+							fontWeight: "500",
+						},
 						h2: {
 							color: theme("colors.accent.300"),
+							fontWeight: "500",
+						},
+						h3: {
+							color: theme("colors.accent.300"),
+							fontWeight: "500",
+						},
+						h4: {
+							color: theme("colors.accent.300"),
+							fontWeight: "500",
 						},
 					},
 				},
