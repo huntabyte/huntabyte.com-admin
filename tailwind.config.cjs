@@ -115,18 +115,6 @@ const config = {
 				},
 				lg: {
 					css: {
-						h1: {
-							marginBottom: "1rem",
-						},
-						h2: {
-							marginBottom: "1rem",
-						},
-						h3: {
-							marginBottom: "0.75rem",
-						},
-						h4: {
-							marginBottom: "0.75rem",
-						},
 						li: {
 							p: {
 								marginTop: 0,
