@@ -54,14 +54,6 @@ function searchAndReplace(content: string): string {
 		})
 }
 
-const mdsvexOptions: MdsvexCompileOptions = {
-	smartypants: {
-		dashes: "oldschool",
-	},
-	remarkPlugins: [],
-	rehypePlugins: [rehypeCodeTitles],
-}
-
 /* Receive raw markdown and compile it to HTML */
 // export const compileContent = async (markdown: string) => {
 // 	const compiledContent = (

@@ -10,3 +10,24 @@ export async function createHash(message: string) {
 export function cloneObj<T>(obj: T): T {
 	return structuredClone(obj)
 }
+
+const defaultDateOptions: Intl.DateTimeFormatOptions = {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+}
+
+export function shortDate(
+	date: Date,
+	options: Intl.DateTimeFormatOptions = defaultDateOptions,
+) {
+	return new Intl.DateTimeFormat("en-US", options).format(date)
+}
+
+export function getReadingTime(text: string) {
+	console.log(text)
+	const wpm = 225
+	const words = text.trim().split(/\s+/).length
+	const time = Math.ceil(words / wpm)
+	return time
+}
