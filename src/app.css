@@ -7,7 +7,7 @@
 
 html,
 body {
-	@apply w-full;
+	@apply w-full h-full;
 }
 
 body {
