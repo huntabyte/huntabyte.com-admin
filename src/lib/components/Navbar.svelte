@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Logo from './Logo.svelte'
 	import { page } from '$app/stores'
+	import Button from './Button.svelte'
 
 	const navigation = [
 		{
@@ -56,10 +57,10 @@
 				<div class="relative ml-3">
 					{#if $page.data.session}
 						<form action="/logout">
-							<button type="submit" class="btn-primary">Logout</button>
+							<Button type="submit" color="primary">Logout</Button>
 						</form>
 					{:else}
-						<a href="/login" class="btn-primary">Login</a>
+						<Button href="/login" color="primary">Login</Button>
 					{/if}
 				</div>
 			</div>
