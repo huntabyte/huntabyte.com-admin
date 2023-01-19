@@ -5,7 +5,7 @@
 	export let article: Article
 </script>
 
-<a href="/blog" class="group">
+<a href="/blog/{article.slug}" class="group">
 	<div
 		class="flex flex-col border border-secondary-500 border-opacity-20 max-w-xl rounded-xl group-hover:border-opacity-100 group-hover:divide-opacity-100 transition-all duration-500 ease-in-out"
 	>
