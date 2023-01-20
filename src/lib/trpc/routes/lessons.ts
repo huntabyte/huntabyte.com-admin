@@ -2,7 +2,7 @@ import { p } from "$lib/server/prisma"
 import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
-import { compileContent, htmlToMarkdown } from "$lib/markdown"
+import { compileContent, processMarkdown } from "$lib/markdown"
 
 export const CreateLessonSchema = zfd.formData({
 	title: zfd.text(),
@@ -30,7 +30,7 @@ const UpdateLessonSchema = z.object({
 export const lessons = t.router({
 	create: t.procedure.input(CreateLessonSchema).mutation(({ input }) => {
 		if (input.content) {
-			input.markdown = htmlToMarkdown(input.content)
+			input.markdown = processMarkdown(input.content)
 		}
 		return p.lesson.create({ data: input })
 	}),
@@ -39,7 +39,7 @@ export const lessons = t.router({
 		.query(({ input }) => p.lesson.findUniqueOrThrow({ where: { id: input } })),
 	update: t.procedure.input(UpdateLessonSchema).mutation(({ input }) => {
 		if (input.data.content) {
-			input.data.markdown = htmlToMarkdown(input.data.content)
+			input.data.markdown = processMarkdown(input.data.content)
 		}
 		return p.lesson.update({ where: { id: input.id }, data: input.data })
 	}),

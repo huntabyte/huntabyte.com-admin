@@ -31,7 +31,12 @@
 </script>
 
 <Modal {dialog}>
-	<form method="POST" action="?/updateModule" class="space-y-2" use:enhance={submitUpdateModule}>
+	<form
+		method="POST"
+		action="?/updateModule&moduleId={currentModule?.id}"
+		class="space-y-2"
+		use:enhance={submitUpdateModule}
+	>
 		<div class="flex w-full justify-between items-center">
 			<h3 class="font-medium text-lg">
 				<span class="text-secondary-500">{$page.data.course.title}</span>

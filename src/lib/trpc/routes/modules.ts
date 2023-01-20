@@ -9,6 +9,14 @@ export const CreateModuleSchema = zfd.formData({
 	courseId: zfd.numeric(),
 })
 
+export const UpdateModuleSchema = zfd.formData({
+	moduleId: zfd.numeric(),
+	data: z.object({
+		title: zfd.text(),
+		sortOrder: zfd.numeric(),
+	}),
+})
+
 export const UpdateLessonSortOrderSchema = z.object({
 	moduleId: z.number(),
 	lessons: z.array(
@@ -44,6 +52,14 @@ export const modules = t.router({
 			)
 			return lessons
 		}),
+	update: t.procedure.input(UpdateModuleSchema).mutation(({ input }) =>
+		p.module.update({
+			where: {
+				id: input.moduleId,
+			},
+			data: input.data,
+		}),
+	),
 })
 
 export type ModuleRouter = typeof modules
