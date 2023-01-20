@@ -11,6 +11,17 @@ const CreateCourseSchema = zfd.formData({
 	status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
 })
 
+const UpdateCourseSchema = zfd.formData({
+	courseId: zfd.numeric(),
+	data: z.object({
+		title: zfd.text(),
+		slug: zfd.text(),
+		description: zfd.text().nullable().optional(),
+		stripeProductId: z.string().nullish().optional(),
+		status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
+	}),
+})
+
 export const courses = t.router({
 	create: t.procedure
 		.input(CreateCourseSchema)
@@ -75,6 +86,14 @@ export const courses = t.router({
 					select: { lessons: true, modules: true },
 				},
 			},
+		}),
+	),
+	update: t.procedure.input(UpdateCourseSchema).mutation(({ input }) =>
+		p.course.update({
+			where: {
+				id: Number(input.courseId),
+			},
+			data: input.data,
 		}),
 	),
 })

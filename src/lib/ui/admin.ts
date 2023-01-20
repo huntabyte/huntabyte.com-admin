@@ -10,6 +10,8 @@ export const lessonSlideoverDialog = createDialog()
 export const createModuleModal = createDialog()
 export const updateModuleModal = createDialog()
 
+export const updateCourseModal = createDialog()
+
 export const createTagModal = createDialog()
 export const updateTagModal = createDialog()
 
