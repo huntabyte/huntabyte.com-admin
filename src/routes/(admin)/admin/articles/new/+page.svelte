@@ -28,7 +28,6 @@
 				type="button"
 				size="sm"
 				on:click={() => {
-					console.log('clicked')
 					dialog.open()
 				}}>Details</Button
 			>

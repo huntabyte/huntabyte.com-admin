@@ -26,7 +26,6 @@ specifiers:
   eslint-plugin-svelte3: ^4.0.0
   histoire: ^0.12.4
   iconify-icon: ^1.0.2
-  mdsvex: ^0.10.6
   nodemailer: ^6.8.0
   postcss: ^8.4.14
   postcss-load-config: ^4.0.1
@@ -118,7 +117,6 @@ devDependencies:
   eslint-config-prettier: 8.6.0_eslint@8.31.0
   eslint-plugin-svelte3: 4.0.0_6go7qzsvzihesfwmyvq3tnl5qq
   histoire: 0.12.4_vite@4.0.4
-  mdsvex: 0.10.6_svelte@3.55.0
   nodemailer: 6.8.0
   postcss: 8.4.21
   postcss-load-config: 4.0.1_postcss@8.4.21
@@ -1189,6 +1187,7 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: false
 
   /@typescript-eslint/eslint-plugin/5.48.0_k73wpmdolxikpyqun3p36akaaq:
     resolution: {integrity: sha512-SVLafp0NXpoJY7ut6VFVUU9I+YeFsDzeQwtK0WZ+xbRN3mtxJ08je+6Oi2N89qDn087COdO0u3blKZNv9VetRQ==}
@@ -3112,18 +3111,6 @@ packages:
       unist-util-visit: 3.1.0
     dev: false
 
-  /mdsvex/0.10.6_svelte@3.55.0:
-    resolution: {integrity: sha512-aGRDY0r5jx9+OOgFdyB9Xm3EBr9OUmcrTDPWLB7a7g8VPRxzPy4MOBmcVYgz7ErhAJ7bZ/coUoj6aHio3x/2mA==}
-    peerDependencies:
-      svelte: 3.x
-    dependencies:
-      '@types/unist': 2.0.6
-      prism-svelte: 0.4.7
-      prismjs: 1.29.0
-      svelte: 3.55.0
-      vfile-message: 2.0.4
-    dev: true
-
   /mdurl/1.0.1:
     resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
     dev: true
@@ -3816,10 +3803,6 @@ packages:
     hasBin: true
     dev: true
 
-  /prism-svelte/0.4.7:
-    resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
-    dev: true
-
   /prisma/4.8.1:
     resolution: {integrity: sha512-ZMLnSjwulIeYfaU1O6/LF6PEJzxN5par5weykxMykS9Z6ara/j76JH3Yo2AH3bgJbPN4Z6NeCK9s5fDkzf33cg==}
     engines: {node: '>=14.17'}
@@ -3827,11 +3810,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.8.1
-    dev: true
-
-  /prismjs/1.29.0:
-    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
-    engines: {node: '>=6'}
     dev: true
 
   /property-information/6.2.0:
@@ -4804,12 +4782,6 @@ packages:
       '@types/unist': 2.0.6
     dev: false
 
-  /unist-util-stringify-position/2.0.3:
-    resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
-    dependencies:
-      '@types/unist': 2.0.6
-    dev: true
-
   /unist-util-stringify-position/3.0.2:
     resolution: {integrity: sha512-7A6eiDCs9UtjcwZOcCpM4aPII3bAAGv13E96IkawkOAW0OhH+yRxtY0lzo8KiHpzEMfH7Q+FizUmwp8Iqy5EWg==}
     dependencies:
@@ -4942,13 +4914,6 @@ packages:
       '@types/unist': 2.0.6
       vfile: 5.3.6
     dev: false
-
-  /vfile-message/2.0.4:
-    resolution: {integrity: sha512-DjssxRGkMvifUOJre00juHoP9DPWuzjxKuMDrhNbk2TdaYYBNMStsNhEOt3idrtI12VQYM/1+iM0KOzXi4pxwQ==}
-    dependencies:
-      '@types/unist': 2.0.6
-      unist-util-stringify-position: 2.0.3
-    dev: true
 
   /vfile-message/3.1.3:
     resolution: {integrity: sha512-0yaU+rj2gKAyEk12ffdSbBfjnnj+b1zqTBv3OQCTn8yEB02bsPizwdBPrLJjHnK+cU9EMMcUnNv938XcZIkmdA==}

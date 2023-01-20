@@ -47,7 +47,5 @@ export const actions: Actions = {
 		}
 	},
 
-	updateSortOrder: async (event) => {
-		console.log(await event.request.json())
-	},
+	updateSortOrder: async (event) => {},
 }
