@@ -23,13 +23,6 @@
 			>
 				<slot />
 			</section>
-
-			<!-- Secondary column (hidden on smaller screens) -->
-			<aside class="hidden lg:order-first lg:block lg:flex-shrink-0">
-				<div
-					class="relative flex h-full w-40 flex-col overflow-y-auto border-r border-gray-200 bg-white"
-				/>
-			</aside>
 		</main>
 	</div>
 </div>

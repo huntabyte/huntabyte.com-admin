@@ -26,7 +26,7 @@
 				</nav>
 			</div>
 			<div class="flex flex-shrink-0 pb-5">
-				<a href="#" class="w-full flex-shrink-0">
+				<a href="/account" class="w-full flex-shrink-0">
 					<img
 						class="mx-auto block h-10 w-10 rounded-full"
 						src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
