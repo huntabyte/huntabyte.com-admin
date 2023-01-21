@@ -22,6 +22,16 @@ const UpdateCourseSchema = zfd.formData({
 	}),
 })
 
+export const UpdateModuleSortOrderSchema = z.object({
+	courseId: z.number(),
+	modules: z.array(
+		z.object({
+			id: z.number(),
+			sortOrder: z.number(),
+		}),
+	),
+})
+
 export const courses = t.router({
 	create: t.procedure
 		.input(CreateCourseSchema)
@@ -96,6 +106,21 @@ export const courses = t.router({
 			data: input.data,
 		}),
 	),
+	updateModules: t.procedure
+		.input(UpdateModuleSortOrderSchema)
+		.mutation(async ({ input }) => {
+			console.log("updated modules")
+			return await Promise.all(
+				input.modules.map(async (module) => {
+					return p.module.update({
+						where: { id: module.id },
+						data: {
+							sortOrder: module.sortOrder,
+						},
+					})
+				}),
+			)
+		}),
 })
 
 export type CourseRouter = typeof courses

@@ -7,5 +7,6 @@ export const load: LayoutServerLoad = async (event) => {
 		course: router
 			.createCaller(await createContext(event))
 			.courses.get(Number(event.params.courseId)),
+		session: event.locals.session,
 	}
 }

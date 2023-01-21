@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client"
 
 export const coursesModulesLessons = Prisma.validator<Prisma.CourseArgs>()({
 	include: {
@@ -8,20 +8,31 @@ export const coursesModulesLessons = Prisma.validator<Prisma.CourseArgs>()({
 			},
 		},
 	},
-});
+})
 
 export type CoursesWithModulesAndLessons = Prisma.CourseGetPayload<
 	typeof coursesModulesLessons
->;
+>
+
+export const moduleWithLessons = Prisma.validator<Prisma.ModuleArgs>()({
+	include: {
+		lessons: true,
+	},
+})
+
+export type ModuleWithLessons = Prisma.ModuleGetPayload<
+	typeof moduleWithLessons
+>
+
 export const modulesWithLessons = Prisma.validator<Prisma.ModuleArgs>()({
 	include: {
 		lessons: true,
 	},
-});
+})
 
 export type ModulesWithLessons = Prisma.ModuleGetPayload<
 	typeof modulesWithLessons
->;
+>
 
 export const minimumCoursesModulesLessons =
 	Prisma.validator<Prisma.CourseArgs>()({
@@ -33,7 +44,6 @@ export const minimumCoursesModulesLessons =
 				select: {
 					id: true,
 					title: true,
-					slug: true,
 					lessons: {
 						select: {
 							id: true,
@@ -44,8 +54,8 @@ export const minimumCoursesModulesLessons =
 				},
 			},
 		},
-	});
+	})
 
 export type MinimumCoursesModulesLessons = Prisma.CourseGetPayload<
 	typeof minimumCoursesModulesLessons
->;
+>
