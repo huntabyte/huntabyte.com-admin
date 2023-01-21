@@ -11,7 +11,7 @@ body {
 }
 
 body {
-	@apply bg-gray-900 text-gray-50;
+	@apply bg-gray-900 text-gray-50 overflow-hidden;
 }
 
 .btn-primary {
