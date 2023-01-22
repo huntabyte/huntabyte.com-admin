@@ -109,7 +109,6 @@ export const courses = t.router({
 	updateModules: t.procedure
 		.input(UpdateModuleSortOrderSchema)
 		.mutation(async ({ input }) => {
-			console.log("updated modules")
 			return await Promise.all(
 				input.modules.map(async (module) => {
 					return p.module.update({
