@@ -34,7 +34,7 @@
 
 	let inputClass: string
 	const defaultClasses =
-		'block w-full rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent disabled:bg-gray-500 disabled:text-gray-400 disabled:cursor-not-allowed'
+		'block w-full rounded-md shadow-sm bg-transparent border-2 focus:border-opacity-10 focus:ring-opacity-60 focus:ring-2 text-gray-50 transition-all duration-200 ease-in-out group-hover:border-gray-50 focus:group-hover:border-transparent disabled:bg-gray-500 disabled:text-gray-400 disabled:cursor-not-allowed placeholder:text-gray-300'
 	$: inputClass = classNames(classes, colorClasses[color], defaultClasses, sizeClasses[inputSize])
 </script>
 
@@ -44,7 +44,7 @@
 			>{label}</label
 		>
 	{/if}
-	<div class="mt-1.5 group">
+	<div class="{label ? 'mt-1.5' : 'mt-0'} group">
 		<input {type} {name} id={name} class={inputClass} {...$$restProps} />
 	</div>
 </div>

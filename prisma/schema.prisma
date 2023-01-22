@@ -60,7 +60,7 @@ model Lesson {
     contentType String        @default("VIDEO")
     moduleId    Int?
     isFree      Boolean       @default(false)
-    sortOrder   Int           @default(0)
+    sortOrder   Int           @default(999)
     videoUrl    String?
     module      Module?       @relation(fields: [moduleId], references: [id])
     course      Course?       @relation(fields: [courseId], references: [id])

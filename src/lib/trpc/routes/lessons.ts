@@ -3,6 +3,7 @@ import { t } from "$lib/trpc/t"
 import { z } from "zod"
 import { zfd } from "$lib/zfd"
 import { compileContent, processMarkdown } from "$lib/markdown"
+import { slugify } from "$lib/utils"
 
 export const CreateLessonSchema = zfd.formData({
 	title: zfd.text(),
@@ -11,6 +12,14 @@ export const CreateLessonSchema = zfd.formData({
 	markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
 	moduleId: zfd.numeric().optional().nullable(),
 	courseId: zfd.numeric(),
+})
+
+export const CreateNewLessonSchema = zfd.formData({
+	courseId: zfd.numeric(),
+	moduleId: zfd.numeric(),
+	data: z.object({
+		title: zfd.text(),
+	}),
 })
 
 const UpdateLessonSchema = z.object({
@@ -28,12 +37,22 @@ const UpdateLessonSchema = z.object({
 })
 
 export const lessons = t.router({
-	create: t.procedure.input(CreateLessonSchema).mutation(({ input }) => {
-		if (input.content) {
-			input.markdown = processMarkdown(input.content)
-		}
-		return p.lesson.create({ data: input })
-	}),
+	// create: t.procedure.input(CreateLessonSchema).mutation(({ input }) => {
+	// 	if (input.content) {
+	// 		input.markdown = processMarkdown(input.content)
+	// 	}
+	// 	return p.lesson.create({ data: input })
+	// }),
+	create: t.procedure.input(CreateNewLessonSchema).mutation(({ input }) =>
+		p.lesson.create({
+			data: {
+				...input.data,
+				slug: slugify(input.data.title),
+				courseId: input.courseId,
+				moduleId: input.moduleId,
+			},
+		}),
+	),
 	get: t.procedure
 		.input(z.number())
 		.query(({ input }) => p.lesson.findUniqueOrThrow({ where: { id: input } })),
