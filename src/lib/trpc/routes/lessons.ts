@@ -41,7 +41,6 @@ export const lessons = t.router({
 		if (input.data.content) {
 			input.data.markdown = processMarkdown(input.data.content)
 		}
-		console.log("updating lesson")
 		return p.lesson.update({ where: { id: input.id }, data: input.data })
 	}),
 	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {

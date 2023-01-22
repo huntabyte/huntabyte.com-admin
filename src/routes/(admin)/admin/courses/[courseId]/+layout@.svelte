@@ -19,7 +19,7 @@
 			<!-- Primary column -->
 			<section
 				aria-labelledby="primary-heading"
-				class="flex h-full min-w-0 flex-1 flex-col overflow-y-auto lg:order-last px-10 py-10"
+				class="flex h-full min-w-0 flex-1 flex-col overflow-y-auto lg:order-last px-10 py-6"
 			>
 				<slot />
 			</section>

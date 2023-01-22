@@ -10,6 +10,7 @@
 	import { invalidateAll } from '$app/navigation'
 	import Select from '$lib/components/form/Select.svelte'
 	import toast from 'svelte-french-toast'
+	import Icon from '$lib/components/Icon.svelte'
 	export let data: PageData
 
 	let content: string = data.lesson.content ?? ''
@@ -43,11 +44,16 @@
 <form
 	action="?/updateLesson"
 	method="POST"
-	class="mx-auto max-w-3xl relative"
+	class="mx-auto max-w-4xl relative w-full"
 	use:enhance={submitUpdateLesson}
 >
 	<PageHeading>
-		<h2 slot="heading">Editing: {data.lesson.title}</h2>
+		<div slot="heading" class="flex items-center gap-2">
+			<a href="/admin/courses/{data.course.id}/curriculum" class="flex items-center">
+				<Icon icon="ph:arrow-left" classes="text-2xl" />
+			</a>
+			<h2 class="text-xl font-medium">Editing: {data.lesson.title}</h2>
+		</div>
 		<div slot="actions" class="space-x-1">
 			<Button type="submit" size="sm" color="primary">Save</Button>
 			<Button type="button" size="sm" on:click={dialog.open}>Details</Button>
