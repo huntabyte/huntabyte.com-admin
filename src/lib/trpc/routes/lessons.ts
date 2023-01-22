@@ -16,7 +16,7 @@ export const CreateLessonSchema = zfd.formData({
 const UpdateLessonSchema = z.object({
 	id: z.number(),
 	data: zfd.formData({
-		title: zfd.text(),
+		title: zfd.text().optional(),
 		slug: zfd.text().nullable().optional(),
 		content: zfd.text(z.string().nullish().optional()).nullable().optional(),
 		markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
@@ -41,6 +41,7 @@ export const lessons = t.router({
 		if (input.data.content) {
 			input.data.markdown = processMarkdown(input.data.content)
 		}
+		console.log("updating lesson")
 		return p.lesson.update({ where: { id: input.id }, data: input.data })
 	}),
 	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {

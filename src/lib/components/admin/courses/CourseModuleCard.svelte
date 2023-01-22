@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import Button from '$lib/components/Button.svelte'
 	import Icon from '$lib/components/Icon.svelte'
 	import type { ModuleWithLessons } from '$lib/prisma.types'
@@ -14,31 +15,24 @@
 
 	let lessons: Lesson[]
 
-	async function handleDndConsider(e: CustomEvent<DndEvent>) {
-		lessons = e.detail.items as Lesson[]
+	async function handleDndConsider(e: CustomEvent<DndEvent<Lesson>>) {
+		lessons = e.detail.items
 		console.log(lessons)
 	}
 
-	async function handleDndFinalize(e: CustomEvent<DndEvent>) {
-		lessons = e.detail.items as Lesson[]
-		console.log('Lesson in this module:', lessons)
-		console.log('This module title:', module.title)
+	async function handleDndFinalize(e: CustomEvent<DndEvent<Lesson>>) {
+		lessons = e.detail.items
 
+		if (e.detail.info.trigger === 'droppedIntoZone') {
+			await trpc($page).lessons.update.mutate({
+				id: Number(e.detail.info.id),
+				data: {
+					moduleId: module.id
+				}
+			})
+		}
 		moduleDragDisabled = true
 	}
-
-	// async function handleDndFinalize(e: CustomEvent<DndEvent>) {
-	// 	console.log(e.detail.items)
-	// 	lessons = e.detail.items as Lesson[]
-
-	// 	lessons = lessons.map((lesson, idx) => {
-	// 		return { ...lesson, sortOrder: idx }
-	// 	})
-	// 	// const res = await trpc($page).courses.updateModules.mutate({
-	// 	// 	courseId: data.course.id,
-	// 	// 	modules: items
-	// 	// })
-	// }
 
 	function startModuleDrag() {
 		moduleDragDisabled = false

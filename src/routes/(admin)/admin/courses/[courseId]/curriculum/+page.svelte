@@ -31,14 +31,9 @@
 		})
 	}
 
-	function handleLessonDndConsider(e: CustomEvent<DndEvent>) {
-		console.log(e.detail.items)
-	}
-
 	$: items = data.course.modules.map((module) => {
 		return module
 	})
-	$: console.log(moduleDragDisabled)
 </script>
 
 <PageHeading>
