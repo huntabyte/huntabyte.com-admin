@@ -39,7 +39,7 @@ model Module {
     createdAt DateTime      @default(now())
     updatedAt DateTime      @default(now()) @updatedAt
     status    PublishStatus @default(DRAFT)
-    sortOrder Int           @default(0)
+    sortOrder Int           @default(999)
     lessons   Lesson[]
     course    Course        @relation(fields: [courseId], references: [id])
     courseId  Int
