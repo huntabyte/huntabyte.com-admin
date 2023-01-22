@@ -24,14 +24,14 @@
 		lessons = e.detail.items
 
 		if (e.detail.info.trigger === 'droppedIntoZone') {
-			await trpc($page).lessons.update.mutate({
+			const res = await trpc($page).lessons.update.mutate({
 				id: Number(e.detail.info.id),
 				data: {
 					moduleId: module.id
 				}
 			})
 		}
-		moduleDragDisabled = true
+		lessonDragDisabled = true
 	}
 
 	function startModuleDrag() {
