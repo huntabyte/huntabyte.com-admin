@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import Button from '$lib/components/Button.svelte'
-	import Icon from '$lib/components/Icon.svelte'
+	import { Button, Icon } from '$lib/components'
 	import type { ModuleWithLessons } from '$lib/prisma.types'
 	import { trpc } from '$lib/trpc/client'
 	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
-	const flipDurationMs = 300
+
 	export let module: ModuleWithLessons
-
 	export let moduleDragDisabled: boolean
-	let lessonDragDisabled: boolean = true
 
+	const flipDurationMs = 300
+	let lessonDragDisabled: boolean = true
 	let lessons: Lesson[]
 
 	async function handleDndConsider(e: CustomEvent<DndEvent<Lesson>>) {
@@ -93,7 +92,12 @@
 					<p>{lesson.title}</p>
 				</div>
 				<div class="flex items-center gap-4">
-					<Button color="primary" outline size="sm">Edit lesson</Button>
+					<Button
+						href="/admin/courses/{$page.data.course.id}/lessons/{lesson.id}"
+						color="primary"
+						outline
+						size="sm">Edit lesson</Button
+					>
 					<div>
 						<Icon icon="ph:dots-three-outline-vertical" />
 					</div>
