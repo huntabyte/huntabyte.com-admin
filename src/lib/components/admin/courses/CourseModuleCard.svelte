@@ -2,33 +2,66 @@
 	import Button from '$lib/components/Button.svelte'
 	import Icon from '$lib/components/Icon.svelte'
 	import type { ModuleWithLessons } from '$lib/prisma.types'
+	import { trpc } from '$lib/trpc/client'
+	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
 	const flipDurationMs = 300
 	export let module: ModuleWithLessons
 
-	export let moduleDragDisabled
+	export let moduleDragDisabled: boolean
+	let lessonDragDisabled: boolean = true
 
-	let items: any[]
+	let lessons: Lesson[]
 
 	async function handleDndConsider(e: CustomEvent<DndEvent>) {
-		items = e.detail.items
-		console.log(items)
+		lessons = e.detail.items as Lesson[]
+		console.log(lessons)
 	}
 
 	async function handleDndFinalize(e: CustomEvent<DndEvent>) {
-		items = e.detail.items
-		console.log(items)
+		lessons = e.detail.items as Lesson[]
+		console.log('Lesson in this module:', lessons)
+		console.log('This module title:', module.title)
+
+		moduleDragDisabled = true
 	}
 
-	$: items = module.lessons
+	// async function handleDndFinalize(e: CustomEvent<DndEvent>) {
+	// 	console.log(e.detail.items)
+	// 	lessons = e.detail.items as Lesson[]
+
+	// 	lessons = lessons.map((lesson, idx) => {
+	// 		return { ...lesson, sortOrder: idx }
+	// 	})
+	// 	// const res = await trpc($page).courses.updateModules.mutate({
+	// 	// 	courseId: data.course.id,
+	// 	// 	modules: items
+	// 	// })
+	// }
+
+	function startModuleDrag() {
+		moduleDragDisabled = false
+	}
+	function startLessonDrag() {
+		lessonDragDisabled = false
+	}
+
+	$: lessons = module.lessons.map((lesson) => {
+		return lesson
+	})
 </script>
 
 <div class="flex flex-col w-full bg-gray-700 items-center rounded-md px-4 pb-2">
 	<!-- Module Item -->
 	<div class="flex w-full items-center justify-between px-2 py-2 h-16">
 		<div class="flex gap-4 items-center">
-			<div>
+			<div
+				on:mousedown|preventDefault={startModuleDrag}
+				on:keydown|preventDefault={startModuleDrag}
+				on:touchstart|preventDefault={startModuleDrag}
+				class={moduleDragDisabled ? 'cursor-grab' : 'cursor-grabbing'}
+			>
 				<Icon icon="ph:dots-six-vertical-fill" />
 			</div>
 			<p>{module.title}</p>
@@ -40,24 +73,34 @@
 	<!-- Lesson Item -->
 	<div
 		class="w-full"
-		use:dndzone={{ items, flipDurationMs }}
+		use:dndzone={{
+			items: lessons,
+			flipDurationMs,
+			dragDisabled: lessonDragDisabled,
+			type: 'lesson'
+		}}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}
 	>
-		{#each items as item (item.id)}
+		{#each lessons as lesson (lesson.id)}
 			<div
 				class="flex w-full items-center justify-between py-2 pl-8 pr-2 h-16"
 				animate:flip={{ duration: flipDurationMs }}
 			>
 				<div class="flex gap-4 items-center">
-					<div>
+					<div
+						on:mousedown|preventDefault={startLessonDrag}
+						on:keydown|preventDefault={startLessonDrag}
+						on:touchstart|preventDefault={startLessonDrag}
+						class={moduleDragDisabled ? 'cursor-grab' : 'cursor-grabbing'}
+					>
 						<Icon icon="ph:dots-six-vertical-fill" />
 					</div>
-					<p>{item.title}</p>
+					<p>{lesson.title}</p>
 				</div>
 				<div class="flex items-center gap-4">
 					<Button color="primary" outline size="sm">Edit lesson</Button>
-					<div on:mousedown>
+					<div>
 						<Icon icon="ph:dots-three-outline-vertical" />
 					</div>
 				</div>

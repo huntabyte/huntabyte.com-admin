@@ -15,17 +15,17 @@
 
 	const flipDurationMs = 200
 
-	function handleDndConsider(e: CustomEvent<DndEvent>) {
+	function handleModuleDndConsider(e: CustomEvent<DndEvent>) {
 		console.log(e.detail.items)
 		items = e.detail.items
 	}
-	async function handleDndFinalize(e: CustomEvent<DndEvent>) {
+	async function handleModuleDndFinalize(e: CustomEvent<DndEvent>) {
 		console.log(e.detail.items)
 		items = e.detail.items
 		items = items.map((item, idx) => {
 			return { ...item, sortOrder: idx }
 		})
-		const res = await trpc($page).courses.updateModules.mutate({
+		await trpc($page).courses.updateModules.mutate({
 			courseId: data.course.id,
 			modules: items
 		})
@@ -34,6 +34,7 @@
 	$: items = data.course.modules.map((module) => {
 		return module
 	})
+	$: console.log(moduleDragDisabled)
 </script>
 
 <PageHeading>
@@ -44,9 +45,9 @@
 </PageHeading>
 <section
 	class="flex flex-col pt-12 gap-10"
-	use:dndzone={{ items, dragDisabled: moduleDragDisabled, flipDurationMs }}
-	on:consider={handleDndConsider}
-	on:finalize={handleDndFinalize}
+	use:dndzone={{ items, dragDisabled: moduleDragDisabled, type: 'module', flipDurationMs }}
+	on:consider={handleModuleDndConsider}
+	on:finalize={handleModuleDndFinalize}
 >
 	{#each items as module (module.id)}
 		<div animate:flip={{ duration: 200 }}>
