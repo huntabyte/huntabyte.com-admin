@@ -1,22 +1,21 @@
-import type { Actions } from './$types'
-import type { z } from 'zod';
-import { router } from '$lib/trpc/router';
-import { createContext } from '$lib/trpc/context';
-import { fail, redirect } from '@sveltejs/kit';
-import type { CreateModuleSchema } from '$lib/trpc/routes/modules';
+import type { Actions } from "./$types"
+import { router } from "$lib/trpc/router"
+import { createContext } from "$lib/trpc/context"
+import { redirect } from "@sveltejs/kit"
+import { handleActionErrors } from "$lib/utils"
 
 export const actions: Actions = {
-    createModule: async (event) => {
-        const body = Object.fromEntries(await event.request.formData()) as unknown as z.infer<typeof CreateModuleSchema>
-        body.courseId = Number(event.params.courseId)
+	createModule: async (event) => {
+		const formData = await event.request.formData()
+		formData.append("courseId", event.params.courseId)
+		const body = Object.fromEntries(formData)
 
-        try {
-            await router.createCaller(await createContext(event)).modules.create(body)
-        } catch (err) {
-            console.error(err)
-            return fail(400, { message: 'Invalid data'})
-        }
+		try {
+			await router.createCaller(await createContext(event)).modules.create(body)
+		} catch (e) {
+			return handleActionErrors(e, body)
+		}
 
-        throw redirect(303, `/admin/courses/${event.params.courseId}`)
-    }
-};
+		throw redirect(303, `/admin/courses/${event.params.courseId}`)
+	},
+}

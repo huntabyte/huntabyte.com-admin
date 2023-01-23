@@ -1,5 +1,6 @@
 import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
+import { handleActionErrors } from "$lib/utils"
 import { fail } from "@sveltejs/kit"
 import type { Actions } from "./$types"
 
@@ -18,9 +19,8 @@ export const actions: Actions = {
 				moduleId,
 				data: body,
 			})
-		} catch (err) {
-			console.error(err)
-			return fail(400, { message: "Bad request" })
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		return {

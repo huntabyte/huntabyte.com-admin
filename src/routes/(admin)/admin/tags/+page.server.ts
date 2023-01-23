@@ -1,7 +1,7 @@
 import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
-import { fail } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
+import { handleActionErrors } from "$lib/utils"
 
 export const load: PageServerLoad = async (event) => {
 	return {
@@ -11,27 +11,29 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	createTag: async (event) => {
-		const body = (await event.request.formData()) as unknown
+		const body = await event.request.formData()
 
 		try {
 			await router.createCaller(await createContext(event)).tags.create(body)
-		} catch (err) {
-			console.log(err)
-			return fail(400, { message: "Error creating tag" })
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		return {
-			success: true,
+			status: 201,
 		}
 	},
 	updateTag: async (event) => {
-		const body = (await event.request.formData()) as unknown
+		const body = await event.request.formData()
 
 		try {
 			await router.createCaller(await createContext(event)).tags.update(body)
-		} catch (err) {
-			console.error(err)
-			return fail(400, { message: "Error updating tag" })
+		} catch (e) {
+			return handleActionErrors(e, body)
+		}
+
+		return {
+			status: 200,
 		}
 	},
 }

@@ -2,20 +2,16 @@ import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
 import type { Actions } from "./$types"
 import { fail, redirect } from "@sveltejs/kit"
+import { handleActionErrors } from "$lib/utils"
 
 export const actions: Actions = {
 	createCourse: async (event) => {
-		const formData = Object.fromEntries(
-			await event.request.formData(),
-		) as unknown
+		const body = Object.fromEntries(await event.request.formData())
 
 		try {
-			await router
-				.createCaller(await createContext(event))
-				.courses.create(formData)
-		} catch (err) {
-			console.log(err)
-			return fail(400, { message: "Invalid request" })
+			await router.createCaller(await createContext(event)).courses.create(body)
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		throw redirect(303, "/admin/courses")

@@ -1,24 +1,21 @@
 import type { PageServerLoad, Actions } from "./$types"
-import type { z } from "zod"
 import { router } from "$lib/trpc/router"
 import { createContext } from "$lib/trpc/context"
 import { error, fail } from "@sveltejs/kit"
-import type { CreateModuleSchema } from "$lib/trpc/routes/modules"
+import { handleActionErrors } from "$lib/utils"
 
 export const load: PageServerLoad = async () => {}
 
 export const actions: Actions = {
 	createModule: async (event) => {
-		const body = Object.fromEntries(
-			await event.request.formData(),
-		) as unknown as z.infer<typeof CreateModuleSchema>
-		body.courseId = Number(event.params.courseId)
+		const formData = await event.request.formData()
+		formData.append("courseId", event.params.courseId)
+		const body = Object.fromEntries(formData)
 
 		try {
 			await router.createCaller(await createContext(event)).modules.create(body)
-		} catch (err) {
-			console.error(err)
-			return fail(400, { message: "Invalid data" })
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		return {
@@ -37,9 +34,8 @@ export const actions: Actions = {
 			await router
 				.createCaller(await createContext(event))
 				.modules.delete(Number(moduleId))
-		} catch (err) {
-			console.error(err)
-			return fail(400, { message: "Invalid data" })
+		} catch (e) {
+			return handleActionErrors(e)
 		}
 
 		return {
@@ -49,7 +45,7 @@ export const actions: Actions = {
 
 	updateSortOrder: async (event) => {},
 	updateModule: async (event) => {
-		const data = Object.fromEntries(await event.request.formData()) as unknown
+		const body = Object.fromEntries(await event.request.formData())
 
 		const moduleId = event.url.searchParams.get("moduleId")
 		if (!moduleId) {
@@ -58,11 +54,10 @@ export const actions: Actions = {
 		try {
 			await router.createCaller(await createContext(event)).modules.update({
 				moduleId,
-				data,
+				data: body,
 			})
-		} catch (err) {
-			console.error(err)
-			return fail(500, { message: "Something went wrong updating the module" })
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		return {
@@ -70,18 +65,16 @@ export const actions: Actions = {
 		}
 	},
 	updateCourse: async (event) => {
-		const data = Object.fromEntries(await event.request.formData()) as unknown
-
+		const body = Object.fromEntries(await event.request.formData())
 		const courseId = event.params.courseId
 
 		try {
 			await router.createCaller(await createContext(event)).courses.update({
 				courseId,
-				data,
+				data: body,
 			})
-		} catch (err) {
-			console.error(err)
-			return fail(500, { message: "Something went wrong updating the course." })
+		} catch (e) {
+			return handleActionErrors(e, body)
 		}
 
 		return {
