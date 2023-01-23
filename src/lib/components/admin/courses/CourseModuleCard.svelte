@@ -1,20 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
+	import type { EventHandler } from 'svelte/elements'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
 	import type { Lesson, Module } from '@prisma/client'
 
 	import type { ModuleWithLessons } from '$lib/prisma.types'
-	import type { DropdownGroup } from '$lib/types'
-	import { updateModuleModal as updateModuleDialog } from '$lib/ui/admin'
 	import { trpc } from '$lib/trpc/client'
 
 	import { Button, Icon } from '$lib/components'
 	import Input from '$lib/components/form/Input.svelte'
-	import ModuleUpdateModal from '$lib/components/admin/modules/ModuleUpdateModal.svelte'
 	import CourseModuleCardItem from '$lib/components/admin/courses/CourseModuleCardItem.svelte'
 	import DropdownMenuButton from '$lib/components/admin/DropdownMenuButton.svelte'
+	import { updateModuleModal as updateModuleDialog } from '$lib/ui/admin'
 
 	export let module: ModuleWithLessons
 	export let moduleDragDisabled: boolean
@@ -22,7 +21,7 @@
 	const flipDurationMs = 100
 	let lessonDragDisabled: boolean = true
 	let lessons: Lesson[]
-	let currentModule: Module | null
+	export let currentModule: Module | null
 
 	let showNewLesson: boolean = false
 
@@ -55,14 +54,31 @@
 		lessonDragDisabled = false
 	}
 
-	export let groups: DropdownGroup[] = [[{ icon: 'ph:pencil', label: 'Rename Lesson' }]]
+	type ModuleDropdownGroup = {
+		icon: string
+		label: 'Edit Module' | 'Delete Module'
+	}[]
+
+	type ModuleDropdownEvent = {
+		selected: 'Edit Module' | 'Delete Module'
+	}
+
+	const moduleDropdownGroups: ModuleDropdownGroup[] = [
+		[{ icon: 'ph:pencil', label: 'Edit Module' }]
+	]
+
+	const moduleDropdownOnSelect: EventHandler<Event, HTMLButtonElement> = (e: Event) => {
+		console.log('function fired')
+		if ((e as CustomEvent<ModuleDropdownEvent>).detail.selected === 'Edit Module') {
+			currentModule = module
+			updateModuleDialog.open()
+		}
+	}
 
 	$: lessons = module.lessons.map((lesson) => {
 		return lesson
 	})
 </script>
-
-<ModuleUpdateModal dialog={updateModuleDialog} {currentModule} />
 
 <div class="flex flex-col w-full bg-gray-700 items-center rounded-md px-4 pb-2">
 	<!-- Module Item -->
@@ -78,7 +94,13 @@
 			</div>
 			<p>{module.title}</p>
 		</div>
-		<DropdownMenuButton icon variant="ghost" color="default" {groups}>
+		<DropdownMenuButton
+			icon
+			variant="ghost"
+			color="default"
+			groups={moduleDropdownGroups}
+			onSelect={moduleDropdownOnSelect}
+		>
 			<Icon icon="ph:dots-three-outline-vertical" />
 		</DropdownMenuButton>
 	</div>

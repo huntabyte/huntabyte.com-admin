@@ -28,6 +28,8 @@
 			}
 		}
 	}
+
+	$: console.log('Current Module: ', currentModule)
 </script>
 
 <Modal {dialog}>
