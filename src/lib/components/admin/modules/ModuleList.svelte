@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Module } from '@prisma/client'
 	import { updateModuleModal as dialog } from '$lib/ui/admin'
-	import { ModuleUpdateModal, ModuleListItem } from '$lib/components/admin/modules'
+	import ModuleListItem from '$lib/components/admin/modules/ModuleListItem.svelte'
+	import ModuleUpdateModal from '$lib/components/admin/modules/ModuleUpdateModal.svelte'
 	export let modules: Module[]
 
 	export let currentModule: Module | null = null

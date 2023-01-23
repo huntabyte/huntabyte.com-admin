@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { LessonList } from '$lib/components/admin/lessons'
+	import LessonList from '$lib/components/admin/lessons/LessonList.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'
-	import { CourseUpdateModal } from '$lib/components/admin/courses'
+	import CourseUpdateModal from '$lib/components/admin/courses/CourseUpdateModal.svelte'
 
 	export let data: PageData
 	import {
@@ -11,7 +11,8 @@
 		updateModuleModal as updateModuleDialog,
 		updateCourseModal as updateCourseDialog
 	} from '$lib/ui/admin'
-	import { ModuleCreateModal, ModuleUpdateModal } from '$lib/components/admin/modules'
+	import ModuleCreateModal from '$lib/components/admin/modules/ModuleCreateModal.svelte'
+	import ModuleUpdateModal from '$lib/components/admin/modules/ModuleUpdateModal.svelte'
 	import type { Module } from '@prisma/client'
 
 	let currentModule: Module | null

@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import CourseModuleCard from '$lib/components/admin/courses/CourseModuleCard.svelte'
-	import DropdownMenuButton from '$lib/components/admin/DropdownMenuButton.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
-	import Icon from '$lib/components/Icon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'

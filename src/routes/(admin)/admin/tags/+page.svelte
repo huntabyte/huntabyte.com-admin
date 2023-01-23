@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import { Button } from '$lib/components'
-	import { TagList } from '$lib/components/admin/tags'
+	import TagList from '$lib/components/admin/tags/TagList.svelte'
 	import type { PageData } from './$types'
 	import { createTagModal as dialog } from '$lib/ui/admin'
 	import TagCreateModal from '$lib/components/admin/tags/TagCreateModal.svelte'

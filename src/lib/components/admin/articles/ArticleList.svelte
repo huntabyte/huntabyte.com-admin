@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Article } from '@prisma/client'
-	import { ArticleListItem } from '$lib/components/admin/articles'
+	import ArticleListItem from '$lib/components/admin/articles/ArticleListItem.svelte'
 	export let articles: Article[]
 </script>
 

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Tag } from '@prisma/client'
 	import { updateModuleModal as dialog } from '$lib/ui/admin'
-	import { TagUpdateModal, TagListItem } from '$lib/components/admin/tags'
+	import TagUpdateModal from '$lib/components/admin/tags/TagUpdateModal.svelte'
+	import TagListItem from '$lib/components/admin/tags/TagListItem.svelte'
 	export let tags: Tag[]
 
 	export let currentTag: Tag | null = null

@@ -7,7 +7,6 @@
 	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
-	import type { z } from 'zod'
 	import CourseModuleCardItem from './CourseModuleCardItem.svelte'
 
 	export let module: ModuleWithLessons
