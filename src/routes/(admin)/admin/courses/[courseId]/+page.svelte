@@ -1,43 +1,24 @@
 <script lang="ts">
-	import LessonList from '$lib/components/admin/lessons/LessonList.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
-	import Button from '$lib/components/Button.svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
-	import type { Module } from '@prisma/client'
-
-	let currentModule: Module | null
+	import Input from '$lib/components/form/Input.svelte'
+	import Button from '$lib/components/Button.svelte'
 </script>
 
 <PageHeading>
-	<h2 slot="heading" class="text-3xl font-bold">{data.course.title}</h2>
+	<h2 slot="heading" class="text-3xl font-bold">Edit Course</h2>
 </PageHeading>
-<div class="pt-8 space-y-8">
-	<div class="space-y-4">
-		{#each data.course.modules as module}
-			<PageHeading>
-				<h3 slot="heading" class="text-2xl font-normal">{module.title}</h3>
-				<div slot="actions" class="space-x-2">
-					<Button
-						on:click={() => {
-							currentModule = module
-							updateModuleDialog.open()
-						}}
-						size="sm"
-						outline>Edit Module</Button
-					>
-					<Button href="/admin/courses/{data.course.id}/lessons/new?moduleId={module.id}" size="sm"
-						>New Lesson</Button
-					>
-				</div>
-			</PageHeading>
-			{#if module.lessons.length > 0}
-				<LessonList lessons={module.lessons} {module} />
-			{:else}
-				<p>No lessons yet.</p>
-			{/if}
-		{/each}
-	</div>
+<div class="pt-8 space-y-2">
+	<PageHeading>
+		<h3 slot="heading" class="text-2xl font-normal">Details</h3>
+		<div slot="actions" class="space-x-2" />
+	</PageHeading>
+	<form action="?/updateCourse" method="POST" class="max-w-xl flex flex-col gap-4">
+		<Input name="title" id="title" label="Title" value={data.course.title} />
+		<Input name="slug" id="slug" label="Slug" value={data.course.slug} />
+		<Button type="submit">Update Course</Button>
+	</form>
 </div>
