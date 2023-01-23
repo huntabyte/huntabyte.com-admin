@@ -12,7 +12,7 @@
 	export let module: ModuleWithLessons
 	export let moduleDragDisabled: boolean
 
-	const flipDurationMs = 300
+	const flipDurationMs = 100
 	let lessonDragDisabled: boolean = true
 	let lessons: Lesson[]
 
@@ -33,7 +33,7 @@
 			return { ...item, sortOrder: idx }
 		})
 
-		await trpc($page).modules.updateLessons.mutate({
+		trpc($page).modules.updateLessons.mutate({
 			moduleId: module.id,
 			lessons: lessons satisfies { id: number; moduleId: number; sortOrder: number }[]
 		})
@@ -77,7 +77,8 @@
 			items: lessons,
 			flipDurationMs,
 			dragDisabled: lessonDragDisabled,
-			type: 'lesson'
+			type: 'lesson',
+			dropTargetStyle: {}
 		}}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}

@@ -13,7 +13,7 @@
 	let items: any[] = []
 	let moduleDragDisabled = true
 
-	const flipDurationMs = 200
+	const flipDurationMs = 100
 
 	function handleModuleDndConsider(e: CustomEvent<DndEvent>) {
 		console.log(e.detail.items)
@@ -44,7 +44,13 @@
 </PageHeading>
 <section
 	class="flex flex-col pt-12 gap-10"
-	use:dndzone={{ items, dragDisabled: moduleDragDisabled, type: 'module', flipDurationMs }}
+	use:dndzone={{
+		items,
+		dragDisabled: moduleDragDisabled,
+		type: 'module',
+		flipDurationMs,
+		dropTargetStyle: {}
+	}}
 	on:consider={handleModuleDndConsider}
 	on:finalize={handleModuleDndFinalize}
 >

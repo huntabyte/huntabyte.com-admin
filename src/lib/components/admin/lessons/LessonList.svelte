@@ -10,7 +10,7 @@
 	export let module: Module
 
 	let items: any[] = []
-	const flipDurationMs = 200
+	const flipDurationMs = 100
 
 	function handleDndConsider(e: CustomEvent<DndEvent>) {
 		items = e.detail.items
