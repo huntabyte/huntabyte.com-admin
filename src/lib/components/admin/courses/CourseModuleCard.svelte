@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { Button, Icon } from '$lib/components'
-	import Input from '$lib/components/form/Input.svelte'
-	import type { ModuleWithLessons } from '$lib/prisma.types'
-	import { trpc } from '$lib/trpc/client'
-	import type { Lesson } from '@prisma/client'
+
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
-	import CourseModuleCardItem from './CourseModuleCardItem.svelte'
+	import type { Lesson, Module } from '@prisma/client'
+
+	import type { ModuleWithLessons } from '$lib/prisma.types'
+	import type { DropdownGroup } from '$lib/types'
+	import { updateModuleModal as updateModuleDialog } from '$lib/ui/admin'
+	import { trpc } from '$lib/trpc/client'
+
+	import { Button, Icon } from '$lib/components'
+	import Input from '$lib/components/form/Input.svelte'
+	import ModuleUpdateModal from '$lib/components/admin/modules/ModuleUpdateModal.svelte'
+	import CourseModuleCardItem from '$lib/components/admin/courses/CourseModuleCardItem.svelte'
+	import DropdownMenuButton from '$lib/components/admin/DropdownMenuButton.svelte'
 
 	export let module: ModuleWithLessons
 	export let moduleDragDisabled: boolean
@@ -15,6 +22,7 @@
 	const flipDurationMs = 100
 	let lessonDragDisabled: boolean = true
 	let lessons: Lesson[]
+	let currentModule: Module | null
 
 	let showNewLesson: boolean = false
 
@@ -47,10 +55,14 @@
 		lessonDragDisabled = false
 	}
 
+	export let groups: DropdownGroup[] = [[{ icon: 'ph:pencil', label: 'Rename Lesson' }]]
+
 	$: lessons = module.lessons.map((lesson) => {
 		return lesson
 	})
 </script>
+
+<ModuleUpdateModal dialog={updateModuleDialog} {currentModule} />
 
 <div class="flex flex-col w-full bg-gray-700 items-center rounded-md px-4 pb-2">
 	<!-- Module Item -->
@@ -66,9 +78,9 @@
 			</div>
 			<p>{module.title}</p>
 		</div>
-		<div>
+		<DropdownMenuButton icon variant="ghost" color="default" {groups}>
 			<Icon icon="ph:dots-three-outline-vertical" />
-		</div>
+		</DropdownMenuButton>
 	</div>
 	<!-- Lesson Item -->
 	<div

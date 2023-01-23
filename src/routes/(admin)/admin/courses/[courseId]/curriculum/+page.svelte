@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import type { PageData } from './$types'
+
+	import { dndzone } from 'svelte-dnd-action'
+	import { trpc } from '$lib/trpc/client'
+	import { flip } from 'svelte/animate'
+
 	import CourseModuleCard from '$lib/components/admin/courses/CourseModuleCard.svelte'
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import Button from '$lib/components/Button.svelte'
-	import { trpc } from '$lib/trpc/client'
-	import { dndzone } from 'svelte-dnd-action'
-	import { flip } from 'svelte/animate'
-	import type { PageData } from './$types'
+	import ModuleCreateModal from '$lib/components/admin/modules/ModuleCreateModal.svelte'
+	import { createModuleModal as createModuleDialog } from '$lib/ui/admin'
 
 	export let data: PageData
 
@@ -16,11 +20,9 @@
 	const flipDurationMs = 100
 
 	function handleModuleDndConsider(e: CustomEvent<DndEvent>) {
-		console.log(e.detail.items)
 		items = e.detail.items
 	}
 	async function handleModuleDndFinalize(e: CustomEvent<DndEvent>) {
-		console.log(e.detail.items)
 		items = e.detail.items
 		items = items.map((item, idx) => {
 			return { ...item, sortOrder: idx }
@@ -36,10 +38,11 @@
 	})
 </script>
 
+<ModuleCreateModal dialog={createModuleDialog} />
 <PageHeading>
 	<h2 slot="heading" class="text-3xl font-bold">Curriculum</h2>
 	<div slot="actions">
-		<Button href="/admin/courses/new" color="primary">New Module</Button>
+		<Button on:click={createModuleDialog.open} color="default" size="sm">New Module</Button>
 	</div>
 </PageHeading>
 <section
