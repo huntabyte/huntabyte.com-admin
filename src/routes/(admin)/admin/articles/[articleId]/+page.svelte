@@ -40,7 +40,7 @@
 <form
 	action="?/updateArticle"
 	method="POST"
-	class="mx-auto max-w-3xl relative"
+	class="mx-auto max-w-4xl relative w-full"
 	use:enhance={submitUpdateArticle}
 >
 	<PageHeading>
