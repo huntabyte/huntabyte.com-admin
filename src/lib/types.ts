@@ -20,3 +20,8 @@ export interface AuthSession {
 	/** The absolute date when the session expires. */
 	expires: Date
 }
+
+export type DropdownGroup = {
+	icon: string
+	label: string
+}[]

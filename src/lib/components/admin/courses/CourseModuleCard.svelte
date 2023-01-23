@@ -7,7 +7,7 @@
 	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
-	import DropdownMenuButton from '../DropdownMenuButton.svelte'
+	import CourseModuleCardItem from './CourseModuleCardItem.svelte'
 
 	export let module: ModuleWithLessons
 	export let moduleDragDisabled: boolean
@@ -84,25 +84,7 @@
 				class="flex w-full items-center justify-between py-2 pl-8 pr-2 h-16"
 				animate:flip={{ duration: flipDurationMs }}
 			>
-				<div class="flex gap-4 items-center">
-					<div
-						on:mousedown|preventDefault={startLessonDrag}
-						on:keydown|preventDefault={startLessonDrag}
-						on:touchstart|preventDefault={startLessonDrag}
-						class={moduleDragDisabled ? 'cursor-grab' : 'cursor-grabbing'}
-					>
-						<Icon icon="ph:dots-six-vertical-fill" />
-					</div>
-					<p>{lesson.title}</p>
-				</div>
-				<div class="flex items-center">
-					<Button href="/admin/courses/{$page.data.course.id}/lessons/{lesson.id}" outline size="sm"
-						>Edit lesson</Button
-					>
-					<DropdownMenuButton icon variant="ghost" color="default">
-						<Icon icon="ph:dots-three-outline-vertical" />
-					</DropdownMenuButton>
-				</div>
+				<CourseModuleCardItem {lesson} {lessonDragDisabled} {startLessonDrag} />
 			</div>
 		{/each}
 		{#if showNewLesson}

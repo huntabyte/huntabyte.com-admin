@@ -4,6 +4,7 @@
 	import Transition from 'svelte-transition'
 	import type { EventHandler } from 'svelte/elements'
 	import Icon from '$lib/components/Icon.svelte'
+	import type { DropdownGroup } from '$lib/types'
 
 	export let label: string = 'default'
 	export let icon: boolean = false
@@ -18,22 +19,7 @@
 		console.log((e as CustomEvent).detail)
 	}
 
-	type DropdownGroup = {
-		icon: string
-		label: string
-	}[]
-
-	export let groups: DropdownGroup[] = [
-		[
-			{ icon: '', label: `Edit` },
-			{ icon: '', label: `Duplicate` }
-		],
-		[
-			{ icon: '', label: `Archive` },
-			{ icon: '', label: `Move` }
-		],
-		[{ icon: '', label: `Delete` }]
-	]
+	export let groups: DropdownGroup[]
 
 	const colorClasses = {
 		default:
@@ -125,7 +111,7 @@
 	>
 		<div
 			use:menu.items
-			class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+			class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 			role="menu"
 			aria-orientation="vertical"
 			aria-labelledby="menu-button"
@@ -137,11 +123,11 @@
 						{@const active = $menu.active === option.label}
 						<button
 							use:menu.item
-							class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active
-								? 'bg-violet-500 text-white'
+							class="group flex rounded-md items-center font-medium w-full px-2 py-2 text-sm transition-all duration-75 ease-in-out {active
+								? 'bg-gray-200 text-gray-900'
 								: 'text-gray-900'}"
 						>
-							<Icon icon="ph:house" classes="mr-2" />
+							<Icon icon={option.icon} classes="mr-2" />
 							{option.label}
 						</button>
 					{/each}

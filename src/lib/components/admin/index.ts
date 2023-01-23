@@ -8,11 +8,13 @@ import PageHeading from "./PageHeading.svelte"
 import Slideover from "./Slideover.svelte"
 import Editor from "./Editor.svelte"
 import EditorUpdate from "./EditorUpdate.svelte"
+import DropdownMenuButton from "./DropdownMenuButton.svelte"
 
 export {
 	Breadcrumbs,
 	ContentTable,
 	DesktopNav,
+	DropdownMenuButton,
 	Editor,
 	EditorUpdate,
 	EmptyState,
