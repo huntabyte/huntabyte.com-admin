@@ -7,6 +7,7 @@
 	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
+	import DropdownMenuButton from '../DropdownMenuButton.svelte'
 
 	export let module: ModuleWithLessons
 	export let moduleDragDisabled: boolean
@@ -94,16 +95,13 @@
 					</div>
 					<p>{lesson.title}</p>
 				</div>
-				<div class="flex items-center gap-4">
-					<Button
-						href="/admin/courses/{$page.data.course.id}/lessons/{lesson.id}"
-						color="primary"
-						outline
-						size="sm">Edit lesson</Button
+				<div class="flex items-center">
+					<Button href="/admin/courses/{$page.data.course.id}/lessons/{lesson.id}" outline size="sm"
+						>Edit lesson</Button
 					>
-					<div>
+					<DropdownMenuButton icon variant="ghost" color="default">
 						<Icon icon="ph:dots-three-outline-vertical" />
-					</div>
+					</DropdownMenuButton>
 				</div>
 			</div>
 		{/each}
@@ -130,12 +128,6 @@
 					</form>
 				</div>
 				<div class="flex items-center gap-4">
-					<Button
-						href="/admin/courses/{$page.data.course.id}/lessons"
-						color="primary"
-						outline
-						size="sm">Edit lesson</Button
-					>
 					<div>
 						<Icon icon="ph:dots-three-outline-vertical" />
 					</div>
