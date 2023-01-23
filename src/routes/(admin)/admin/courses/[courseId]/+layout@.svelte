@@ -1,16 +1,16 @@
 <script lang="ts">
 	import '../../../../../admin.css'
 	import { page } from '$app/stores'
-	import DesktopNavAlt from '$lib/components/admin/DesktopNavAlt.svelte'
 	import { Toaster } from 'svelte-french-toast'
-	import MobileNavAlt from '$lib/components/admin/MobileNavAlt.svelte'
-	import MobileTopNav from '$lib/components/admin/MobileTopNav.svelte'
+	import DesktopNav from '$lib/components/admin/navigation/DesktopNav.svelte'
+	import MobileNav from '$lib/components/admin/navigation/MobileNav.svelte'
+	import MobileTopNav from '$lib/components/admin/navigation/MobileTopNav.svelte'
 </script>
 
 <Toaster />
 <div class="flex h-full">
-	<MobileNavAlt />
-	<DesktopNavAlt />
+	<MobileNav />
+	<DesktopNav />
 	<div class="flex min-w-0 flex-1 flex-col overflow-hidden">
 		<!-- Mobile top navigation -->
 		<MobileTopNav />

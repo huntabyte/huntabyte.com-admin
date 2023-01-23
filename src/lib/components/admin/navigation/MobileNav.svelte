@@ -3,7 +3,7 @@
 	import { mobileMenuDialog as dialog, navigation } from '$lib/ui/admin'
 	import Transition from 'svelte-transition'
 	import { Icon } from '$lib/components'
-	import Logo from '../Logo.svelte'
+	import Logo from '../../Logo.svelte'
 
 	export const mobileNavClasses = {
 		active: {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Logo from '../Logo.svelte'
+	import Logo from '../../Logo.svelte'
 	import { navigation } from '$lib/ui/admin'
-	import Icon from '../Icon.svelte'
+	import Icon from '../../Icon.svelte'
 </script>
 
 <div class="hidden lg:flex lg:flex-shrink-0">
