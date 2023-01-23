@@ -38,18 +38,14 @@
 					<div class="py-7 flex flex-col space-y-4 px-4">
 						<a
 							href="/admin/courses/{$page.data.course.id}"
-							class="hover:text-primary-500 transition-all duration-200 ease-in-out">Information</a
+							class="hover:text-primary-500 transition-all duration-200 ease-in-out">Details</a
 						>
 						<a
 							href="/admin/courses/{$page.data.course.id}/curriculum"
 							class="hover:text-primary-500 transition-all duration-200 ease-in-out">Curriculum</a
 						>
 						<a
-							href="/admin/courses/{$page.data.course.id}/comments"
-							class="hover:text-primary-500 transition-all duration-200 ease-in-out">Comments</a
-						>
-						<a
-							href="/admin/courses/{$page.data.course.id}/students"
+							href="/admin/courses/{$page.data.course.id}"
 							class="hover:text-primary-500 transition-all duration-200 ease-in-out">Students</a
 						>
 					</div>
