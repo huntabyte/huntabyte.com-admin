@@ -73,4 +73,7 @@
 			</div>
 		{/each}
 	</section>
+	<Button on:click={createModuleDialog.open} color="default" size="sm" classes="mt-6"
+		>New Module</Button
+	>
 </div>
