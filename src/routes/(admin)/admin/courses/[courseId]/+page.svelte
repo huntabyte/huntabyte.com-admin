@@ -2,10 +2,10 @@
 	import PageHeading from '$lib/components/admin/PageHeading.svelte'
 	import type { PageData } from './$types'
 
-	export let data: PageData
-
 	import Input from '$lib/components/form/Input.svelte'
 	import Button from '$lib/components/Button.svelte'
+
+	export let data: PageData
 </script>
 
 <PageHeading>
