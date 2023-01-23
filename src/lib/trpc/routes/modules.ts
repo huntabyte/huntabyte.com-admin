@@ -23,6 +23,7 @@ export const UpdateLessonSortOrderSchema = z.object({
 		z.object({
 			id: z.number(),
 			sortOrder: z.number(),
+			moduleId: z.number(),
 		}),
 	),
 })
@@ -46,6 +47,7 @@ export const modules = t.router({
 						where: { id: lesson.id },
 						data: {
 							sortOrder: lesson.sortOrder,
+							moduleId: lesson.moduleId,
 						},
 					})
 				}),

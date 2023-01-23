@@ -7,6 +7,7 @@
 	import type { Lesson } from '@prisma/client'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
+	import type { z } from 'zod'
 	import CourseModuleCardItem from './CourseModuleCardItem.svelte'
 
 	export let module: ModuleWithLessons
@@ -26,14 +27,17 @@
 	async function handleDndFinalize(e: CustomEvent<DndEvent<Lesson>>) {
 		lessons = e.detail.items
 
-		if (e.detail.info.trigger === 'droppedIntoZone') {
-			const res = await trpc($page).lessons.update.mutate({
-				id: Number(e.detail.info.id),
-				data: {
-					moduleId: module.id
-				}
-			})
-		}
+		lessons = lessons.map((item, idx) => {
+			if (item.id === Number(e.detail.info.id)) {
+				item.moduleId = module.id
+			}
+			return { ...item, sortOrder: idx }
+		})
+
+		await trpc($page).modules.updateLessons.mutate({
+			moduleId: module.id,
+			lessons: lessons satisfies { id: number; moduleId: number; sortOrder: number }[]
+		})
 		lessonDragDisabled = true
 	}
 

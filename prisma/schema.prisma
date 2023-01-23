@@ -58,7 +58,7 @@ model Lesson {
     updatedAt   DateTime      @default(now()) @updatedAt
     status      PublishStatus @default(DRAFT)
     contentType String        @default("VIDEO")
-    moduleId    Int?
+    moduleId    Int
     isFree      Boolean       @default(false)
     sortOrder   Int           @default(999)
     videoUrl    String?
