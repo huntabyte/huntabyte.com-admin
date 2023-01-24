@@ -29,7 +29,7 @@ const UpdateLessonSchema = z.object({
 		slug: zfd.text().nullable().optional(),
 		content: zfd.text(z.string().nullish().optional()).nullable().optional(),
 		markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
-		moduleId: zfd.numeric().optional().nullable(),
+		moduleId: zfd.numeric().optional(),
 		contentType: zfd.text().optional(),
 		videoUrl: zfd.text().optional(),
 		sortOrder: zfd.numeric().optional(),
@@ -37,12 +37,6 @@ const UpdateLessonSchema = z.object({
 })
 
 export const lessons = t.router({
-	// create: t.procedure.input(CreateLessonSchema).mutation(({ input }) => {
-	// 	if (input.content) {
-	// 		input.markdown = processMarkdown(input.content)
-	// 	}
-	// 	return p.lesson.create({ data: input })
-	// }),
 	create: t.procedure.input(CreateNewLessonSchema).mutation(({ input }) =>
 		p.lesson.create({
 			data: {
@@ -62,6 +56,13 @@ export const lessons = t.router({
 		}
 		return p.lesson.update({ where: { id: input.id }, data: input.data })
 	}),
+	delete: t.procedure.input(z.number()).mutation(({ input }) =>
+		p.lesson.delete({
+			where: {
+				id: input,
+			},
+		}),
+	),
 	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {
 		const lesson = await p.lesson.findFirstOrThrow({ where: { slug: input } })
 		if (lesson.markdown) {

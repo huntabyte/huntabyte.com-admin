@@ -27,4 +27,25 @@ export const actions: Actions = {
 			status: 201,
 		}
 	},
+	updateLesson: async (event) => {
+		const body = Object.fromEntries(await event.request.formData())
+
+		const lessonId = event.url.searchParams.get("lessonId")
+		if (!lessonId) {
+			return fail(400, { message: "Invalid request" })
+		}
+
+		try {
+			await router.createCaller(await createContext(event)).lessons.update({
+				id: Number(lessonId),
+				data: body,
+			})
+		} catch (e) {
+			return handleActionErrors(e, body)
+		}
+
+		return {
+			status: 200,
+		}
+	},
 }
