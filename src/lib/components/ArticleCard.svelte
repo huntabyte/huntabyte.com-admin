@@ -1,23 +1,25 @@
 <script lang="ts">
 	import { shortDate } from '$lib/utils'
 	import type { Article } from '@prisma/client'
+	import Icon from '$lib/components/Icon.svelte'
 
 	export let article: Article
 </script>
 
-<a href="/blog/{article.slug}" class="group">
-	<div
-		class="flex flex-col border border-secondary-500 border-opacity-20 max-w-xl rounded-xl group-hover:border-opacity-100 group-hover:divide-opacity-100 transition-all duration-500 ease-in-out"
-	>
-		<div class="flex flex-col space-y-2 px-6 pt-6">
-			<p class="text-xs text-gray-300 font-medium">{shortDate(article.createdAt)}</p>
-			<h2 class="text-3xl font-medium">{article.title}</h2>
+<a href="/blog/{article.slug}" class="group flex flex-col w-full max-w-2xl">
+	<h2 class="text-2xl font-semibold">{article.title}</h2>
+	<p class="text-gray-300 mt-1">
+		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint ullam nemo culpa, aut pariatur
+		tenetur obcaecati fugiat laboriosam quos alias esse assumenda corrupti labore vero excepturi.
+	</p>
+	<div class="flex flex-row items-center space-x-2 mt-3 justify-between">
+		<div class="flex items-center">
+			<span class="text-gray-400">{shortDate(article.createdAt)}</span>
 		</div>
-		<div class="px-6 pb-6 pt-4">
-			<p class="leading-7 text-gray-200">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, repellat, commodi impedit
-				autem inventore odio quae ut optio cum ad earum at neque libero.
-			</p>
+		<div>
+			<span class="text-gray-400 flex items-center gap-1">
+				<Icon icon="ph:eye" /> <span>10,000</span>
+			</span>
 		</div>
-	</div>
-</a>
+	</div></a
+>

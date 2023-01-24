@@ -13,3 +13,7 @@ body {
 body {
 	@apply bg-gray-900 text-gray-50;
 }
+
+p {
+	font-size: 18px;
+}

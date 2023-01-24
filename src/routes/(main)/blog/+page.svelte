@@ -4,20 +4,19 @@
 	export let data: PageData
 </script>
 
-<div class="flex flex-col mx-auto items-center space-y-8">
+<div class="flex flex-col mx-auto items-center space-y-12 max-w-2xl">
 	<div class="w-full">
 		<div class="mx-auto px-6 pt-16">
 			<div class="text-center">
-				<h2 class="text-lg font-semibold text-primary-600">Blog</h2>
-				<p class="mt-1 font-bold tracking-tight text-6xl">Thoughts, Ideas, & Experiences</p>
-				<p class="mx-auto mt-5 max-w-xl text-xl text-gray-100">
-					Exploring the intersection of technology, personal growth, and whatever else I find
-					interesting.
+				<p class="mt-1 font-semibold tracking-tight text-5xl">Thoughts, Ideas, & Lessons</p>
+				<p class="mx-auto max-w-lg text-xl text-gray-100">
+					<em> "You can make anything by writing" </em>
+					-C.S. Lewis
 				</p>
 			</div>
 		</div>
 	</div>
-	<div class="grid grid-cols-2 gap-10">
+	<div class="flex flex-col space-y-8">
 		{#each data.articles as article}
 			<ArticleCard {article} />
 		{/each}

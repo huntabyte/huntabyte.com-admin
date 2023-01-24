@@ -39,11 +39,11 @@
 						<Logo />
 					</a>
 				</div>
-				<div class="hidden sm:ml-8 sm:flex sm:space-x-8">
+				<div class="hidden sm:ml-6 sm:flex sm:space-x-6">
 					{#each navigation as navItem}
 						<a
 							href={navItem.href}
-							class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-50 hover:text-primary-500 border-b-2 {$page
+							class="inline-flex items-center px-1 pt-1 font-medium text-gray-50 hover:text-primary-500 border-b-2 {$page
 								.url.pathname === navItem.href
 								? activeNavItem
 								: 'border-transparent'}">{navItem.label}</a

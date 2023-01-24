@@ -1,7 +1,6 @@
 import { unified } from "unified"
 import Turndown from "turndown"
 import remarkGfm from "remark-gfm"
-import remarkToc from "remark-toc"
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import remarkSlug from "remark-slug"
@@ -53,7 +52,7 @@ function searchAndReplace(content: string): string {
 export async function compileContent(markdown: string) {
 	const result = await unified()
 		.use(remarkParse)
-		.use([remarkGfm, [remarkToc, { tight: true }]])
+		.use(remarkGfm)
 		.use(remarkSlug)
 		.use(remarkRehype)
 		.use(rehypeAutolinkHeadings)
