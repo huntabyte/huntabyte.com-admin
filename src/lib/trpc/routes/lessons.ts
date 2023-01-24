@@ -31,7 +31,7 @@ const UpdateLessonSchema = z.object({
 		markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
 		moduleId: zfd.numeric().optional(),
 		contentType: zfd.text().optional(),
-		videoUrl: zfd.text().optional(),
+		videoUrl: zfd.text(z.string().nullish().optional()).nullable().optional(),
 		sortOrder: zfd.numeric().optional(),
 	}),
 })
@@ -51,10 +51,14 @@ export const lessons = t.router({
 		.input(z.number())
 		.query(({ input }) => p.lesson.findUniqueOrThrow({ where: { id: input } })),
 	update: t.procedure.input(UpdateLessonSchema).mutation(({ input }) => {
+		console.log("Made it to updateLesson procedure")
 		if (input.data.content) {
 			input.data.markdown = processMarkdown(input.data.content)
 		}
-		return p.lesson.update({ where: { id: input.id }, data: input.data })
+		return p.lesson.update({
+			where: { id: input.id },
+			data: input.data,
+		})
 	}),
 	delete: t.procedure.input(z.number()).mutation(({ input }) =>
 		p.lesson.delete({
