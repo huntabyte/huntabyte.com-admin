@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { enhance, type SubmitFunction } from '$app/forms'
+	import { invalidateAll } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Button, Icon } from '$lib/components'
 	import { DropdownMenuButton } from '$lib/components/admin'
 	import Badge from '$lib/components/Badge.svelte'
 	import Input from '$lib/components/form/Input.svelte'
+	import { trpc } from '$lib/trpc/client'
 	import type { Lesson } from '@prisma/client'
+	import toast from 'svelte-french-toast'
 	import type { EventHandler } from 'svelte/elements'
 
 	export let startLessonDrag: EventHandler
@@ -29,10 +33,22 @@
 		]
 	]
 
-	const lessonDropdownOnSelect: EventHandler<Event, HTMLButtonElement> = (e: Event) => {
-		console.log('function fired')
-		if ((e as CustomEvent<LessonDropdownEvent>).detail.selected === 'Edit Lesson') {
-			renameLesson = true
+	const lessonDropdownOnSelect: EventHandler<Event, HTMLButtonElement> = async (e: Event) => {
+		switch ((e as CustomEvent<LessonDropdownEvent>).detail.selected) {
+			case 'Edit Lesson':
+				renameLesson = true
+
+				break
+			case 'Delete Lesson':
+				const res = await trpc($page)
+					.lessons.delete.mutate(lesson.id)
+					.catch((err) => {
+						toast.error('Could not delete lesson.')
+						return
+					})
+				toast.success('Lesson deleted!')
+				await invalidateAll()
+				break
 		}
 	}
 
@@ -40,6 +56,24 @@
 		PUBLISHED: 'primary',
 		DRAFT: 'secondary',
 		ARCHIVED: 'default'
+	}
+
+	const submitRenameLesson: SubmitFunction = () => {
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'success':
+					toast.success('Successfully renamed lesson')
+					await update()
+					renameLesson = false
+					break
+				case 'failure':
+					toast.error('Could not rename lesson')
+					break
+				case 'error':
+					toast.error('An unexpected error occurred')
+					break
+			}
+		}
 	}
 </script>
 
@@ -57,6 +91,7 @@
 			action="?/updateLesson&lessonId={lesson.id}"
 			method="POST"
 			class="flex items-center gap-2"
+			use:enhance={submitRenameLesson}
 		>
 			<div class="flex items-center">
 				<Input type="text" name="title" id="title" inputSize="sm" value={lesson.title} />

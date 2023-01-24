@@ -68,7 +68,6 @@
 	]
 
 	const moduleDropdownOnSelect: EventHandler<Event, HTMLButtonElement> = (e: Event) => {
-		console.log('function fired')
 		if ((e as CustomEvent<ModuleDropdownEvent>).detail.selected === 'Edit Module') {
 			currentModule = module
 			updateModuleDialog.open()
