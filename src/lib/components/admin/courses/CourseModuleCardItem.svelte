@@ -19,23 +19,23 @@
 
 	type LessonDropdownGroup = {
 		icon: string
-		label: 'Edit Lesson' | 'Delete Lesson'
+		label: 'Rename Lesson' | 'Delete Lesson'
 	}[]
 
 	type LessonDropdownEvent = {
-		selected: 'Edit Lesson' | 'Delete Lesson'
+		selected: 'Rename Lesson' | 'Delete Lesson'
 	}
 
 	const lessonDropdownGroups: LessonDropdownGroup[] = [
 		[
-			{ icon: 'ph:pencil', label: 'Edit Lesson' },
+			{ icon: 'ph:pencil', label: 'Rename Lesson' },
 			{ icon: 'ph:trash', label: 'Delete Lesson' }
 		]
 	]
 
 	const lessonDropdownOnSelect: EventHandler<Event, HTMLButtonElement> = async (e: Event) => {
 		switch ((e as CustomEvent<LessonDropdownEvent>).detail.selected) {
-			case 'Edit Lesson':
+			case 'Rename Lesson':
 				renameLesson = true
 
 				break
