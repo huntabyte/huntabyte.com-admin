@@ -9,16 +9,12 @@
 			href: '/'
 		},
 		{
-			label: 'Pro',
-			href: '/pro'
+			label: 'Writing',
+			href: '/blog'
 		},
 		{
 			label: 'Courses',
 			href: '/courses'
-		},
-		{
-			label: 'Blog',
-			href: '/blog'
 		},
 		{
 			label: 'Account',
@@ -57,10 +53,10 @@
 				<div class="relative ml-3">
 					{#if $page.data.session}
 						<form action="/logout">
-							<Button type="submit" color="primary">Logout</Button>
+							<Button type="submit" color="primary" size="sm">Logout</Button>
 						</form>
 					{:else}
-						<Button href="/login" color="primary">Login</Button>
+						<Button href="/login" color="primary" size="sm">Login</Button>
 					{/if}
 				</div>
 			</div>

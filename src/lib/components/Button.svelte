@@ -32,7 +32,7 @@
 
 	const sizeClasses = {
 		xs: 'py-1.5 px-2.5 text-sm',
-		sm: 'py-2 px-3 text-sm',
+		sm: 'py-2 px-3',
 		md: 'py-2.5 px-4 text-base',
 		lg: 'py-3.5 px-5 text-lg'
 	}

@@ -6,7 +6,7 @@
 
 <div class="flex flex-col mx-auto items-center space-y-12 max-w-2xl">
 	<div class="w-full">
-		<div class="mx-auto px-6 pt-16">
+		<div class="mx-auto px-6">
 			<div class="text-center">
 				<p class="mt-1 font-semibold tracking-tight text-5xl">Thoughts, Ideas, & Lessons</p>
 				<p class="mx-auto max-w-lg text-xl text-gray-100">

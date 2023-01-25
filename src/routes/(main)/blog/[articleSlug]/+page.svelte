@@ -7,7 +7,7 @@
 	$: ({ article } = data)
 </script>
 
-<div class="flex flex-col items-center mx-auto w-full max-w-2xl gap-6 py-16">
+<div class="flex flex-col items-center mx-auto w-full max-w-2xl gap-6 py-12">
 	<div class="w-full">
 		<h1 class="text-left text-5xl font-semibold">{article.title}</h1>
 		<div class="flex items-center gap-2 text-sm pt-2">
