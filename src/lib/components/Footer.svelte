@@ -48,7 +48,7 @@
 			</a>
 		</div>
 		<div class="mt-8 md:order-1 md:mt-0">
-			<p class="text-center text-xs leading-5 text-gray-100">
+			<p class="text-center text-sm leading-5 text-gray-100">
 				&copy; 2022 Huntabyte. All rights reserved.
 			</p>
 		</div>

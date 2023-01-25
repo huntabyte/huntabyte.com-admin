@@ -22,8 +22,8 @@
 		}
 	]
 
-	const activeNavItem = 'text-primary-500 border-b-2 border-primary-500'
-	const activeMobileNavItem = 'bg-gray-600 border-primary-500 text-primary-700 '
+	const activeNavItem = 'text-primary-500'
+	const activeMobileNavItem = 'bg-gray-600 text-primary-700 '
 </script>
 
 <nav class="bg-inherit">
@@ -39,10 +39,10 @@
 					{#each navigation as navItem}
 						<a
 							href={navItem.href}
-							class="inline-flex items-center px-1 pt-1 font-medium text-gray-50 hover:text-primary-500 border-b-2 {$page
+							class="inline-flex items-center font-medium text-gray-50 hover:text-primary-500 transition-all duration-200 ease-in-out {$page
 								.url.pathname === navItem.href
 								? activeNavItem
-								: 'border-transparent'}">{navItem.label}</a
+								: ''}">{navItem.label}</a
 						>
 					{/each}
 				</div>
