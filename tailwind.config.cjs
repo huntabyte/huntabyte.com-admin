@@ -8,14 +8,14 @@ const config = {
 				sans: ["Heebo", "sans-serif"],
 			},
 			fontSize: {
-				xs: ["0.651rem", "18.235px"],
-				sm: ["0.781rem", "21.875px"],
+				xs: "0.781rem",
+				sm: "0.9rem",
 				base: ["1.125rem", "31.5px"],
-				xl: ["1.35rem", "37.8px"],
-				"2xl": ["1.62rem", "45.36px"],
-				"3xl": ["1.944rem", "54.425px"],
-				"4xl": ["2.333rem", "65.31px"],
-				"5xl": ["2.799rem", "78.382px"],
+				xl: "1.35rem",
+				"2xl": "1.62rem",
+				"3xl": "1.944rem",
+				"4xl": "2.333rem",
+				"5xl": "2.799rem",
 			},
 			colors: {
 				gray: {
