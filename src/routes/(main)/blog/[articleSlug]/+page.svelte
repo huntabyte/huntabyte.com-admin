@@ -9,6 +9,13 @@
 </script>
 
 <div class="flex flex-col items-center mx-auto w-full max-w-2xl gap-6">
+	<a
+		href="/blog"
+		class="self-start flex items-center gap-2 hover:text-primary-500 transition-all duration-200 ease-in-out"
+	>
+		<Icon icon="ph:arrow-left-bold" />
+		<p>Back to Blog</p>
+	</a>
 	<div class="w-full">
 		<h1 class="text-left text-5xl font-semibold">{article.title}</h1>
 		<div class="flex items-center justify-between">
