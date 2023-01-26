@@ -9,7 +9,7 @@
 			href: '/'
 		},
 		{
-			label: 'Writing',
+			label: 'Blog',
 			href: '/blog'
 		},
 		{
