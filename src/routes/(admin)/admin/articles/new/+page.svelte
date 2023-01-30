@@ -4,6 +4,7 @@
 	import Button from '$lib/components/Button.svelte'
 	import { Editor, Slideover, PageHeading } from '$lib/components/admin'
 	import { Input, Select } from '$lib/components/form'
+	import MDEditor from '$lib/components/admin/MDEditor.svelte'
 
 	export let data: PageData
 	let content: string = ''
@@ -40,7 +41,7 @@
 		name="title"
 	/>
 	<input type="hidden" name="content" bind:value={content} />
-	<Editor bind:content />
+	<MDEditor />
 	<Slideover {dialog}>
 		<h2 slot="heading">Article Settings</h2>
 		<p slot="subheading">Update article details using the form below</p>

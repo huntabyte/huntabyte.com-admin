@@ -29,3 +29,7 @@ p.is-editor-empty:first-child::before {
 p {
 	font-size: 18px;
 }
+
+.editor-preview {
+	@apply prose prose-invert prose-lg;
+}

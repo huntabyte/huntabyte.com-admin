@@ -64,6 +64,7 @@
         "@types/nodemailer": "^6.4.7",
         "@types/turndown": "^5.0.1",
         "classnames": "^2.3.2",
+        "easymde": "^2.18.0",
         "iconify-icon": "^1.0.2",
         "rehype-autolink-headings": "^6.1.1",
         "rehype-code-titles": "^1.1.0",
