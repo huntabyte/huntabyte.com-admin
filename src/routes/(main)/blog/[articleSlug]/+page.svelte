@@ -37,7 +37,7 @@
 			</div>
 		</div>
 	</div>
-	<article bind:this={articleTag} class="prose-invert prose prose-lg max-w-2xl">
+	<article bind:this={articleTag} class="prose-invert prose prose-lg max-w-2xl w-full">
 		{@html article.content}
 	</article>
 </div>

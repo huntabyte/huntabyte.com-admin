@@ -6,6 +6,7 @@ export const mobileMenuDialog = createDialog()
 export const mobileAltMenuDialog = createDialog()
 
 export const articleSlideoverDialog = createDialog()
+export const articleDeleteDialog = createDialog()
 export const lessonSlideoverDialog = createDialog()
 
 export const createModuleModal = createDialog()

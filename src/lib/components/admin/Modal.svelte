@@ -7,7 +7,7 @@
 
 <Transition show={$dialog.expanded}>
 	<div
-		class="relative z-10"
+		class="relative z-20"
 		aria-labelledby="modal-title"
 		role="dialog"
 		aria-modal="true"

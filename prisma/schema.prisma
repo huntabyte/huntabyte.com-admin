@@ -72,15 +72,17 @@ model Lesson {
 }
 
 model Article {
-    id        Int           @id @default(autoincrement())
-    title     String
-    slug      String        @unique
-    content   String?       @db.Text()
-    markdown  String?       @db.Text()
-    status    PublishStatus @default(DRAFT)
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @default(now()) @updatedAt
-    tags      ArticleTag[]
+    id          Int           @id @default(autoincrement())
+    title       String
+    slug        String        @unique
+    content     String?       @db.Text()
+    markdown    String?       @db.Text()
+    pageContent String?       @db.Text()
+    status      PublishStatus @default(DRAFT)
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @default(now()) @updatedAt
+    tags        ArticleTag[]
+    viewCount   Int           @default(0)
 }
 
 model Tag {

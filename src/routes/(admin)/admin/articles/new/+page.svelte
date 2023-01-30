@@ -20,7 +20,7 @@
 	]
 </script>
 
-<form action="?/createArticle" method="POST" class="mx-auto max-w-3xl relative">
+<form action="?/createArticle" method="POST" class="mx-auto max-w-4xl relative w-full">
 	<PageHeading>
 		<h2 slot="heading">New Article</h2>
 		<div slot="actions">

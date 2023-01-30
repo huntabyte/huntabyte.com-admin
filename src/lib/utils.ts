@@ -47,6 +47,7 @@ export function slugify(str: string) {
 }
 
 export function handleActionErrors(e: unknown, body: unknown = {}) {
+	console.log(e)
 	if (e instanceof TRPCError) {
 		if (e.cause instanceof ZodError) {
 			return fail(400, {

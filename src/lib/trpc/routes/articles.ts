@@ -9,6 +9,7 @@ export const CreateArticleSchema = zfd.formData({
 	slug: zfd.text(),
 	content: zfd.text(z.string().nullish().optional()).nullable().optional(),
 	markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
+	pageContent: zfd.text(z.string().nullish().optional()).nullable().optional(),
 })
 
 const UpdateArticleSchema = z.object({
@@ -18,6 +19,10 @@ const UpdateArticleSchema = z.object({
 		slug: zfd.text().optional(),
 		content: zfd.text(z.string().nullish().optional()).nullable().optional(),
 		markdown: zfd.text(z.string().nullish().optional()).nullable().optional(),
+		pageContent: zfd
+			.text(z.string().nullish().optional())
+			.nullable()
+			.optional(),
 		moduleId: zfd.numeric().optional().nullable(),
 		contentType: zfd.text().optional(),
 		videoUrl: zfd.text().optional(),
@@ -28,11 +33,12 @@ const UpdateArticleSchema = z.object({
 
 export const articles = t.router({
 	list: t.procedure.query(() => p.article.findMany()),
-	create: t.procedure.input(CreateArticleSchema).mutation(({ input }) => {
+	create: t.procedure.input(CreateArticleSchema).mutation(async ({ input }) => {
 		if (input.content) {
 			input.markdown = processMarkdown(input.content)
+			input.pageContent = await compileContent(input.markdown)
 		}
-		return p.article.create({ data: input })
+		return await p.article.create({ data: input })
 	}),
 
 	get: t.procedure
@@ -46,6 +52,9 @@ export const articles = t.router({
 		}
 		return p.article.update({ where: { id: input.id }, data: input.data })
 	}),
+	delete: t.procedure
+		.input(zfd.numeric())
+		.mutation(({ input }) => p.article.delete({ where: { id: input } })),
 	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {
 		const article = await p.article.findFirstOrThrow({ where: { slug: input } })
 		if (article.markdown) {

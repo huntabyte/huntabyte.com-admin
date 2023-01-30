@@ -1,6 +1,7 @@
 import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
 import { handleActionErrors } from "$lib/utils"
+import { redirect } from "@sveltejs/kit"
 import type { Actions, PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async (event) => {
@@ -21,5 +22,20 @@ export const actions: Actions = {
 		} catch (e) {
 			return handleActionErrors(e, body)
 		}
+
+		return {
+			status: 200,
+		}
+	},
+	deleteArticle: async (event) => {
+		try {
+			await router
+				.createCaller(await createContext(event))
+				.articles.delete(event.params.articleId)
+		} catch (e) {
+			return handleActionErrors(e)
+		}
+
+		throw redirect(302, "/admin/articles")
 	},
 }

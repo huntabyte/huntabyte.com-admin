@@ -1,7 +1,6 @@
 import { createContext } from "$lib/trpc/context"
 import { router } from "$lib/trpc/router"
 import { handleActionErrors } from "$lib/utils"
-import { fail } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import type { Actions } from "./$types"
 
