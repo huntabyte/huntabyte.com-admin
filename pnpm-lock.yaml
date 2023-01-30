@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@faker-js/faker': ^7.6.0
   '@histoire/plugin-svelte': ^0.12.4
   '@playwright/test': ^1.29.2
   '@prisma/client': ^4.9.0
@@ -98,6 +99,7 @@ dependencies:
   unified: 10.1.2
 
 devDependencies:
+  '@faker-js/faker': 7.6.0
   '@histoire/plugin-svelte': 0.12.4_76dbu7m65vjnozzv4fj7qep6aq
   '@playwright/test': 1.29.2
   '@prisma/client': 4.9.0_prisma@4.9.0
@@ -403,6 +405,11 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: true
 
   /@histoire/app/0.12.4_vite@4.0.4:

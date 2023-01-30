@@ -86,9 +86,9 @@
 				on:click={() => {
 					deleteDialog.open()
 					slideoverDialog.close()
-				}}>Delete Lesson</Button
+				}}>Delete Article</Button
 			>
-			<Button type="submit" size="sm" color="primary">Update Lesson</Button>
+			<Button type="submit" size="sm" color="primary">Update Article</Button>
 		</div>
 	</Slideover>
 </form>

@@ -17,6 +17,7 @@
         "story:preview": "histoire preview"
     },
     "devDependencies": {
+        "@faker-js/faker": "^7.6.0",
         "@histoire/plugin-svelte": "^0.12.4",
         "@playwright/test": "^1.29.2",
         "@prisma/client": "^4.9.0",

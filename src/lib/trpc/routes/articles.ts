@@ -55,13 +55,11 @@ export const articles = t.router({
 	delete: t.procedure
 		.input(zfd.numeric())
 		.mutation(({ input }) => p.article.delete({ where: { id: input } })),
-	getBySlug: t.procedure.input(z.string()).query(async ({ input }) => {
-		const article = await p.article.findFirstOrThrow({ where: { slug: input } })
-		if (article.markdown) {
-			article.content = await compileContent(article.markdown)
-		}
-		return article
-	}),
+	getBySlug: t.procedure
+		.input(z.string())
+		.query(async ({ input }) =>
+			p.article.findFirstOrThrow({ where: { slug: input } }),
+		),
 })
 
 export type ArticleRouter = typeof articles
